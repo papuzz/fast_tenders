@@ -1,93 +1,157 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import '../../features/feed/presentation/feed_screen.dart';
-import '../../features/cpo_calculator/presentation/cpo_calculator_screen.dart';
-import '../../features/settings/presentation/settings_screen.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
+import 'dart:async';
+import 'package:fast_tenders/screens/feed_screen.dart';
+import 'package:fast_tenders/screens/cpo_calculator_screen.dart';
+import 'package:fast_tenders/screens/profile_screen.dart';
+import 'package:fast_tenders/screens/login_screen.dart';
+import 'package:fast_tenders/screens/signup_screen.dart';
+import 'package:fast_tenders/screens/forgot_password_screen.dart';
+import 'package:fast_tenders/screens/tender_detail_screen.dart';
+import 'package:core/core.dart';
+
+import '../../l10n/app_localizations.dart';
 
 // Private navigators
 final _rootNavigatorKey = GlobalKey<NavigatorState>();
-final _shellNavigatorKey = GlobalKey<NavigatorState>();
 
-class AppRouter {
-  static final router = GoRouter(
+class AuthRefreshListenable extends ChangeNotifier {
+  AuthRefreshListenable(Stream<AuthState> authStateChanges) {
+    _subscription = authStateChanges.listen((_) {
+      notifyListeners();
+    });
+  }
+
+  late final StreamSubscription<AuthState> _subscription;
+
+  @override
+  void dispose() {
+    _subscription.cancel();
+    super.dispose();
+  }
+}
+
+final authRefreshListenableProvider = Provider<AuthRefreshListenable>((ref) {
+  final authRepository = ref.watch(authRepositoryProvider);
+  return AuthRefreshListenable(authRepository.authStateChanges);
+});
+
+final routerProvider = Provider<GoRouter>((ref) {
+  final authRepository = ref.watch(authRepositoryProvider);
+  final refreshListenable = ref.watch(authRefreshListenableProvider);
+
+  return GoRouter(
     initialLocation: '/feed',
     navigatorKey: _rootNavigatorKey,
+    refreshListenable: refreshListenable,
+    redirect: (context, state) {
+      final isLoggedIn = authRepository.currentUser != null;
+      final isAuthRoute =
+          state.uri.toString() == '/login' ||
+          state.uri.toString() == '/signup' ||
+          state.uri.toString() == '/forgot-password';
+
+      if (!isLoggedIn && !isAuthRoute) {
+        return '/login';
+      }
+      if (isLoggedIn && isAuthRoute) {
+        return '/feed';
+      }
+      return null;
+    },
     routes: [
-      ShellRoute(
-        navigatorKey: _shellNavigatorKey,
-        builder: (context, state, child) {
-          return ScaffoldWithBottomNavBar(child: child);
+      GoRoute(path: '/login', builder: (context, state) => const LoginScreen()),
+      GoRoute(
+        path: '/signup',
+        builder: (context, state) => const SignUpScreen(),
+      ),
+      GoRoute(
+        path: '/forgot-password',
+        builder: (context, state) => const ForgotPasswordScreen(),
+      ),
+      GoRoute(
+        path: '/tender-details',
+        builder: (context, state) {
+          final extra = state.extra as Map<String, dynamic>;
+          final tenders = extra['tenders'] as List<Tender>;
+          final initialIndex = extra['initialIndex'] as int;
+          return TenderDetailScreen(
+            tenders: tenders,
+            initialIndex: initialIndex,
+          );
         },
-        routes: [
-          GoRoute(
-            path: '/feed',
-            builder: (context, state) => const TenderScreen(),
+      ),
+      // Stateful Navigation for Bottom Bar
+      StatefulShellRoute.indexedStack(
+        builder: (context, state, navigationShell) {
+          return ScaffoldWithBottomNavBar(navigationShell: navigationShell);
+        },
+        branches: [
+          StatefulShellBranch(
+            routes: [
+              GoRoute(
+                path: '/feed',
+                builder: (context, state) => const TenderScreen(),
+              ),
+            ],
           ),
-          GoRoute(
-            path: '/calculator',
-            builder: (context, state) => const CpoCalculatorScreen(),
+          StatefulShellBranch(
+            routes: [
+              GoRoute(
+                path: '/calculator',
+                builder: (context, state) => const CpoCalculatorScreen(),
+              ),
+            ],
           ),
-          GoRoute(
-            path: '/settings',
-            builder: (context, state) => const SettingsScreen(),
+          StatefulShellBranch(
+            routes: [
+              GoRoute(
+                path: '/profile',
+                builder: (context, state) => const ProfileScreen(),
+              ),
+            ],
           ),
         ],
       ),
     ],
   );
-}
+});
 
 class ScaffoldWithBottomNavBar extends StatelessWidget {
-  const ScaffoldWithBottomNavBar({required this.child, super.key});
-  final Widget child;
+  const ScaffoldWithBottomNavBar({required this.navigationShell, super.key});
+  final StatefulNavigationShell navigationShell;
+
+  void _onTap(int index) {
+    navigationShell.goBranch(
+      index,
+      initialLocation: index == navigationShell.currentIndex,
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: child,
+      body: navigationShell,
       bottomNavigationBar: NavigationBar(
-        selectedIndex: _calculateSelectedIndex(context),
-        onDestinationSelected: (int index) => _onItemTapped(index, context),
-        destinations: const [
+        selectedIndex: navigationShell.currentIndex,
+        onDestinationSelected: _onTap,
+        destinations: [
           NavigationDestination(
-            icon: Icon(Icons.list_alt),
-            label: 'Tenders',
+            icon: const Icon(Icons.list_alt),
+            label: AppLocalizations.of(context)!.navTenders,
           ),
           NavigationDestination(
-            icon: Icon(Icons.calculate),
-            label: 'CPO Calc',
+            icon: const Icon(Icons.calculate),
+            label: AppLocalizations.of(context)!.navCpo,
           ),
           NavigationDestination(
-            icon: Icon(Icons.person),
-            label: 'Profile',
+            icon: const Icon(Icons.person),
+            label: AppLocalizations.of(context)!.navProfile,
           ),
         ],
       ),
     );
   }
-
-  static int _calculateSelectedIndex(BuildContext context) {
-    final String location = GoRouterState.of(context).uri.toString();
-    if (location.startsWith('/feed')) return 0;
-    if (location.startsWith('/calculator')) return 1;
-    if (location.startsWith('/settings')) return 2;
-    return 0;
-  }
-
-  void _onItemTapped(int index, BuildContext context) {
-    switch (index) {
-      case 0:
-        GoRouter.of(context).go('/feed');
-        break;
-      case 1:
-        GoRouter.of(context).go('/calculator');
-        break;
-      case 2:
-        GoRouter.of(context).go('/settings');
-        break;
-    }
-  }
-}
-extension on Color {
-  Color? get shade800 => null;
 }

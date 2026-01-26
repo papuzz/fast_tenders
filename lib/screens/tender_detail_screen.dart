@@ -1,0 +1,614 @@
+import 'package:fast_tenders/l10n/app_localizations.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:core/core.dart';
+import 'package:intl/intl.dart';
+import 'dart:ui';
+import '../core/providers/locale_provider.dart';
+import 'package:fast_tenders/core/constants/app_colors.dart';
+import 'package:share_plus/share_plus.dart';
+
+class TenderDetailScreen extends ConsumerStatefulWidget {
+  final List<Tender> tenders;
+  final int initialIndex;
+
+  const TenderDetailScreen({
+    super.key,
+    required this.tenders,
+    required this.initialIndex,
+  });
+
+  @override
+  ConsumerState<TenderDetailScreen> createState() => _TenderDetailScreenState();
+}
+
+class _TenderDetailScreenState extends ConsumerState<TenderDetailScreen> {
+  late int currentIndex;
+
+  @override
+  void initState() {
+    super.initState();
+    currentIndex = widget.initialIndex;
+  }
+
+  Tender get tender => widget.tenders[currentIndex];
+
+  @override
+  Widget build(BuildContext context) {
+    final locale = ref.watch(localeProvider);
+    final langCode = locale.languageCode;
+    final l10n = AppLocalizations.of(context)!;
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+
+    return Scaffold(
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+      appBar: AppBar(
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back_ios, size: 20),
+          onPressed: () => Navigator.of(context).pop(),
+        ),
+        title: Text(
+          l10n.tendersTitle, // Using existing key for "Tender Details" concept
+          style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
+        ),
+        centerTitle: true,
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.share_outlined),
+            onPressed: () {
+              final text =
+                  "${tender.getOrganization(langCode)}\n${tender.getTitle(langCode)}\nDeadline: ${DateFormat('MMM dd, yyyy').format(tender.deadline)}";
+              Share.share(text);
+            },
+          ),
+          const SizedBox(width: 8),
+        ],
+        backgroundColor: Colors.transparent,
+        elevation: 0,
+      ),
+      body: SingleChildScrollView(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            // Newspaper Scan Section
+            _buildSectionHeader(
+              context,
+              title: "Original Scan",
+              trailing:
+                  "Addis Zemen • ${DateFormat('MMM dd, yyyy').format(tender.postedDate)}",
+            ),
+
+            // OCR Text Section
+            _buildOCRSection(context, tender, langCode),
+
+            // Locked Bidding Documents
+            _buildBiddingDocuments(context),
+
+            // Historical Winning Prices (PRO)
+            _buildHistoricalPrices(context),
+
+            const SizedBox(height: 100), // Space for bottom bar
+          ],
+        ),
+      ),
+      bottomNavigationBar: _buildBottomActionBar(context, l10n),
+    );
+  }
+
+  Widget _buildSectionHeader(
+    BuildContext context, {
+    required String title,
+    String? trailing,
+  }) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Text(
+            title.toUpperCase(),
+            style: const TextStyle(
+              fontSize: 12,
+              fontWeight: FontWeight.bold,
+              color: AppColors.primary,
+              letterSpacing: 1.2,
+            ),
+          ),
+          if (trailing != null)
+            Text(
+              trailing,
+              style: TextStyle(fontSize: 12, color: Colors.grey.shade500),
+            ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildOCRSection(
+    BuildContext context,
+    Tender tender,
+    String langCode,
+  ) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+    return Padding(
+      padding: const EdgeInsets.all(16.0),
+      child: Column(
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              const Text(
+                "Text Extracted (OCR)",
+                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+              ),
+              TextButton.icon(
+                onPressed: () {},
+                icon: const Icon(Icons.copy_outlined, size: 16),
+                label: const Text("Copy"),
+                style: TextButton.styleFrom(
+                  foregroundColor: AppColors.primary,
+                  textStyle: const TextStyle(fontWeight: FontWeight.bold),
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: 8),
+          Container(
+            padding: const EdgeInsets.all(16),
+            decoration: BoxDecoration(
+              color: isDark
+                  ? const Color(0xFF1F2937).withValues(alpha: 0.5)
+                  : Colors.white,
+              borderRadius: BorderRadius.circular(16),
+              border: Border.all(color: Colors.grey.withValues(alpha: 0.2)),
+            ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                _buildOCRLine("Organization", tender.getOrganization(langCode)),
+                _buildOCRLine("Project", tender.getTitle(langCode)),
+                _buildOCRLine(
+                  "Deadline",
+                  DateFormat('MMM dd, yyyy (hh:mm a)').format(tender.deadline),
+                ),
+                _buildOCRLine(
+                  "Bid Bond",
+                  tender.cpoAmount != null
+                      ? "${NumberFormat.decimalPattern().format(tender.cpoAmount)} ETB (CPO or Bank Guarantee)"
+                      : "Not specified",
+                ),
+                _buildOCRLine("Eligibility", tender.minGrade),
+                const Divider(height: 24),
+                Row(
+                  children: [
+                    const Icon(Icons.verified, color: Colors.green, size: 16),
+                    const SizedBox(width: 4),
+                    Text(
+                      "AI CONFIDENCE: 98%",
+                      style: TextStyle(
+                        fontSize: 10,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.grey.shade500,
+                      ),
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildOCRLine(String label, String value) {
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 8.0),
+      child: RichText(
+        text: TextSpan(
+          style: const TextStyle(fontSize: 14, height: 1.5),
+          children: [
+            TextSpan(
+              text: "$label: ",
+              style: const TextStyle(
+                fontWeight: FontWeight.bold,
+                color: Colors.grey,
+              ),
+            ),
+            TextSpan(
+              text: value,
+              style: const TextStyle(color: Colors.white70),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildBiddingDocuments(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+      child: Stack(
+        children: [
+          Container(
+            padding: const EdgeInsets.all(35),
+            decoration: BoxDecoration(
+              color: isDark
+                  ? const Color(0xFF1F2937).withValues(alpha: 0.5)
+                  : Colors.white,
+              borderRadius: BorderRadius.circular(16),
+              border: Border.all(color: Colors.grey.withValues(alpha: 0.2)),
+            ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const Text(
+                  "Bidding Documents",
+                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                ),
+                const SizedBox(height: 16),
+                _buildLockedDocItem(isDark, "Document 1"),
+                const SizedBox(height: 12),
+                _buildLockedDocItem(isDark, "Document 2"),
+              ],
+            ),
+          ),
+          // Locked Overlay
+          Positioned.fill(
+            child: ClipRRect(
+              borderRadius: BorderRadius.circular(16),
+              child: BackdropFilter(
+                filter: ImageFilter.blur(sigmaX: 8, sigmaY: 8),
+                child: Container(
+                  color: Colors.black.withValues(alpha: 0.3),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Container(
+                        padding: const EdgeInsets.all(12),
+                        decoration: BoxDecoration(
+                          color: AppColors.primary.withValues(alpha: 0.2),
+                          shape: BoxShape.circle,
+                        ),
+                        child: const Icon(
+                          Icons.shopping_bag,
+                          color: AppColors.primary,
+                          size: 32,
+                        ),
+                      ),
+                      const SizedBox(height: 12),
+                      const Text(
+                        "Access Documents",
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      const SizedBox(height: 4),
+                      const Padding(
+                        padding: EdgeInsets.symmetric(horizontal: 40),
+                        child: Text(
+                          "Get the full BOQ and technical specifications instantly.",
+                          textAlign: TextAlign.center,
+                          style: TextStyle(color: Colors.white70, fontSize: 13),
+                        ),
+                      ),
+                      const SizedBox(height: 16),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 24),
+                        child: ElevatedButton(
+                          onPressed: () {},
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: AppColors.primary,
+                            foregroundColor: Colors.white,
+                            padding: const EdgeInsets.symmetric(vertical: 16),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(12),
+                            ),
+                            minimumSize: const Size(double.infinity, 50),
+                          ),
+                          child: const Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Icon(Icons.payments_outlined),
+                              SizedBox(width: 8),
+                              Text(
+                                "Buy for 500 ETB with Telebirr",
+                                style: TextStyle(fontWeight: FontWeight.bold),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildLockedDocItem(bool isDark, String name) {
+    return Container(
+      padding: const EdgeInsets.all(12),
+      decoration: BoxDecoration(
+        color: isDark
+            ? Colors.black.withValues(alpha: 0.2)
+            : Colors.grey.shade100,
+        borderRadius: BorderRadius.circular(8),
+      ),
+      child: Row(
+        children: [
+          Icon(Icons.description, color: Colors.grey.shade400),
+          const SizedBox(width: 12),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Container(
+                  height: 8,
+                  width: 100,
+                  decoration: BoxDecoration(
+                    color: Colors.grey.shade700,
+                    borderRadius: BorderRadius.circular(4),
+                  ),
+                ),
+                const SizedBox(height: 6),
+                Container(
+                  height: 6,
+                  width: 60,
+                  decoration: BoxDecoration(
+                    color: Colors.grey.shade800,
+                    borderRadius: BorderRadius.circular(3),
+                  ),
+                ),
+              ],
+            ),
+          ),
+          Icon(Icons.lock, color: Colors.grey.shade500, size: 18),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildHistoricalPrices(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+    return Padding(
+      padding: const EdgeInsets.all(16.0),
+      child: Column(
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              const Text(
+                "Historical Winning Prices",
+                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+              ),
+              Container(
+                padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
+                decoration: BoxDecoration(
+                  color: AppColors.primary.withValues(alpha: 0.2),
+                  borderRadius: BorderRadius.circular(4),
+                ),
+                child: const Text(
+                  "PRO",
+                  style: TextStyle(
+                    color: AppColors.primary,
+                    fontSize: 10,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: 12),
+          Stack(
+            children: [
+              Container(
+                height: 180,
+                padding: const EdgeInsets.all(16),
+                decoration: BoxDecoration(
+                  color: isDark
+                      ? const Color(0xFF1F2937).withValues(alpha: 0.5)
+                      : Colors.white,
+                  borderRadius: BorderRadius.circular(16),
+                  border: Border.all(color: Colors.grey.withValues(alpha: 0.2)),
+                ),
+                child: Column(
+                  children: [
+                    Expanded(
+                      child: Row(
+                        crossAxisAlignment: CrossAxisAlignment.end,
+                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        children: [
+                          _buildBar(0.4),
+                          _buildBar(0.7),
+                          _buildBar(0.3),
+                          _buildBar(0.9),
+                          _buildBar(0.6),
+                        ],
+                      ),
+                    ),
+                    const SizedBox(height: 8),
+                    const Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          "2020",
+                          style: TextStyle(fontSize: 10, color: Colors.grey),
+                        ),
+                        Text(
+                          "2021",
+                          style: TextStyle(fontSize: 10, color: Colors.grey),
+                        ),
+                        Text(
+                          "2022",
+                          style: TextStyle(fontSize: 10, color: Colors.grey),
+                        ),
+                        Text(
+                          "2023",
+                          style: TextStyle(fontSize: 10, color: Colors.grey),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+              ),
+              // Blurred Overlay
+              Positioned.fill(
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(16),
+                  child: BackdropFilter(
+                    filter: ImageFilter.blur(sigmaX: 4, sigmaY: 4),
+                    child: Container(
+                      color: Colors.black.withValues(alpha: 0.1),
+                      child: Center(
+                        child: Container(
+                          padding: const EdgeInsets.all(20),
+                          decoration: BoxDecoration(
+                            color: const Color(
+                              0xFF101922,
+                            ).withValues(alpha: 0.8),
+                            borderRadius: BorderRadius.circular(20),
+                            border: Border.all(color: Colors.white10),
+                          ),
+                          child: Column(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              const Text(
+                                "Unlock market insights for\nsimilar tenders",
+                                textAlign: TextAlign.center,
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 14,
+                                ),
+                              ),
+                              const SizedBox(height: 12),
+                              ElevatedButton(
+                                onPressed: () {},
+                                style: ElevatedButton.styleFrom(
+                                  backgroundColor: Colors.white,
+                                  foregroundColor: Colors.black,
+                                  shape: const StadiumBorder(),
+                                  padding: const EdgeInsets.symmetric(
+                                    horizontal: 24,
+                                    vertical: 8,
+                                  ),
+                                ),
+                                child: const Text(
+                                  "Upgrade to Pro",
+                                  style: TextStyle(fontWeight: FontWeight.bold),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildBar(double heightFactor) {
+    return Container(
+      width: 30,
+      decoration: BoxDecoration(
+        color: AppColors.primary.withValues(alpha: 0.4),
+        borderRadius: const BorderRadius.vertical(top: Radius.circular(4)),
+      ),
+      child: FractionallySizedBox(
+        heightFactor: heightFactor,
+        child: Container(
+          decoration: BoxDecoration(
+            color: AppColors.primary.withValues(alpha: 0.6),
+            borderRadius: const BorderRadius.vertical(top: Radius.circular(4)),
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildBottomActionBar(BuildContext context, AppLocalizations l10n) {
+    final theme = Theme.of(context);
+    final isDark = theme.brightness == Brightness.dark;
+    return Container(
+      padding: const EdgeInsets.all(16),
+      decoration: BoxDecoration(
+        color: theme.scaffoldBackgroundColor,
+        border: Border(
+          top: BorderSide(color: Colors.grey.withValues(alpha: 0.2)),
+        ),
+      ),
+      child: Row(
+        children: [
+          IconButton(
+            onPressed: currentIndex > 0
+                ? () => setState(() => currentIndex--)
+                : null,
+            icon: Icon(
+              Icons.arrow_back_ios,
+              color: currentIndex > 0
+                  ? (isDark ? Colors.white : Colors.black)
+                  : Colors.grey,
+              size: 20,
+            ),
+          ),
+          const SizedBox(width: 8),
+          Expanded(
+            child: OutlinedButton.icon(
+              onPressed: () {},
+              icon: const Icon(Icons.bookmark_outline),
+              label: const Text("Save"),
+              style: OutlinedButton.styleFrom(
+                foregroundColor: isDark ? Colors.white : Colors.black,
+                side: BorderSide(color: Colors.grey.shade700),
+                padding: const EdgeInsets.symmetric(vertical: 16),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(12),
+                ),
+              ),
+            ),
+          ),
+          const SizedBox(width: 12),
+          Container(
+            decoration: BoxDecoration(
+              color: AppColors.primary,
+              borderRadius: BorderRadius.circular(12),
+            ),
+            child: IconButton(
+              onPressed: () {},
+              icon: const Icon(Icons.notifications_active_outlined),
+              color: Colors.white,
+              padding: const EdgeInsets.all(16),
+            ),
+          ),
+          const SizedBox(width: 8),
+          IconButton(
+            onPressed: currentIndex < widget.tenders.length - 1
+                ? () => setState(() => currentIndex++)
+                : null,
+            icon: Icon(
+              Icons.arrow_forward_ios,
+              color: currentIndex < widget.tenders.length - 1
+                  ? (isDark ? Colors.white : Colors.black)
+                  : Colors.grey,
+              size: 20,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}

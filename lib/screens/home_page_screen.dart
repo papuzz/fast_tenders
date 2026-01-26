@@ -1,4 +1,6 @@
+import 'package:fast_tenders/l10n/app_localizations.dart';
 import 'package:flutter/material.dart';
+import 'package:core/core.dart';
 
 class HomePageScreen extends StatelessWidget {
   const HomePageScreen({super.key});
@@ -6,12 +8,8 @@ class HomePageScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('TenderWin Ethiopia'),
-      ),
-      body: const Center(
-        child: Text('Welcome to TenderWin!'),
-      ),
+      appBar: AppBar(title: Text(AppLocalizations.of(context)!.appTitle)),
+      body: Center(child: Text(AppLocalizations.of(context)!.welcomeMessage)),
     );
   }
 }

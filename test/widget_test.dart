@@ -10,7 +10,7 @@ void main() {
     await tester.pumpWidget(const ProviderScope(child: TenderWinApp()));
 
     // Verify that the app renders the bottom navigation bar with "Tenders"
-    expect(find.text('Tenders'), findsOneWidget);
-    expect(find.text('CPO Calc'), findsOneWidget);
+    expect(find.text('ጨረታዎች'), findsOneWidget);
+    expect(find.text('CPO ማስያ'), findsOneWidget);
   });
 }
