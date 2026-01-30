@@ -156,6 +156,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get proLabel => 'PRO';
 
   @override
+  String get comingSoon => 'Coming Soon';
+
+  @override
   String get settingsTitle => 'Settings';
 
   @override
@@ -207,6 +210,9 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get navTenders => 'Tenders';
+
+  @override
+  String get navBrowse => 'Browse';
 
   @override
   String get navCpo => 'CPO Calc';
@@ -321,4 +327,257 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get appVersion => 'TenderEthiopia v2.4.0 (Build 88)';
+
+  @override
+  String get profileSetupTitle => 'Setup Profile';
+
+  @override
+  String get skip => 'Skip';
+
+  @override
+  String get profileUpdatedSyncing =>
+      'Profile Updated! Your feed is syncing...';
+
+  @override
+  String profileUpdateError(String error) {
+    return 'Error updating profile: $error';
+  }
+
+  @override
+  String get back => 'Back';
+
+  @override
+  String get next => 'Next';
+
+  @override
+  String get finish => 'Finish';
+
+  @override
+  String get businessBasicsTitle => 'Business Basics';
+
+  @override
+  String get businessBasicsSubtitle =>
+      'Tell us about your company so we can find the right tenders.';
+
+  @override
+  String get businessNameLabel => 'Business Name';
+
+  @override
+  String get businessNameHint => 'e.g., Ethio Tech Solutions';
+
+  @override
+  String get businessTypeLabel => 'Business Type';
+
+  @override
+  String get primarySectorLabel => 'Primary Sector (Select all that apply)';
+
+  @override
+  String get primarySectorSubtitle =>
+      'We use this to recommend tenders you can actually win.';
+
+  @override
+  String get legalLicenseTitle => 'Legal & License Info';
+
+  @override
+  String get legalLicenseSubtitle => 'Help us verify your eligibility.';
+
+  @override
+  String get tradeLicenseCategoryLabel => 'Trade License Category';
+
+  @override
+  String get licenseGradeLabel => 'License Grade (if applicable)';
+
+  @override
+  String get vatRegisteredLabel => 'VAT Registered?';
+
+  @override
+  String get yes => 'Yes';
+
+  @override
+  String get no => 'No';
+
+  @override
+  String get taxComplianceDeclaration =>
+      'I declare my tax compliance status is up to date.';
+
+  @override
+  String get taxComplianceSubtitle => 'Trust-based declaration.';
+
+  @override
+  String get targetInstitutionsTitle => 'Target Institutions & Regions';
+
+  @override
+  String get targetInstitutionsSubtitle =>
+      'Hyper-relevant notifications, less spam.';
+
+  @override
+  String get preferredInstitutionsLabel => 'Preferred Institutions';
+
+  @override
+  String get operatingRegionsLabel => 'Operating Regions';
+
+  @override
+  String get alertPreferencesTitle => 'Alert Preferences';
+
+  @override
+  String get alertPreferencesSubtitle => 'Let users control noise early.';
+
+  @override
+  String get alertMatchingTender => 'Matching tender published';
+
+  @override
+  String get alertMatchingTenderSubtitle =>
+      'Notify me when a tender matches my profile';
+
+  @override
+  String get alertFavoriteInstitution => 'Favorite institution posts';
+
+  @override
+  String get alertFavoriteInstitutionSubtitle =>
+      'Notify me when my preferred institutions post';
+
+  @override
+  String get alertDeadlineApproaching => 'Deadline approaching';
+
+  @override
+  String get alertDeadlineApproachingSubtitle =>
+      'Notify me 48h before deadline';
+
+  @override
+  String get alertCompetitorWins => 'Competitor wins';
+
+  @override
+  String get alertCompetitorWinsSubtitle =>
+      'Notify me when a competitor wins a similar tender';
+
+  @override
+  String get profileReadyToSyncTitle => 'Profile Ready to Sync';
+
+  @override
+  String get profileReadyToSyncSubtitle =>
+      'Your preferences will be used to filter and recommend tenders.';
+
+  @override
+  String get personalizedTenderFeed => 'Personalized tender feed';
+
+  @override
+  String get customizedAlerts => 'Customized alerts';
+
+  @override
+  String get sectorSpecificMatching => 'Sector-specific matching';
+
+  @override
+  String get configurationStatusComplete => 'Configuration Status: Complete';
+
+  @override
+  String get saveAndUpdateFeed => 'Save & Update My Feed';
+
+  @override
+  String get previewMatchesLabel => 'Preview of matches for your sectors:';
+
+  @override
+  String get previewTenderTitle => 'Office Supplies Procurement';
+
+  @override
+  String get previewTenderSubtitle => 'Ministry of Education • 2 Days left';
+
+  @override
+  String get filterByCategory => 'Filter by Category';
+
+  @override
+  String get reset => 'Reset';
+
+  @override
+  String get clearAllFilters => 'Clear All Filters';
+
+  @override
+  String get failedToLoadTenders => 'Failed to load tenders';
+
+  @override
+  String get retry => 'Retry';
+
+  @override
+  String get tenderBookmarkUpdated => 'Tender bookmark updated';
+
+  @override
+  String errorWithCount(String error) {
+    return 'Error: $error';
+  }
+
+  @override
+  String get summaryTitle => 'Summary';
+
+  @override
+  String get organizationLabel => 'Organization';
+
+  @override
+  String get projectLabel => 'Project';
+
+  @override
+  String get deadlineLabel => 'Deadline';
+
+  @override
+  String get bidBondLabel => 'Bid Bond';
+
+  @override
+  String get notSpecified => 'Not specified';
+
+  @override
+  String get eligibilityLabel => 'Eligibility';
+
+  @override
+  String get unknown => 'Unknown';
+
+  @override
+  String get descriptionTitle => 'Description';
+
+  @override
+  String get noDescriptionAvailable =>
+      'No description available for this tender.';
+
+  @override
+  String get historicalWinningPrices => 'Historical Winning Prices';
+
+  @override
+  String get unlockMarketInsights =>
+      'Unlock market insights for\nsimilar tenders';
+
+  @override
+  String get saved => 'Saved';
+
+  @override
+  String get save => 'Save';
+
+  @override
+  String get alertsSetForTender => 'Alerts set for this tender';
+
+  @override
+  String get alertsDisabled => 'Alerts disabled';
+
+  @override
+  String get pleaseLoginToSeeSaved => 'Please login to see saved tenders';
+
+  @override
+  String get noSavedTendersYet => 'No saved tenders yet';
+
+  @override
+  String noItemsIn(String title) {
+    return 'No items in $title';
+  }
+
+  @override
+  String get aiSummaryTitle => 'AI Summary';
+
+  @override
+  String get generateSummary => 'Generate Summary';
+
+  @override
+  String get generatingSummary => 'Generating...';
+
+  @override
+  String get aiSummaryDisclaimer =>
+      'AI-generated summary. Please refer to official documents for final details.';
+
+  @override
+  String get aiSummaryError => 'Failed to generate summary.';
 }

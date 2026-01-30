@@ -380,6 +380,12 @@ abstract class AppLocalizations {
   /// **'PRO'**
   String get proLabel;
 
+  /// No description provided for @comingSoon.
+  ///
+  /// In en, this message translates to:
+  /// **'Coming Soon'**
+  String get comingSoon;
+
   /// No description provided for @settingsTitle.
   ///
   /// In en, this message translates to:
@@ -481,6 +487,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Tenders'**
   String get navTenders;
+
+  /// No description provided for @navBrowse.
+  ///
+  /// In en, this message translates to:
+  /// **'Browse'**
+  String get navBrowse;
 
   /// No description provided for @navCpo.
   ///
@@ -691,6 +703,474 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'TenderEthiopia v2.4.0 (Build 88)'**
   String get appVersion;
+
+  /// No description provided for @profileSetupTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Setup Profile'**
+  String get profileSetupTitle;
+
+  /// No description provided for @skip.
+  ///
+  /// In en, this message translates to:
+  /// **'Skip'**
+  String get skip;
+
+  /// No description provided for @profileUpdatedSyncing.
+  ///
+  /// In en, this message translates to:
+  /// **'Profile Updated! Your feed is syncing...'**
+  String get profileUpdatedSyncing;
+
+  /// No description provided for @profileUpdateError.
+  ///
+  /// In en, this message translates to:
+  /// **'Error updating profile: {error}'**
+  String profileUpdateError(String error);
+
+  /// No description provided for @back.
+  ///
+  /// In en, this message translates to:
+  /// **'Back'**
+  String get back;
+
+  /// No description provided for @next.
+  ///
+  /// In en, this message translates to:
+  /// **'Next'**
+  String get next;
+
+  /// No description provided for @finish.
+  ///
+  /// In en, this message translates to:
+  /// **'Finish'**
+  String get finish;
+
+  /// No description provided for @businessBasicsTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Business Basics'**
+  String get businessBasicsTitle;
+
+  /// No description provided for @businessBasicsSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Tell us about your company so we can find the right tenders.'**
+  String get businessBasicsSubtitle;
+
+  /// No description provided for @businessNameLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Business Name'**
+  String get businessNameLabel;
+
+  /// No description provided for @businessNameHint.
+  ///
+  /// In en, this message translates to:
+  /// **'e.g., Ethio Tech Solutions'**
+  String get businessNameHint;
+
+  /// No description provided for @businessTypeLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Business Type'**
+  String get businessTypeLabel;
+
+  /// No description provided for @primarySectorLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Primary Sector (Select all that apply)'**
+  String get primarySectorLabel;
+
+  /// No description provided for @primarySectorSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'We use this to recommend tenders you can actually win.'**
+  String get primarySectorSubtitle;
+
+  /// No description provided for @legalLicenseTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Legal & License Info'**
+  String get legalLicenseTitle;
+
+  /// No description provided for @legalLicenseSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Help us verify your eligibility.'**
+  String get legalLicenseSubtitle;
+
+  /// No description provided for @tradeLicenseCategoryLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Trade License Category'**
+  String get tradeLicenseCategoryLabel;
+
+  /// No description provided for @licenseGradeLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'License Grade (if applicable)'**
+  String get licenseGradeLabel;
+
+  /// No description provided for @vatRegisteredLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'VAT Registered?'**
+  String get vatRegisteredLabel;
+
+  /// No description provided for @yes.
+  ///
+  /// In en, this message translates to:
+  /// **'Yes'**
+  String get yes;
+
+  /// No description provided for @no.
+  ///
+  /// In en, this message translates to:
+  /// **'No'**
+  String get no;
+
+  /// No description provided for @taxComplianceDeclaration.
+  ///
+  /// In en, this message translates to:
+  /// **'I declare my tax compliance status is up to date.'**
+  String get taxComplianceDeclaration;
+
+  /// No description provided for @taxComplianceSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Trust-based declaration.'**
+  String get taxComplianceSubtitle;
+
+  /// No description provided for @targetInstitutionsTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Target Institutions & Regions'**
+  String get targetInstitutionsTitle;
+
+  /// No description provided for @targetInstitutionsSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Hyper-relevant notifications, less spam.'**
+  String get targetInstitutionsSubtitle;
+
+  /// No description provided for @preferredInstitutionsLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Preferred Institutions'**
+  String get preferredInstitutionsLabel;
+
+  /// No description provided for @operatingRegionsLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Operating Regions'**
+  String get operatingRegionsLabel;
+
+  /// No description provided for @alertPreferencesTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Alert Preferences'**
+  String get alertPreferencesTitle;
+
+  /// No description provided for @alertPreferencesSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Let users control noise early.'**
+  String get alertPreferencesSubtitle;
+
+  /// No description provided for @alertMatchingTender.
+  ///
+  /// In en, this message translates to:
+  /// **'Matching tender published'**
+  String get alertMatchingTender;
+
+  /// No description provided for @alertMatchingTenderSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Notify me when a tender matches my profile'**
+  String get alertMatchingTenderSubtitle;
+
+  /// No description provided for @alertFavoriteInstitution.
+  ///
+  /// In en, this message translates to:
+  /// **'Favorite institution posts'**
+  String get alertFavoriteInstitution;
+
+  /// No description provided for @alertFavoriteInstitutionSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Notify me when my preferred institutions post'**
+  String get alertFavoriteInstitutionSubtitle;
+
+  /// No description provided for @alertDeadlineApproaching.
+  ///
+  /// In en, this message translates to:
+  /// **'Deadline approaching'**
+  String get alertDeadlineApproaching;
+
+  /// No description provided for @alertDeadlineApproachingSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Notify me 48h before deadline'**
+  String get alertDeadlineApproachingSubtitle;
+
+  /// No description provided for @alertCompetitorWins.
+  ///
+  /// In en, this message translates to:
+  /// **'Competitor wins'**
+  String get alertCompetitorWins;
+
+  /// No description provided for @alertCompetitorWinsSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Notify me when a competitor wins a similar tender'**
+  String get alertCompetitorWinsSubtitle;
+
+  /// No description provided for @profileReadyToSyncTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Profile Ready to Sync'**
+  String get profileReadyToSyncTitle;
+
+  /// No description provided for @profileReadyToSyncSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Your preferences will be used to filter and recommend tenders.'**
+  String get profileReadyToSyncSubtitle;
+
+  /// No description provided for @personalizedTenderFeed.
+  ///
+  /// In en, this message translates to:
+  /// **'Personalized tender feed'**
+  String get personalizedTenderFeed;
+
+  /// No description provided for @customizedAlerts.
+  ///
+  /// In en, this message translates to:
+  /// **'Customized alerts'**
+  String get customizedAlerts;
+
+  /// No description provided for @sectorSpecificMatching.
+  ///
+  /// In en, this message translates to:
+  /// **'Sector-specific matching'**
+  String get sectorSpecificMatching;
+
+  /// No description provided for @configurationStatusComplete.
+  ///
+  /// In en, this message translates to:
+  /// **'Configuration Status: Complete'**
+  String get configurationStatusComplete;
+
+  /// No description provided for @saveAndUpdateFeed.
+  ///
+  /// In en, this message translates to:
+  /// **'Save & Update My Feed'**
+  String get saveAndUpdateFeed;
+
+  /// No description provided for @previewMatchesLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Preview of matches for your sectors:'**
+  String get previewMatchesLabel;
+
+  /// No description provided for @previewTenderTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Office Supplies Procurement'**
+  String get previewTenderTitle;
+
+  /// No description provided for @previewTenderSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Ministry of Education • 2 Days left'**
+  String get previewTenderSubtitle;
+
+  /// No description provided for @filterByCategory.
+  ///
+  /// In en, this message translates to:
+  /// **'Filter by Category'**
+  String get filterByCategory;
+
+  /// No description provided for @reset.
+  ///
+  /// In en, this message translates to:
+  /// **'Reset'**
+  String get reset;
+
+  /// No description provided for @clearAllFilters.
+  ///
+  /// In en, this message translates to:
+  /// **'Clear All Filters'**
+  String get clearAllFilters;
+
+  /// No description provided for @failedToLoadTenders.
+  ///
+  /// In en, this message translates to:
+  /// **'Failed to load tenders'**
+  String get failedToLoadTenders;
+
+  /// No description provided for @retry.
+  ///
+  /// In en, this message translates to:
+  /// **'Retry'**
+  String get retry;
+
+  /// No description provided for @tenderBookmarkUpdated.
+  ///
+  /// In en, this message translates to:
+  /// **'Tender bookmark updated'**
+  String get tenderBookmarkUpdated;
+
+  /// No description provided for @errorWithCount.
+  ///
+  /// In en, this message translates to:
+  /// **'Error: {error}'**
+  String errorWithCount(String error);
+
+  /// No description provided for @summaryTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Summary'**
+  String get summaryTitle;
+
+  /// No description provided for @organizationLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Organization'**
+  String get organizationLabel;
+
+  /// No description provided for @projectLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Project'**
+  String get projectLabel;
+
+  /// No description provided for @deadlineLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Deadline'**
+  String get deadlineLabel;
+
+  /// No description provided for @bidBondLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Bid Bond'**
+  String get bidBondLabel;
+
+  /// No description provided for @notSpecified.
+  ///
+  /// In en, this message translates to:
+  /// **'Not specified'**
+  String get notSpecified;
+
+  /// No description provided for @eligibilityLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Eligibility'**
+  String get eligibilityLabel;
+
+  /// No description provided for @unknown.
+  ///
+  /// In en, this message translates to:
+  /// **'Unknown'**
+  String get unknown;
+
+  /// No description provided for @descriptionTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Description'**
+  String get descriptionTitle;
+
+  /// No description provided for @noDescriptionAvailable.
+  ///
+  /// In en, this message translates to:
+  /// **'No description available for this tender.'**
+  String get noDescriptionAvailable;
+
+  /// No description provided for @historicalWinningPrices.
+  ///
+  /// In en, this message translates to:
+  /// **'Historical Winning Prices'**
+  String get historicalWinningPrices;
+
+  /// No description provided for @unlockMarketInsights.
+  ///
+  /// In en, this message translates to:
+  /// **'Unlock market insights for\nsimilar tenders'**
+  String get unlockMarketInsights;
+
+  /// No description provided for @saved.
+  ///
+  /// In en, this message translates to:
+  /// **'Saved'**
+  String get saved;
+
+  /// No description provided for @save.
+  ///
+  /// In en, this message translates to:
+  /// **'Save'**
+  String get save;
+
+  /// No description provided for @alertsSetForTender.
+  ///
+  /// In en, this message translates to:
+  /// **'Alerts set for this tender'**
+  String get alertsSetForTender;
+
+  /// No description provided for @alertsDisabled.
+  ///
+  /// In en, this message translates to:
+  /// **'Alerts disabled'**
+  String get alertsDisabled;
+
+  /// No description provided for @pleaseLoginToSeeSaved.
+  ///
+  /// In en, this message translates to:
+  /// **'Please login to see saved tenders'**
+  String get pleaseLoginToSeeSaved;
+
+  /// No description provided for @noSavedTendersYet.
+  ///
+  /// In en, this message translates to:
+  /// **'No saved tenders yet'**
+  String get noSavedTendersYet;
+
+  /// No description provided for @noItemsIn.
+  ///
+  /// In en, this message translates to:
+  /// **'No items in {title}'**
+  String noItemsIn(String title);
+
+  /// No description provided for @aiSummaryTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'AI Summary'**
+  String get aiSummaryTitle;
+
+  /// No description provided for @generateSummary.
+  ///
+  /// In en, this message translates to:
+  /// **'Generate Summary'**
+  String get generateSummary;
+
+  /// No description provided for @generatingSummary.
+  ///
+  /// In en, this message translates to:
+  /// **'Generating...'**
+  String get generatingSummary;
+
+  /// No description provided for @aiSummaryDisclaimer.
+  ///
+  /// In en, this message translates to:
+  /// **'AI-generated summary. Please refer to official documents for final details.'**
+  String get aiSummaryDisclaimer;
+
+  /// No description provided for @aiSummaryError.
+  ///
+  /// In en, this message translates to:
+  /// **'Failed to generate summary.'**
+  String get aiSummaryError;
 }
 
 class _AppLocalizationsDelegate

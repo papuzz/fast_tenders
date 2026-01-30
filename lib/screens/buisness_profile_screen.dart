@@ -9,6 +9,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import '../core/constants/app_colors.dart';
 import 'package:fast_tenders/core/providers/tender_provider.dart';
+import 'package:fast_tenders/l10n/app_localizations.dart';
 import '../features/auth/data/auth_controller.dart';
 
 class BusinessProfileScreen extends ConsumerStatefulWidget {
@@ -22,7 +23,7 @@ class BusinessProfileScreen extends ConsumerStatefulWidget {
 class _BusinessProfileScreenState extends ConsumerState<BusinessProfileScreen> {
   final PageController _pageController = PageController();
   int _currentStep = 0;
-  final int _totalSteps = 7;
+  final int _totalSteps = 5;
   bool _isLoading = true;
 
   // Form Data State
@@ -37,16 +38,9 @@ class _BusinessProfileScreenState extends ConsumerState<BusinessProfileScreen> {
     'vatRegistered': null,
     'taxCompliance': 'Unknown',
     // Step 3
-    'maxContractSize': '< 500k ETB',
-    'bidBondComfort': 'Up to 20k',
-    // Step 4
-    'yearsInOperation': '',
-    'projectsCompleted': '',
-    'majorClient': '',
-    // Step 5
     'preferredInstitutions': <String>[],
     'operatingRegions': <String>[],
-    // Step 6
+    // Step 4
     'alertMatch': true,
     'alertFavorite': true,
     'alertDeadline': false,
@@ -85,11 +79,6 @@ class _BusinessProfileScreenState extends ConsumerState<BusinessProfileScreen> {
               'licenseGrade': profile['license_grade'],
               'vatRegistered': profile['vat_registered'],
               'taxCompliance': profile['tax_compliance'] ?? 'Unknown',
-              'maxContractSize': profile['max_contract_size'] ?? '< 500k ETB',
-              'bidBondComfort': profile['bid_bond_comfort'] ?? 'Up to 20k',
-              'yearsInOperation': profile['years_in_operation'] ?? '',
-              'projectsCompleted': profile['projects_completed'] ?? '',
-              'majorClient': profile['major_client'] ?? '',
               'preferredInstitutions': List<String>.from(
                 profile['preferred_institutions'] ?? [],
               ),
@@ -183,11 +172,12 @@ class _BusinessProfileScreenState extends ConsumerState<BusinessProfileScreen> {
     }
 
     final progress = (_currentStep + 1) / _totalSteps;
+    final l10n = AppLocalizations.of(context)!;
 
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          'Setup Profile',
+          l10n.profileSetupTitle,
           style: GoogleFonts.inter(fontWeight: FontWeight.w600, fontSize: 18),
         ),
         bottom: PreferredSize(
@@ -199,8 +189,11 @@ class _BusinessProfileScreenState extends ConsumerState<BusinessProfileScreen> {
           ),
         ),
         actions: [
-          if (_currentStep > 2 && _currentStep < 6)
-            TextButton(onPressed: _nextStep, child: const Text('Skip')),
+          if (_currentStep > 1 && _currentStep < 4)
+            TextButton(
+              onPressed: _nextStep,
+              child: Text(l10n.skip),
+            ),
         ],
       ),
       body: PageView(
@@ -211,14 +204,6 @@ class _BusinessProfileScreenState extends ConsumerState<BusinessProfileScreen> {
         children: [
           _BusinessBasicsStep(formData: _formData, onChanged: _updateFormData),
           _LegalLicenseStep(formData: _formData, onChanged: _updateFormData),
-          _FinancialCapacityStep(
-            formData: _formData,
-            onChanged: _updateFormData,
-          ),
-          _ExperienceSnapshotStep(
-            formData: _formData,
-            onChanged: _updateFormData,
-          ),
           _TargetInstitutionsStep(
             formData: _formData,
             onChanged: _updateFormData,
@@ -244,8 +229,8 @@ class _BusinessProfileScreenState extends ConsumerState<BusinessProfileScreen> {
 
                 if (mounted) {
                   ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(
-                      content: Text('Profile Updated! Your feed is syncing...'),
+                    SnackBar(
+                      content: Text(l10n.profileUpdatedSyncing),
                     ),
                   );
                   context.go('/feed');
@@ -253,7 +238,9 @@ class _BusinessProfileScreenState extends ConsumerState<BusinessProfileScreen> {
               } catch (e) {
                 if (mounted) {
                   ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(content: Text('Error updating profile: $e')),
+                    SnackBar(
+                      content: Text(l10n.profileUpdateError(e.toString())),
+                    ),
                   );
                 }
               }
@@ -261,7 +248,7 @@ class _BusinessProfileScreenState extends ConsumerState<BusinessProfileScreen> {
           ),
         ],
       ),
-      bottomNavigationBar: _currentStep < 6
+      bottomNavigationBar: _currentStep < 4
           ? Container(
               padding: const EdgeInsets.all(16.0),
               decoration: BoxDecoration(
@@ -280,13 +267,15 @@ class _BusinessProfileScreenState extends ConsumerState<BusinessProfileScreen> {
                   if (_currentStep > 0)
                     OutlinedButton(
                       onPressed: _previousStep,
-                      child: const Text('Back'),
+                      child: Text(l10n.back),
                     )
                   else
                     const SizedBox.shrink(),
                   ElevatedButton(
                     onPressed: _nextStep,
-                    child: Text(_currentStep == 6 ? 'Finish' : 'Next'),
+                    child: Text(
+                      _currentStep == 4 ? l10n.finish : l10n.next,
+                    ),
                   ),
                 ],
               ),
@@ -328,6 +317,7 @@ class _BusinessBasicsStepState extends State<_BusinessBasicsStep>
   Widget build(BuildContext context) {
     super.build(context);
     final selectedSectors = widget.formData['sectors'] as List<String>;
+    final l10n = AppLocalizations.of(context)!;
 
     return SingleChildScrollView(
       padding: const EdgeInsets.all(24.0),
@@ -335,24 +325,24 @@ class _BusinessBasicsStepState extends State<_BusinessBasicsStep>
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           _buildHeader(
-            'Business Basics',
-            'Tell us about your company so we can find the right tenders.',
+            l10n.businessBasicsTitle,
+            l10n.businessBasicsSubtitle,
           ),
 
           const SizedBox(height: 24),
           TextFormField(
             initialValue: widget.formData['businessName'],
-            decoration: const InputDecoration(
-              labelText: 'Business Name',
-              hintText: 'e.g., Ethio Tech Solutions',
-              prefixIcon: Icon(Icons.business),
+            decoration: InputDecoration(
+              labelText: l10n.businessNameLabel,
+              hintText: l10n.businessNameHint,
+              prefixIcon: const Icon(Icons.business),
             ),
             onChanged: (val) => widget.onChanged('businessName', val),
           ),
 
           const SizedBox(height: 24),
           Text(
-            'Business Type',
+            l10n.businessTypeLabel,
             style: GoogleFonts.inter(fontWeight: FontWeight.w600),
           ),
           const SizedBox(height: 8),
@@ -372,12 +362,12 @@ class _BusinessBasicsStepState extends State<_BusinessBasicsStep>
 
           const SizedBox(height: 24),
           Text(
-            'Primary Sector (Select all that apply)',
+            l10n.primarySectorLabel,
             style: GoogleFonts.inter(fontWeight: FontWeight.w600),
           ),
           const SizedBox(height: 4),
           Text(
-            'We use this to recommend tenders you can actually win.',
+            l10n.primarySectorSubtitle,
             style: TextStyle(fontSize: 12, color: AppColors.textSecondary),
           ),
           const SizedBox(height: 8),
@@ -436,21 +426,22 @@ class _LegalLicenseStepState extends State<_LegalLicenseStep>
   @override
   Widget build(BuildContext context) {
     super.build(context);
+    final l10n = AppLocalizations.of(context)!;
     return SingleChildScrollView(
       padding: const EdgeInsets.all(24.0),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           _buildHeader(
-            'Legal & License Info',
-            'Help us verify your eligibility.',
+            l10n.legalLicenseTitle,
+            l10n.legalLicenseSubtitle,
           ),
 
           const SizedBox(height: 24),
           DropdownButtonFormField<String>(
             value: widget.formData['licenseCategory'],
-            decoration: const InputDecoration(
-              labelText: 'Trade License Category',
+            decoration: InputDecoration(
+              labelText: l10n.tradeLicenseCategoryLabel,
             ),
             items: _categories
                 .map((c) => DropdownMenuItem(value: c, child: Text(c)))
@@ -461,8 +452,8 @@ class _LegalLicenseStepState extends State<_LegalLicenseStep>
           const SizedBox(height: 16),
           DropdownButtonFormField<String>(
             value: widget.formData['licenseGrade'],
-            decoration: const InputDecoration(
-              labelText: 'License Grade (if applicable)',
+            decoration: InputDecoration(
+              labelText: l10n.licenseGradeLabel,
             ),
             items: _grades
                 .map((g) => DropdownMenuItem(value: g, child: Text(g)))
@@ -472,14 +463,14 @@ class _LegalLicenseStepState extends State<_LegalLicenseStep>
 
           const SizedBox(height: 24),
           Text(
-            'VAT Registered?',
+            l10n.vatRegisteredLabel,
             style: GoogleFonts.inter(fontWeight: FontWeight.w600),
           ),
           Row(
             children: [
               Expanded(
                 child: RadioListTile<bool>(
-                  title: const Text('Yes'),
+                  title: Text(l10n.yes),
                   value: true,
                   groupValue: widget.formData['vatRegistered'],
                   onChanged: (val) => widget.onChanged('vatRegistered', val),
@@ -487,7 +478,7 @@ class _LegalLicenseStepState extends State<_LegalLicenseStep>
               ),
               Expanded(
                 child: RadioListTile<bool>(
-                  title: const Text('No'),
+                  title: Text(l10n.no),
                   value: false,
                   groupValue: widget.formData['vatRegistered'],
                   onChanged: (val) => widget.onChanged('vatRegistered', val),
@@ -498,10 +489,10 @@ class _LegalLicenseStepState extends State<_LegalLicenseStep>
 
           const SizedBox(height: 16),
           CheckboxListTile(
-            title: const Text(
-              'I declare my tax compliance status is up to date.',
+            title: Text(
+              l10n.taxComplianceDeclaration,
             ),
-            subtitle: const Text('Trust-based declaration.'),
+            subtitle: Text(l10n.taxComplianceSubtitle),
             value: widget.formData['taxCompliance'] == 'Compliant',
             onChanged: (val) => widget.onChanged(
               'taxCompliance',
@@ -517,153 +508,7 @@ class _LegalLicenseStepState extends State<_LegalLicenseStep>
 }
 
 // -----------------------------------------------------------------------------
-// STEP 3: Financial Capacity
-// -----------------------------------------------------------------------------
-class _FinancialCapacityStep extends StatefulWidget {
-  final Map<String, dynamic> formData;
-  final Function(String, dynamic) onChanged;
-
-  const _FinancialCapacityStep({
-    required this.formData,
-    required this.onChanged,
-  });
-
-  @override
-  State<_FinancialCapacityStep> createState() => _FinancialCapacityStepState();
-}
-
-class _FinancialCapacityStepState extends State<_FinancialCapacityStep>
-    with AutomaticKeepAliveClientMixin {
-  final _contractSizes = ['< 500k ETB', '500k – 2M', '2M – 10M', '10M+'];
-  final _bidBonds = ['Up to 20k', 'Up to 100k', '100k+'];
-
-  @override
-  bool get wantKeepAlive => true;
-
-  @override
-  Widget build(BuildContext context) {
-    super.build(context);
-    return SingleChildScrollView(
-      padding: const EdgeInsets.all(24.0),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          _buildHeader(
-            'Financial Capacity',
-            'This silently filters out impossible tenders.',
-          ),
-
-          const SizedBox(height: 24),
-          Text(
-            'Max contract size you can handle',
-            style: GoogleFonts.inter(fontWeight: FontWeight.w600),
-          ),
-          const SizedBox(height: 8),
-          ..._contractSizes.map(
-            (size) => RadioListTile<String>(
-              title: Text(size),
-              value: size,
-              groupValue: widget.formData['maxContractSize'],
-              onChanged: (val) => widget.onChanged('maxContractSize', val),
-              contentPadding: EdgeInsets.zero,
-            ),
-          ),
-
-          const SizedBox(height: 24),
-          Text(
-            'Typical bid bond comfort',
-            style: GoogleFonts.inter(fontWeight: FontWeight.w600),
-          ),
-          const SizedBox(height: 8),
-          ..._bidBonds.map(
-            (bond) => RadioListTile<String>(
-              title: Text(bond),
-              value: bond,
-              groupValue: widget.formData['bidBondComfort'],
-              onChanged: (val) => widget.onChanged('bidBondComfort', val),
-              contentPadding: EdgeInsets.zero,
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-}
-
-// -----------------------------------------------------------------------------
-// STEP 4: Experience Snapshot
-// -----------------------------------------------------------------------------
-class _ExperienceSnapshotStep extends StatefulWidget {
-  final Map<String, dynamic> formData;
-  final Function(String, dynamic) onChanged;
-
-  const _ExperienceSnapshotStep({
-    required this.formData,
-    required this.onChanged,
-  });
-
-  @override
-  State<_ExperienceSnapshotStep> createState() =>
-      _ExperienceSnapshotStepState();
-}
-
-class _ExperienceSnapshotStepState extends State<_ExperienceSnapshotStep>
-    with AutomaticKeepAliveClientMixin {
-  @override
-  bool get wantKeepAlive => true;
-
-  @override
-  Widget build(BuildContext context) {
-    super.build(context);
-    return SingleChildScrollView(
-      padding: const EdgeInsets.all(24.0),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          _buildHeader(
-            'Experience Snapshot',
-            'Completing this increases your tender match accuracy by 30%.',
-          ),
-
-          const SizedBox(height: 24),
-          TextFormField(
-            initialValue: widget.formData['yearsInOperation'],
-            keyboardType: TextInputType.number,
-            decoration: const InputDecoration(
-              labelText: 'Years in Operation',
-              prefixIcon: Icon(Icons.history),
-            ),
-            onChanged: (val) => widget.onChanged('yearsInOperation', val),
-          ),
-
-          const SizedBox(height: 16),
-          TextFormField(
-            initialValue: widget.formData['projectsCompleted'],
-            keyboardType: TextInputType.number,
-            decoration: const InputDecoration(
-              labelText: 'Number of similar projects completed',
-              prefixIcon: Icon(Icons.work_outline),
-            ),
-            onChanged: (val) => widget.onChanged('projectsCompleted', val),
-          ),
-
-          const SizedBox(height: 16),
-          TextFormField(
-            initialValue: widget.formData['majorClient'],
-            decoration: const InputDecoration(
-              labelText: 'Major past client (optional)',
-              prefixIcon: Icon(Icons.apartment),
-            ),
-            onChanged: (val) => widget.onChanged('majorClient', val),
-          ),
-        ],
-      ),
-    );
-  }
-}
-
-// -----------------------------------------------------------------------------
-// STEP 5: Target Institutions & Regions
+// STEP 3: Target Institutions & Regions
 // -----------------------------------------------------------------------------
 class _TargetInstitutionsStep extends StatefulWidget {
   final Map<String, dynamic> formData;
@@ -693,6 +538,7 @@ class _TargetInstitutionsStepState extends State<_TargetInstitutionsStep>
     final selectedInstitutions =
         widget.formData['preferredInstitutions'] as List<String>;
     final selectedRegions = widget.formData['operatingRegions'] as List<String>;
+    final l10n = AppLocalizations.of(context)!;
 
     return SingleChildScrollView(
       padding: const EdgeInsets.all(24.0),
@@ -700,13 +546,13 @@ class _TargetInstitutionsStepState extends State<_TargetInstitutionsStep>
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           _buildHeader(
-            'Target Institutions & Regions',
-            'Hyper-relevant notifications, less spam.',
+            l10n.targetInstitutionsTitle,
+            l10n.targetInstitutionsSubtitle,
           ),
 
           const SizedBox(height: 24),
           Text(
-            'Preferred Institutions',
+            l10n.preferredInstitutionsLabel,
             style: GoogleFonts.inter(fontWeight: FontWeight.w600),
           ),
           Wrap(
@@ -727,7 +573,7 @@ class _TargetInstitutionsStepState extends State<_TargetInstitutionsStep>
 
           const SizedBox(height: 24),
           Text(
-            'Operating Regions',
+            l10n.operatingRegionsLabel,
             style: GoogleFonts.inter(fontWeight: FontWeight.w600),
           ),
           Wrap(
@@ -775,38 +621,42 @@ class _AlertPreferencesStepState extends State<_AlertPreferencesStep>
   @override
   Widget build(BuildContext context) {
     super.build(context);
+    final l10n = AppLocalizations.of(context)!;
     return SingleChildScrollView(
       padding: const EdgeInsets.all(24.0),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          _buildHeader('Alert Preferences', 'Let users control noise early.'),
+          _buildHeader(
+            l10n.alertPreferencesTitle,
+            l10n.alertPreferencesSubtitle,
+          ),
 
           const SizedBox(height: 24),
           SwitchListTile(
-            title: const Text('Matching tender published'),
-            subtitle: const Text('Notify me when a tender matches my profile'),
+            title: Text(l10n.alertMatchingTender),
+            subtitle: Text(l10n.alertMatchingTenderSubtitle),
             value: widget.formData['alertMatch'],
             onChanged: (val) => widget.onChanged('alertMatch', val),
           ),
           SwitchListTile(
-            title: const Text('Favorite institution posts'),
-            subtitle: const Text(
-              'Notify me when my preferred institutions post',
+            title: Text(l10n.alertFavoriteInstitution),
+            subtitle: Text(
+              l10n.alertFavoriteInstitutionSubtitle,
             ),
             value: widget.formData['alertFavorite'],
             onChanged: (val) => widget.onChanged('alertFavorite', val),
           ),
           SwitchListTile(
-            title: const Text('Deadline approaching'),
-            subtitle: const Text('Notify me 48h before deadline'),
+            title: Text(l10n.alertDeadlineApproaching),
+            subtitle: Text(l10n.alertDeadlineApproachingSubtitle),
             value: widget.formData['alertDeadline'],
             onChanged: (val) => widget.onChanged('alertDeadline', val),
           ),
           SwitchListTile(
-            title: const Text('Competitor wins'),
-            subtitle: const Text(
-              'Notify me when a competitor wins a similar tender',
+            title: Text(l10n.alertCompetitorWins),
+            subtitle: Text(
+              l10n.alertCompetitorWinsSubtitle,
             ),
             value: widget.formData['alertCompetitor'],
             onChanged: (val) => widget.onChanged('alertCompetitor', val),
@@ -828,6 +678,7 @@ class _ReviewActivateStep extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final l10n = AppLocalizations.of(context)!;
     return SingleChildScrollView(
       padding: const EdgeInsets.all(24.0),
       child: Column(
@@ -836,13 +687,13 @@ class _ReviewActivateStep extends ConsumerWidget {
           Icon(FontAwesomeIcons.rocket, size: 60, color: AppColors.primary),
           const SizedBox(height: 24),
           Text(
-            'Profile Ready to Sync',
+            l10n.profileReadyToSyncTitle,
             textAlign: TextAlign.center,
             style: GoogleFonts.inter(fontSize: 24, fontWeight: FontWeight.bold),
           ),
           const SizedBox(height: 8),
           Text(
-            'Your preferences will be used to filter and recommend tenders.',
+            l10n.profileReadyToSyncSubtitle,
             textAlign: TextAlign.center,
             style: TextStyle(color: AppColors.textSecondary),
           ),
@@ -865,14 +716,14 @@ class _ReviewActivateStep extends ConsumerWidget {
               children: [
                 _buildStrengthRow(
                   Icons.check_circle,
-                  'Personalized tender feed',
+                  l10n.personalizedTenderFeed,
                 ),
                 const SizedBox(height: 12),
-                _buildStrengthRow(Icons.check_circle, 'Customized alerts'),
+                _buildStrengthRow(Icons.check_circle, l10n.customizedAlerts),
                 const SizedBox(height: 12),
                 _buildStrengthRow(
                   Icons.check_circle,
-                  'Sector-specific matching',
+                  l10n.sectorSpecificMatching,
                 ),
                 const SizedBox(height: 24),
                 LinearProgressIndicator(
@@ -886,7 +737,7 @@ class _ReviewActivateStep extends ConsumerWidget {
                 ),
                 const SizedBox(height: 8),
                 Text(
-                  'Configuration Status: Complete',
+                  l10n.configurationStatusComplete,
                   style: GoogleFonts.inter(
                     fontWeight: FontWeight.w600,
                     color: AppColors.success,
@@ -900,7 +751,7 @@ class _ReviewActivateStep extends ConsumerWidget {
           ElevatedButton.icon(
             onPressed: onActivate,
             icon: const Icon(Icons.sync),
-            label: const Text('Save & Update My Feed'),
+            label: Text(l10n.saveAndUpdateFeed),
             style: ElevatedButton.styleFrom(
               padding: const EdgeInsets.symmetric(vertical: 20),
               textStyle: const TextStyle(
@@ -912,11 +763,11 @@ class _ReviewActivateStep extends ConsumerWidget {
 
           const SizedBox(height: 32),
           Text(
-            'Preview of matches for your sectors:',
+            l10n.previewMatchesLabel,
             style: GoogleFonts.inter(fontWeight: FontWeight.w600),
           ),
           const SizedBox(height: 16),
-          _buildTenderPreviewCard(),
+          _buildTenderPreviewCard(context),
         ],
       ),
     );
@@ -932,7 +783,8 @@ class _ReviewActivateStep extends ConsumerWidget {
     );
   }
 
-  Widget _buildTenderPreviewCard() {
+  Widget _buildTenderPreviewCard(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
     // Placeholder for "Instant Value"
     return Card(
       elevation: 0,
@@ -947,8 +799,8 @@ class _ReviewActivateStep extends ConsumerWidget {
           ),
           child: const Icon(FontAwesomeIcons.building, size: 20),
         ),
-        title: const Text('Office Supplies Procurement'),
-        subtitle: const Text('Ministry of Education • 2 Days left'),
+        title: Text(l10n.previewTenderTitle),
+        subtitle: Text(l10n.previewTenderSubtitle),
         trailing: const Icon(Icons.chevron_right),
       ),
     );

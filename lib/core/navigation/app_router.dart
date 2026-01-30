@@ -88,31 +88,24 @@ final routerProvider = Provider<GoRouter>((ref) {
         builder: (context, state) => const SavedTendersScreen(),
       ),
       GoRoute(
-        path: '/my-tenders',
-        builder: (context, state) => const GenericTenderListScreen(
-          type: TenderListType.myTenders,
-          title: 'My Tenders',
-        ),
-      ),
-      GoRoute(
         path: '/free-tenders',
-        builder: (context, state) => const GenericTenderListScreen(
+        builder: (context, state) => GenericTenderListScreen(
           type: TenderListType.freeTenders,
-          title: 'Free Tenders',
+          title: AppLocalizations.of(context)!.drawerFreeTenders,
         ),
       ),
       GoRoute(
         path: '/unread-tenders',
-        builder: (context, state) => const GenericTenderListScreen(
+        builder: (context, state) => GenericTenderListScreen(
           type: TenderListType.unread,
-          title: 'Unread Tenders',
+          title: AppLocalizations.of(context)!.drawerUnread,
         ),
       ),
       GoRoute(
         path: '/trashed-tenders',
-        builder: (context, state) => const GenericTenderListScreen(
+        builder: (context, state) => GenericTenderListScreen(
           type: TenderListType.trashed,
-          title: 'Trashed Tenders',
+          title: AppLocalizations.of(context)!.drawerTrashed,
         ),
       ),
       GoRoute(
@@ -144,8 +137,11 @@ final routerProvider = Provider<GoRouter>((ref) {
           StatefulShellBranch(
             routes: [
               GoRoute(
-                path: '/calculator',
-                builder: (context, state) => const CpoCalculatorScreen(),
+                path: '/my-tenders',
+                builder: (context, state) => GenericTenderListScreen(
+                  type: TenderListType.myTenders,
+                  title: AppLocalizations.of(context)!.drawerMyTenders,
+                ),
               ),
             ],
           ),
@@ -183,15 +179,15 @@ class ScaffoldWithBottomNavBar extends StatelessWidget {
         onDestinationSelected: _onTap,
         destinations: [
           NavigationDestination(
-            icon: const Icon(Icons.list_alt),
-            label: AppLocalizations.of(context)!.navTenders,
+            icon: const Icon(Icons.search),
+            label: AppLocalizations.of(context)!.navBrowse,
           ),
           NavigationDestination(
-            icon: const Icon(Icons.calculate),
-            label: AppLocalizations.of(context)!.navCpo,
+            icon: const Icon(Icons.assignment_outlined),
+            label: AppLocalizations.of(context)!.drawerMyTenders,
           ),
           NavigationDestination(
-            icon: const Icon(Icons.person),
+            icon: const Icon(Icons.person_outline),
             label: AppLocalizations.of(context)!.navProfile,
           ),
         ],

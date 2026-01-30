@@ -62,7 +62,7 @@ class GenericTenderListScreen extends ConsumerWidget {
                   Icon(Icons.list_alt, size: 64, color: Colors.grey.shade400),
                   const SizedBox(height: 16),
                   Text(
-                    'No items in $title',
+                    l10n.noItemsIn(title),
                     style: const TextStyle(fontSize: 18),
                   ),
                 ],
@@ -111,7 +111,7 @@ class GenericTenderListScreen extends ConsumerWidget {
           );
         },
         loading: () => const Center(child: CircularProgressIndicator()),
-        error: (err, stack) => Center(child: Text('Error: $err')),
+        error: (err, stack) => Center(child: Text(l10n.errorWithCount(err.toString()))),
       ),
     );
   }

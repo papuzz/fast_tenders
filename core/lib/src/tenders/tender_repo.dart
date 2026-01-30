@@ -23,6 +23,14 @@ class SupabaseTenderRepository implements TenderRepository {
     // Ensure titles are strings
     data['title_en'] = data['title_en']?.toString() ?? 'No Title';
     data['title_am'] = data['title_am']?.toString() ?? 'ርዕስ የለም';
+    // Remove forced defaults to allow fallback logic in model
+    // data['description'] = data['description']?.toString() ?? '';
+    // data['description_en'] = data['description_en']?.toString() ?? '';
+    // data['description_am'] = data['description_am']?.toString() ?? '';
+    
+    // Add debug print to see what columns are actually coming from Supabase
+    // print('DEBUG: Tender keys: ${data.keys.toList()}');
+    // if (data['description'] != null) print('DEBUG: Description found: ${data['description'].toString().substring(0, min(20, data['description'].toString().length))}...');
     data['organization_en'] =
         data['organization_en']?.toString() ?? 'Organization';
     data['organization_am'] = data['organization_am']?.toString() ?? 'ድርጅት';

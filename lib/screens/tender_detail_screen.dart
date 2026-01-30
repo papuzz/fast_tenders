@@ -8,6 +8,7 @@ import 'dart:ui';
 import '../core/providers/locale_provider.dart';
 import 'package:fast_tenders/core/constants/app_colors.dart';
 import 'package:share_plus/share_plus.dart';
+import '../core/services/gemini_service.dart';
 
 class TenderDetailScreen extends ConsumerStatefulWidget {
   final List<Tender> tenders;
@@ -28,6 +29,9 @@ class _TenderDetailScreenState extends ConsumerState<TenderDetailScreen> {
   bool isSaving = false;
   // Track alert status per tender ID
   final Map<String, bool> _alertStates = {};
+  // Cache for AI summaries
+  final Map<String, String> _aiSummaries = {};
+  bool _isGeneratingSummary = false;
 
   @override
   void initState() {
@@ -38,8 +42,39 @@ class _TenderDetailScreenState extends ConsumerState<TenderDetailScreen> {
   Tender get tender => widget.tenders[currentIndex];
   bool get isAlertSet => _alertStates[tender.id] ?? false;
 
+  Future<void> _generateAiSummary(String langCode) async {
+    if (_aiSummaries.containsKey(tender.id)) return;
+
+    setState(() => _isGeneratingSummary = true);
+    try {
+      final geminiService = ref.read(geminiServiceProvider);
+      // We combine all available data for the best summary
+      final textToSummarize = '''
+Organization: ${tender.getOrganization(langCode)}
+Title: ${tender.getTitle(langCode)}
+Location: ${tender.getLocation(langCode)}
+Category: ${tender.category}
+Deadline: ${DateFormat('MMM dd, yyyy').format(tender.deadline)}
+Description: ${tender.getDescription(langCode)}
+''';
+      final summary = await geminiService.summarizeTender(textToSummarize);
+      setState(() {
+        _aiSummaries[tender.id] = summary;
+      });
+    } catch (e) {
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text(AppLocalizations.of(context)!.aiSummaryError)),
+        );
+      }
+    } finally {
+      if (mounted) setState(() => _isGeneratingSummary = false);
+    }
+  }
+
   Future<void> _toggleSave() async {
     final user = ref.read(currentUserProvider).value;
+    final l10n = AppLocalizations.of(context)!;
     if (user == null) return;
 
     setState(() => isSaving = true);
@@ -56,14 +91,14 @@ class _TenderDetailScreenState extends ConsumerState<TenderDetailScreen> {
       setState(() {});
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Tender bookmark updated')),
+          SnackBar(content: Text(l10n.tenderBookmarkUpdated)),
         );
       }
     } catch (e) {
       if (mounted) {
         ScaffoldMessenger.of(
           context,
-        ).showSnackBar(SnackBar(content: Text('Error: $e')));
+        ).showSnackBar(SnackBar(content: Text(l10n.errorWithCount(e.toString()))));
       }
     } finally {
       if (mounted) setState(() => isSaving = false);
@@ -77,6 +112,16 @@ class _TenderDetailScreenState extends ConsumerState<TenderDetailScreen> {
     final langCode = locale.languageCode;
     final l10n = AppLocalizations.of(context)!;
     final isDark = theme.brightness == Brightness.dark;
+
+    final description = tender.getDescription(langCode);
+    // ignore: avoid_print
+    print('DEBUG: Tender ID: ${tender.id}');
+    // ignore: avoid_print
+    print('DEBUG: LangCode: $langCode');
+    // ignore: avoid_print
+    print('DEBUG: Raw Description field: ${tender.description}');
+    // ignore: avoid_print
+    print('DEBUG: Calculated Description: $description');
 
     return Scaffold(
       backgroundColor: theme.scaffoldBackgroundColor,
@@ -115,11 +160,11 @@ class _TenderDetailScreenState extends ConsumerState<TenderDetailScreen> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
+            // AI Summary Section
+            _buildAiSummarySection(context, tender, langCode),
+
             // Description Section
             _buildDescriptionSection(context, tender, langCode),
-
-            // Locked Bidding Documents
-            _buildBiddingDocuments(context),
 
             // Historical Winning Prices (PRO)
             _buildHistoricalPrices(context),
@@ -132,257 +177,139 @@ class _TenderDetailScreenState extends ConsumerState<TenderDetailScreen> {
     );
   }
 
+  Widget _buildAiSummarySection(
+    BuildContext context,
+    Tender tender,
+    String langCode,
+  ) {
+    final theme = Theme.of(context);
+    final l10n = AppLocalizations.of(context)!;
+    final summary = _aiSummaries[tender.id];
+
+    return Padding(
+      padding: const EdgeInsets.all(16.0),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            children: [
+              const Icon(Icons.auto_awesome, color: AppColors.accent, size: 20),
+              const SizedBox(width: 8),
+              Text(
+                l10n.aiSummaryTitle,
+                style: theme.textTheme.titleMedium?.copyWith(
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: 12),
+          Container(
+            width: double.infinity,
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(16),
+              gradient: LinearGradient(
+                colors: [
+                  AppColors.primary.withValues(alpha: 0.1),
+                  AppColors.accent.withValues(alpha: 0.1),
+                ],
+                begin: Alignment.topLeft,
+                end: Alignment.bottomRight,
+              ),
+              border: Border.all(
+                color: AppColors.accent.withValues(alpha: 0.3),
+                width: 1.5,
+              ),
+            ),
+            child: Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  if (summary != null) ...[
+                    Text(
+                      summary,
+                      style: theme.textTheme.bodyMedium?.copyWith(
+                        height: 1.5,
+                        fontSize: 14,
+                      ),
+                    ),
+                    const SizedBox(height: 12),
+                    const Divider(color: Colors.white24),
+                    const SizedBox(height: 4),
+                    Text(
+                      l10n.aiSummaryDisclaimer,
+                      style: theme.textTheme.bodySmall?.copyWith(
+                        fontStyle: FontStyle.italic,
+                        color: theme.hintColor,
+                        fontSize: 10,
+                      ),
+                    ),
+                  ] else ...[
+                    Center(
+                      child: _isGeneratingSummary
+                          ? Column(
+                              children: [
+                                const CircularProgressIndicator(strokeWidth: 2),
+                                const SizedBox(height: 12),
+                                Text(l10n.generatingSummary),
+                              ],
+                            )
+                          : ElevatedButton.icon(
+                              onPressed: () => _generateAiSummary(langCode),
+                              icon: const Icon(Icons.auto_awesome, size: 18),
+                              label: Text(l10n.generateSummary),
+                              style: ElevatedButton.styleFrom(
+                                backgroundColor: AppColors.primary,
+                                foregroundColor: Colors.white,
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(12),
+                                ),
+                              ),
+                            ),
+                    ),
+                  ],
+                ],
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
   Widget _buildDescriptionSection(
     BuildContext context,
     Tender tender,
     String langCode,
   ) {
     final theme = Theme.of(context);
+    final l10n = AppLocalizations.of(context)!;
+    final description = tender.getDescription(langCode);
+
     return Padding(
       padding: const EdgeInsets.all(16.0),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            "Description",
+            l10n.descriptionTitle,
             style: theme.textTheme.titleMedium?.copyWith(
               fontWeight: FontWeight.bold,
             ),
           ),
           const SizedBox(height: 12),
-          Container(
-            width: double.infinity,
-            padding: const EdgeInsets.all(16),
-            decoration: BoxDecoration(
-              color: theme.colorScheme.surface,
-              borderRadius: BorderRadius.circular(16),
-              border: Border.all(
-                color: theme.dividerColor.withValues(alpha: 0.1),
+          Text(
+            description.isNotEmpty ? description : l10n.noDescriptionAvailable,
+            style: theme.textTheme.bodyMedium?.copyWith(
+              height: 1.6,
+              fontSize: 15,
+              color: theme.textTheme.bodyMedium?.color?.withValues(
+                alpha: description.isNotEmpty ? 0.9 : 0.5,
               ),
-              boxShadow: [
-                BoxShadow(
-                  color: Colors.black.withValues(alpha: 0.05),
-                  blurRadius: 10,
-                  offset: const Offset(0, 4),
-                ),
-              ],
-            ),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                _buildOCRLine(
-                  context,
-                  "Organization",
-                  tender.getOrganization(langCode),
-                ),
-                _buildOCRLine(context, "Project", tender.getTitle(langCode)),
-                _buildOCRLine(
-                  context,
-                  "Deadline",
-                  DateFormat('MMM dd, yyyy (hh:mm a)').format(tender.deadline),
-                ),
-                _buildOCRLine(
-                  context,
-                  "Bid Bond",
-                  tender.cpoAmount != null
-                      ? "${NumberFormat.decimalPattern().format(tender.cpoAmount)} ETB (CPO or Bank Guarantee)"
-                      : "Not specified",
-                ),
-                _buildOCRLine(
-                  context,
-                  "Eligibility",
-                  tender.minGrade ?? "Unknown",
-                ),
-              ],
+              fontStyle: description.isNotEmpty ? null : FontStyle.italic,
             ),
           ),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildOCRLine(BuildContext context, String label, String value) {
-    final theme = Theme.of(context);
-    return Padding(
-      padding: const EdgeInsets.only(bottom: 8.0),
-      child: RichText(
-        text: TextSpan(
-          style: theme.textTheme.bodyMedium?.copyWith(height: 1.5),
-          children: [
-            TextSpan(
-              text: "$label: ",
-              style: const TextStyle(
-                fontWeight: FontWeight.bold,
-                color: AppColors.textSecondary,
-              ),
-            ),
-            TextSpan(
-              text: value,
-              style: TextStyle(
-                color: theme.textTheme.bodyMedium?.color?.withValues(
-                  alpha: 0.9,
-                ),
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-
-  Widget _buildBiddingDocuments(BuildContext context) {
-    final theme = Theme.of(context);
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-      child: Stack(
-        children: [
-          Container(
-            padding: const EdgeInsets.all(35),
-            decoration: BoxDecoration(
-              color: theme.colorScheme.surface,
-              borderRadius: BorderRadius.circular(16),
-              border: Border.all(
-                color: theme.dividerColor.withValues(alpha: 0.1),
-              ),
-            ),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  "Bidding Documents",
-                  style: theme.textTheme.titleMedium?.copyWith(
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-                const SizedBox(height: 16),
-                _buildLockedDocItem(context, "Document 1"),
-                const SizedBox(height: 12),
-                _buildLockedDocItem(context, "Document 2"),
-              ],
-            ),
-          ),
-          // Locked Overlay
-          Positioned.fill(
-            child: ClipRRect(
-              borderRadius: BorderRadius.circular(16),
-              child: BackdropFilter(
-                filter: ImageFilter.blur(sigmaX: 8, sigmaY: 8),
-                child: Container(
-                  color: Colors.black.withValues(alpha: 0.3),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Container(
-                        padding: const EdgeInsets.all(12),
-                        decoration: BoxDecoration(
-                          color: AppColors.primary.withValues(alpha: 0.2),
-                          shape: BoxShape.circle,
-                        ),
-                        child: const Icon(
-                          Icons.shopping_bag,
-                          color: AppColors.primary,
-                          size: 32,
-                        ),
-                      ),
-                      const SizedBox(height: 12),
-                      const Text(
-                        "Access Documents",
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 18,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                      const SizedBox(height: 4),
-                      const Padding(
-                        padding: EdgeInsets.symmetric(horizontal: 40),
-                        child: Text(
-                          "Get the full BOQ and technical specifications instantly.",
-                          textAlign: TextAlign.center,
-                          style: TextStyle(color: Colors.white70, fontSize: 13),
-                        ),
-                      ),
-                      const SizedBox(height: 16),
-                      Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 24),
-                        child: ElevatedButton(
-                          onPressed: () {},
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor: AppColors.primary,
-                            foregroundColor: Colors.white,
-                            padding: const EdgeInsets.symmetric(vertical: 16),
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(12),
-                            ),
-                            minimumSize: const Size(double.infinity, 50),
-                          ),
-                          child: const Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Icon(Icons.payments_outlined),
-                              SizedBox(width: 8),
-                              Text(
-                                "Buy for 500 ETB with Telebirr",
-                                style: TextStyle(fontWeight: FontWeight.bold),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildLockedDocItem(BuildContext context, String name) {
-    final theme = Theme.of(context);
-    final isDark = theme.brightness == Brightness.dark;
-    return Container(
-      padding: const EdgeInsets.all(12),
-      decoration: BoxDecoration(
-        color: isDark
-            ? Colors.black.withValues(alpha: 0.2)
-            : Colors.grey.shade100,
-        borderRadius: BorderRadius.circular(8),
-      ),
-      child: Row(
-        children: [
-          Icon(
-            Icons.description,
-            color: theme.hintColor.withValues(alpha: 0.5),
-          ),
-          const SizedBox(width: 12),
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Container(
-                  height: 8,
-                  width: 100,
-                  decoration: BoxDecoration(
-                    color: isDark ? Colors.grey.shade700 : Colors.grey.shade300,
-                    borderRadius: BorderRadius.circular(4),
-                  ),
-                ),
-                const SizedBox(height: 6),
-                Container(
-                  height: 6,
-                  width: 60,
-                  decoration: BoxDecoration(
-                    color: isDark ? Colors.grey.shade800 : Colors.grey.shade200,
-                    borderRadius: BorderRadius.circular(3),
-                  ),
-                ),
-              ],
-            ),
-          ),
-          Icon(Icons.lock, color: theme.hintColor, size: 18),
         ],
       ),
     );
@@ -390,6 +317,7 @@ class _TenderDetailScreenState extends ConsumerState<TenderDetailScreen> {
 
   Widget _buildHistoricalPrices(BuildContext context) {
     final theme = Theme.of(context);
+    final l10n = AppLocalizations.of(context)!;
     return Padding(
       padding: const EdgeInsets.all(16.0),
       child: Column(
@@ -398,7 +326,7 @@ class _TenderDetailScreenState extends ConsumerState<TenderDetailScreen> {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text(
-                "Historical Winning Prices",
+                l10n.historicalWinningPrices,
                 style: theme.textTheme.titleMedium?.copyWith(
                   fontWeight: FontWeight.bold,
                 ),
@@ -409,9 +337,9 @@ class _TenderDetailScreenState extends ConsumerState<TenderDetailScreen> {
                   color: AppColors.primary.withValues(alpha: 0.2),
                   borderRadius: BorderRadius.circular(4),
                 ),
-                child: const Text(
-                  "PRO",
-                  style: TextStyle(
+                child: Text(
+                  l10n.proLabel,
+                  style: const TextStyle(
                     color: AppColors.primary,
                     fontSize: 10,
                     fontWeight: FontWeight.bold,
@@ -506,10 +434,10 @@ class _TenderDetailScreenState extends ConsumerState<TenderDetailScreen> {
                           child: Column(
                             mainAxisSize: MainAxisSize.min,
                             children: [
-                              const Text(
-                                "Unlock market insights for\nsimilar tenders",
+                              Text(
+                                l10n.unlockMarketInsights,
                                 textAlign: TextAlign.center,
-                                style: TextStyle(
+                                style: const TextStyle(
                                   color: Colors.white,
                                   fontWeight: FontWeight.bold,
                                   fontSize: 14,
@@ -527,9 +455,9 @@ class _TenderDetailScreenState extends ConsumerState<TenderDetailScreen> {
                                     vertical: 8,
                                   ),
                                 ),
-                                child: const Text(
-                                  "Upgrade to Pro",
-                                  style: TextStyle(fontWeight: FontWeight.bold),
+                                child: Text(
+                                  AppLocalizations.of(context)!.comingSoon,
+                                  style: const TextStyle(fontWeight: FontWeight.bold),
                                 ),
                               ),
                             ],
@@ -614,7 +542,7 @@ class _TenderDetailScreenState extends ConsumerState<TenderDetailScreen> {
                     icon: Icon(
                       isSaved ? Icons.bookmark : Icons.bookmark_outline,
                     ),
-                    label: Text(isSaved ? "Saved" : "Save"),
+                    label: Text(isSaved ? l10n.saved : l10n.save),
                     style: OutlinedButton.styleFrom(
                       foregroundColor: theme.colorScheme.primary,
                       side: BorderSide(color: theme.colorScheme.primary),
@@ -638,8 +566,8 @@ class _TenderDetailScreenState extends ConsumerState<TenderDetailScreen> {
                   SnackBar(
                     content: Text(
                       isAlertSet
-                          ? 'Alerts set for this tender'
-                          : 'Alerts disabled',
+                          ? l10n.alertsSetForTender
+                          : l10n.alertsDisabled,
                     ),
                     duration: const Duration(seconds: 1),
                   ),

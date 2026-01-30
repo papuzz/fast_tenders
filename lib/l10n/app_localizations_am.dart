@@ -155,6 +155,9 @@ class AppLocalizationsAm extends AppLocalizations {
   String get proLabel => 'PRO';
 
   @override
+  String get comingSoon => 'በቅርብ ቀን';
+
+  @override
   String get settingsTitle => 'ቅንብሮች';
 
   @override
@@ -206,6 +209,9 @@ class AppLocalizationsAm extends AppLocalizations {
 
   @override
   String get navTenders => 'ጨረታዎች';
+
+  @override
+  String get navBrowse => 'መፈለጊያ';
 
   @override
   String get navCpo => 'CPO ማስያ';
@@ -319,4 +325,246 @@ class AppLocalizationsAm extends AppLocalizations {
 
   @override
   String get appVersion => 'TenderEthiopia v2.4.0 (Build 88)';
+
+  @override
+  String get profileSetupTitle => 'መገለጫ አዋቅር';
+
+  @override
+  String get skip => 'ዝለል';
+
+  @override
+  String get profileUpdatedSyncing => 'መገለጫ ተዘምኗል! የእርስዎ ዝርዝር እየተመሳሰለ ነው...';
+
+  @override
+  String profileUpdateError(String error) {
+    return 'መገለጫ በማዘመን ላይ ስህተት፡ $error';
+  }
+
+  @override
+  String get back => 'ተመለስ';
+
+  @override
+  String get next => 'ቀጣይ';
+
+  @override
+  String get finish => 'ጨርስ';
+
+  @override
+  String get businessBasicsTitle => 'የንግድ መሠረታዊ ነገሮች';
+
+  @override
+  String get businessBasicsSubtitle => 'ትክክለኛውን ጨረታ እንድናገኝልዎ ስለ ድርጅትዎ ይንገሩን።';
+
+  @override
+  String get businessNameLabel => 'የንግድ ስም';
+
+  @override
+  String get businessNameHint => 'ለምሳሌ፡ ኢትዮ ቴክ ሶሉሽንስ';
+
+  @override
+  String get businessTypeLabel => 'የንግድ ዓይነት';
+
+  @override
+  String get primarySectorLabel => 'ዋና ዘርፍ (ሁሉንም የሚመለከታቸውን ይምረጡ)';
+
+  @override
+  String get primarySectorSubtitle => 'ይህንን የምንጠቀመው ማሸነፍ የሚችሉትን ጨረታ ለመምከር ነው።';
+
+  @override
+  String get legalLicenseTitle => 'የህግ እና ፈቃድ መረጃ';
+
+  @override
+  String get legalLicenseSubtitle => 'ብቁነትዎን ለማረጋገጥ ያግዙን።';
+
+  @override
+  String get tradeLicenseCategoryLabel => 'የንግድ ፈቃድ ምድብ';
+
+  @override
+  String get licenseGradeLabel => 'የፈቃድ ደረጃ (የሚመለከተው ከሆነ)';
+
+  @override
+  String get vatRegisteredLabel => 'ተጨማሪ እሴት ታክስ ተመዝጋቢ?';
+
+  @override
+  String get yes => 'አዎ';
+
+  @override
+  String get no => 'አይ';
+
+  @override
+  String get taxComplianceDeclaration => 'የግብር ተገዢነት ሁኔታዬ ወቅታዊ መሆኑን አረጋግጣለሁ።';
+
+  @override
+  String get taxComplianceSubtitle => 'በእምነት ላይ የተመሰረተ መግለጫ።';
+
+  @override
+  String get targetInstitutionsTitle => 'የታለመላቸው ተቋማት እና ክልሎች';
+
+  @override
+  String get targetInstitutionsSubtitle => 'በጣም ጠቃሚ ማሳወቂያዎች፣ ያነሰ አይፈለጌ መልዕክት።';
+
+  @override
+  String get preferredInstitutionsLabel => 'ተመራጭ ተቋማት';
+
+  @override
+  String get operatingRegionsLabel => 'የስራ ክልሎች';
+
+  @override
+  String get alertPreferencesTitle => 'የማንቂያ ምርጫዎች';
+
+  @override
+  String get alertPreferencesSubtitle => 'ተጠቃሚዎች ድምጽን ቀድመው እንዲቆጣጠሩ ያድርጉ።';
+
+  @override
+  String get alertMatchingTender => 'ተዛማጅ ጨረታ ታትሟል';
+
+  @override
+  String get alertMatchingTenderSubtitle => 'ጨረታ ከመገለጫዬ ጋር ሲዛመድ አሳውቀኝ';
+
+  @override
+  String get alertFavoriteInstitution => 'ተወዳጅ ተቋም ልጥፎች';
+
+  @override
+  String get alertFavoriteInstitutionSubtitle => 'የምርጫ ተቋሞቼ ሲለጥፉ አሳውቀኝ';
+
+  @override
+  String get alertDeadlineApproaching => 'የማብቂያ ቀን እየቀረበ ነው';
+
+  @override
+  String get alertDeadlineApproachingSubtitle => 'ከማብቂያው 48 ሰዓት በፊት አሳውቀኝ';
+
+  @override
+  String get alertCompetitorWins => 'ተወዳዳሪ አሸንፏል';
+
+  @override
+  String get alertCompetitorWinsSubtitle => 'ተወዳዳሪ ተመሳሳይ ጨረታ ሲያሸንፍ አሳውቀኝ';
+
+  @override
+  String get profileReadyToSyncTitle => 'መገለጫ ለማመሳሰል ዝግጁ ነው';
+
+  @override
+  String get profileReadyToSyncSubtitle =>
+      'ምርጫዎችዎ ጨረታዎችን ለማጣራት እና ለመምከር ያገለግላሉ።';
+
+  @override
+  String get personalizedTenderFeed => 'የተበጀ የጨረታ ዝርዝር';
+
+  @override
+  String get customizedAlerts => 'የተበጁ ማንቂያዎች';
+
+  @override
+  String get sectorSpecificMatching => 'ዘርፍ-ተኮር ማዛመድ';
+
+  @override
+  String get configurationStatusComplete => 'የማዋቀር ሁኔታ፡ ተጠናቅቋል';
+
+  @override
+  String get saveAndUpdateFeed => 'አስቀምጥ እና ዝርዝሬን አዘምን';
+
+  @override
+  String get previewMatchesLabel => 'ለዘርፍዎ ተዛማጅ ቅድመ እይታ፡';
+
+  @override
+  String get previewTenderTitle => 'የቢሮ ዕቃዎች ግዥ';
+
+  @override
+  String get previewTenderSubtitle => 'ትምህርት ሚኒስቴር • 2 ቀናት ቀርተዋል';
+
+  @override
+  String get filterByCategory => 'በምድብ አጣራ';
+
+  @override
+  String get reset => 'ዳግም አስጀምር';
+
+  @override
+  String get clearAllFilters => 'ሁሉንም ማጣሪያዎች አጽዳ';
+
+  @override
+  String get failedToLoadTenders => 'ጨረታዎችን መጫን አልተቻለም';
+
+  @override
+  String get retry => 'እንደገና ይሞክሩ';
+
+  @override
+  String get tenderBookmarkUpdated => 'የጨረታ ዕልባት ተዘምኗል';
+
+  @override
+  String errorWithCount(String error) {
+    return 'ስህተት፡ $error';
+  }
+
+  @override
+  String get summaryTitle => 'ማጠቃለያ';
+
+  @override
+  String get organizationLabel => 'ድርጅት';
+
+  @override
+  String get projectLabel => 'ፕሮጀክት';
+
+  @override
+  String get deadlineLabel => 'የማብቂያ ቀን';
+
+  @override
+  String get bidBondLabel => 'የጨረታ ማስያዣ';
+
+  @override
+  String get notSpecified => 'አልተገለጸም';
+
+  @override
+  String get eligibilityLabel => 'ብቁነት';
+
+  @override
+  String get unknown => 'ያልታወቀ';
+
+  @override
+  String get descriptionTitle => 'መግለጫ';
+
+  @override
+  String get noDescriptionAvailable => 'ለዚህ ጨረታ ምንም መግለጫ የለም።';
+
+  @override
+  String get historicalWinningPrices => 'ታሪካዊ የማሸነፊያ ዋጋዎች';
+
+  @override
+  String get unlockMarketInsights => 'ለተመሳሳይ ጨረታዎች\nየገበያ ግንዛቤዎችን ይክፈቱ';
+
+  @override
+  String get saved => 'ተቀምጧል';
+
+  @override
+  String get save => 'አስቀምጥ';
+
+  @override
+  String get alertsSetForTender => 'ለዚህ ጨረታ ማንቂያዎች ተዘጋጅተዋል';
+
+  @override
+  String get alertsDisabled => 'ማንቂያዎች ተሰናክለዋል';
+
+  @override
+  String get pleaseLoginToSeeSaved => 'የተቀመጡ ጨረታዎችን ለማየት እባክዎ ይግቡ';
+
+  @override
+  String get noSavedTendersYet => 'እስካሁን ምንም የተቀመጠ ጨረታ የለም';
+
+  @override
+  String noItemsIn(String title) {
+    return 'በ$title ውስጥ ምንም ንጥል የለም';
+  }
+
+  @override
+  String get aiSummaryTitle => 'የ AI ማጠቃለያ';
+
+  @override
+  String get generateSummary => 'ማጠቃለያ አመንጭ';
+
+  @override
+  String get generatingSummary => 'በማመንጨት ላይ...';
+
+  @override
+  String get aiSummaryDisclaimer =>
+      'በ AI የተመነጨ ማጠቃለያ። እባክዎ ለተሟላ ዝርዝር ኦፊሴላዊ ሰነዶችን ይመልከቱ።';
+
+  @override
+  String get aiSummaryError => 'ማጠቃለያውን ማመንጨት አልተቻለም።';
 }

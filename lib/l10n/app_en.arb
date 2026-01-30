@@ -60,6 +60,7 @@
     }
   },
   "proLabel": "PRO",
+  "comingSoon": "Coming Soon",
   "settingsTitle": "Settings",
   "settingsComingSoon": "Settings & Profile (Coming Soon)",
   "cpoRequired": "CPO REQUIRED",
@@ -84,6 +85,7 @@
   "generatingCpo": "Generating CPO Request Letter... (Coming Soon)",
   "generateCpoLetter": "Generate Bank CPO Request Letter",
   "navTenders": "Tenders",
+  "navBrowse": "Browse",
   "navCpo": "CPO Calc",
     "navProfile": "Profile",
     "postedAgo": "Posted {time}",
@@ -118,6 +120,105 @@
     "faq": "Frequently Asked Questions",
     "contactSupport": "Contact Customer Support",
     "logout": "Logout Account",
-    "appVersion": "TenderEthiopia v2.4.0 (Build 88)"
+    "appVersion": "TenderEthiopia v2.4.0 (Build 88)",
+  "profileSetupTitle": "Setup Profile",
+  "skip": "Skip",
+  "profileUpdatedSyncing": "Profile Updated! Your feed is syncing...",
+  "profileUpdateError": "Error updating profile: {error}",
+  "@profileUpdateError": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "back": "Back",
+  "next": "Next",
+  "finish": "Finish",
+  "businessBasicsTitle": "Business Basics",
+  "businessBasicsSubtitle": "Tell us about your company so we can find the right tenders.",
+  "businessNameLabel": "Business Name",
+  "businessNameHint": "e.g., Ethio Tech Solutions",
+  "businessTypeLabel": "Business Type",
+  "primarySectorLabel": "Primary Sector (Select all that apply)",
+  "primarySectorSubtitle": "We use this to recommend tenders you can actually win.",
+  "legalLicenseTitle": "Legal & License Info",
+  "legalLicenseSubtitle": "Help us verify your eligibility.",
+  "tradeLicenseCategoryLabel": "Trade License Category",
+  "licenseGradeLabel": "License Grade (if applicable)",
+  "vatRegisteredLabel": "VAT Registered?",
+  "yes": "Yes",
+  "no": "No",
+  "taxComplianceDeclaration": "I declare my tax compliance status is up to date.",
+  "taxComplianceSubtitle": "Trust-based declaration.",
+  "targetInstitutionsTitle": "Target Institutions & Regions",
+  "targetInstitutionsSubtitle": "Hyper-relevant notifications, less spam.",
+  "preferredInstitutionsLabel": "Preferred Institutions",
+  "operatingRegionsLabel": "Operating Regions",
+  "alertPreferencesTitle": "Alert Preferences",
+  "alertPreferencesSubtitle": "Let users control noise early.",
+  "alertMatchingTender": "Matching tender published",
+  "alertMatchingTenderSubtitle": "Notify me when a tender matches my profile",
+  "alertFavoriteInstitution": "Favorite institution posts",
+  "alertFavoriteInstitutionSubtitle": "Notify me when my preferred institutions post",
+  "alertDeadlineApproaching": "Deadline approaching",
+  "alertDeadlineApproachingSubtitle": "Notify me 48h before deadline",
+  "alertCompetitorWins": "Competitor wins",
+  "alertCompetitorWinsSubtitle": "Notify me when a competitor wins a similar tender",
+  "profileReadyToSyncTitle": "Profile Ready to Sync",
+  "profileReadyToSyncSubtitle": "Your preferences will be used to filter and recommend tenders.",
+  "personalizedTenderFeed": "Personalized tender feed",
+  "customizedAlerts": "Customized alerts",
+  "sectorSpecificMatching": "Sector-specific matching",
+  "configurationStatusComplete": "Configuration Status: Complete",
+  "saveAndUpdateFeed": "Save & Update My Feed",
+  "previewMatchesLabel": "Preview of matches for your sectors:",
+  "previewTenderTitle": "Office Supplies Procurement",
+  "previewTenderSubtitle": "Ministry of Education • 2 Days left",
+  "filterByCategory": "Filter by Category",
+  "reset": "Reset",
+  "clearAllFilters": "Clear All Filters",
+  "failedToLoadTenders": "Failed to load tenders",
+  "retry": "Retry",
+  "tenderBookmarkUpdated": "Tender bookmark updated",
+  "errorWithCount": "Error: {error}",
+  "@errorWithCount": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "summaryTitle": "Summary",
+  "organizationLabel": "Organization",
+  "projectLabel": "Project",
+  "deadlineLabel": "Deadline",
+  "bidBondLabel": "Bid Bond",
+  "notSpecified": "Not specified",
+  "eligibilityLabel": "Eligibility",
+  "unknown": "Unknown",
+  "descriptionTitle": "Description",
+  "noDescriptionAvailable": "No description available for this tender.",
+  "historicalWinningPrices": "Historical Winning Prices",
+  "unlockMarketInsights": "Unlock market insights for\nsimilar tenders",
+  "saved": "Saved",
+  "save": "Save",
+  "alertsSetForTender": "Alerts set for this tender",
+  "alertsDisabled": "Alerts disabled",
+  "pleaseLoginToSeeSaved": "Please login to see saved tenders",
+  "noSavedTendersYet": "No saved tenders yet",
+  "noItemsIn": "No items in {title}",
+  "@noItemsIn": {
+    "placeholders": {
+      "title": {
+        "type": "String"
+      }
+    }
+  },
+  "aiSummaryTitle": "AI Summary",
+  "generateSummary": "Generate Summary",
+  "generatingSummary": "Generating...",
+  "aiSummaryDisclaimer": "AI-generated summary. Please refer to official documents for final details.",
+  "aiSummaryError": "Failed to generate summary."
   }
   

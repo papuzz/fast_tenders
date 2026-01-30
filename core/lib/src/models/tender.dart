@@ -9,6 +9,9 @@ class Tender with _$Tender {
     required String id,
     @JsonKey(name: 'title_en') required String titleEn,
     @JsonKey(name: 'title_am') required String titleAm,
+    String? description,
+    @JsonKey(name: 'description_en') String? descriptionEn,
+    @JsonKey(name: 'description_am') String? descriptionAm,
     required String category,
     @JsonKey(name: 'organization_en') required String organizationEn,
     @JsonKey(name: 'organization_am') required String organizationAm,
@@ -27,6 +30,16 @@ class Tender with _$Tender {
 
 extension TenderX on Tender {
   String getTitle(String langCode) => langCode == 'am' ? titleAm : titleEn;
-  String getOrganization(String langCode) => langCode == 'am' ? organizationAm : organizationEn;
-  String getLocation(String langCode) => langCode == 'am' ? locationAm : locationEn;
+  String getDescription(String langCode) {
+    final localized = langCode == 'am' ? descriptionAm : descriptionEn;
+    if (localized != null && localized.trim().isNotEmpty) {
+      return localized;
+    }
+    return description ?? '';
+  }
+
+  String getOrganization(String langCode) =>
+      langCode == 'am' ? organizationAm : organizationEn;
+  String getLocation(String langCode) =>
+      langCode == 'am' ? locationAm : locationEn;
 }

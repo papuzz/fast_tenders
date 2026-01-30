@@ -110,6 +110,7 @@ class _TenderScreenState extends ConsumerState<TenderScreen> {
   }
 
   void _showFilterSheet(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
     showModalBottomSheet(
       context: context,
       shape: const RoundedRectangleBorder(
@@ -127,9 +128,9 @@ class _TenderScreenState extends ConsumerState<TenderScreen> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      const Text(
-                        "Filter by Category",
-                        style: TextStyle(
+                      Text(
+                        l10n.filterByCategory,
+                        style: const TextStyle(
                           fontSize: 18,
                           fontWeight: FontWeight.bold,
                         ),
@@ -140,7 +141,7 @@ class _TenderScreenState extends ConsumerState<TenderScreen> {
                           setSheetState(() {});
                           Navigator.pop(context);
                         },
-                        child: const Text("Reset"),
+                        child: Text(l10n.reset),
                       ),
                     ],
                   ),
@@ -261,11 +262,6 @@ class _TenderScreenState extends ConsumerState<TenderScreen> {
                     Icons.list_alt,
                     l10n.drawerAllTenders,
                     () => context.go('/feed'),
-                  ),
-                  _buildDrawerItem(
-                    Icons.person_outline,
-                    l10n.drawerMyTenders,
-                    () => context.push('/my-tenders'),
                   ),
                   _buildDrawerItem(
                     Icons.money_off,
@@ -397,7 +393,7 @@ class _TenderScreenState extends ConsumerState<TenderScreen> {
                               });
                             },
                             icon: const Icon(Icons.refresh),
-                            label: const Text('Clear All Filters'),
+                            label: Text(l10n.clearAllFilters),
                             style: ElevatedButton.styleFrom(
                               backgroundColor: AppColors.primary,
                               foregroundColor: Colors.white,
@@ -506,7 +502,7 @@ class _TenderScreenState extends ConsumerState<TenderScreen> {
                       ),
                       const SizedBox(height: 16),
                       Text(
-                        'Failed to load tenders',
+                        l10n.failedToLoadTenders,
                         style: Theme.of(context).textTheme.titleMedium,
                       ),
                       const SizedBox(height: 8),
@@ -518,7 +514,7 @@ class _TenderScreenState extends ConsumerState<TenderScreen> {
                       const SizedBox(height: 16),
                       ElevatedButton(
                         onPressed: () => ref.refresh(tendersProvider),
-                        child: const Text('Retry'),
+                        child: Text(l10n.retry),
                       ),
                     ],
                   ),

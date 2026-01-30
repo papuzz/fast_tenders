@@ -26,6 +26,11 @@ mixin _$Tender {
   String get titleEn => throw _privateConstructorUsedError;
   @JsonKey(name: 'title_am')
   String get titleAm => throw _privateConstructorUsedError;
+  String? get description => throw _privateConstructorUsedError;
+  @JsonKey(name: 'description_en')
+  String? get descriptionEn => throw _privateConstructorUsedError;
+  @JsonKey(name: 'description_am')
+  String? get descriptionAm => throw _privateConstructorUsedError;
   String get category => throw _privateConstructorUsedError;
   @JsonKey(name: 'organization_en')
   String get organizationEn => throw _privateConstructorUsedError;
@@ -64,6 +69,9 @@ abstract class $TenderCopyWith<$Res> {
     String id,
     @JsonKey(name: 'title_en') String titleEn,
     @JsonKey(name: 'title_am') String titleAm,
+    String? description,
+    @JsonKey(name: 'description_en') String? descriptionEn,
+    @JsonKey(name: 'description_am') String? descriptionAm,
     String category,
     @JsonKey(name: 'organization_en') String organizationEn,
     @JsonKey(name: 'organization_am') String organizationAm,
@@ -96,6 +104,9 @@ class _$TenderCopyWithImpl<$Res, $Val extends Tender>
     Object? id = null,
     Object? titleEn = null,
     Object? titleAm = null,
+    Object? description = freezed,
+    Object? descriptionEn = freezed,
+    Object? descriptionAm = freezed,
     Object? category = null,
     Object? organizationEn = null,
     Object? organizationAm = null,
@@ -122,6 +133,18 @@ class _$TenderCopyWithImpl<$Res, $Val extends Tender>
                 ? _value.titleAm
                 : titleAm // ignore: cast_nullable_to_non_nullable
                       as String,
+            description: freezed == description
+                ? _value.description
+                : description // ignore: cast_nullable_to_non_nullable
+                      as String?,
+            descriptionEn: freezed == descriptionEn
+                ? _value.descriptionEn
+                : descriptionEn // ignore: cast_nullable_to_non_nullable
+                      as String?,
+            descriptionAm: freezed == descriptionAm
+                ? _value.descriptionAm
+                : descriptionAm // ignore: cast_nullable_to_non_nullable
+                      as String?,
             category: null == category
                 ? _value.category
                 : category // ignore: cast_nullable_to_non_nullable
@@ -184,6 +207,9 @@ abstract class _$$TenderImplCopyWith<$Res> implements $TenderCopyWith<$Res> {
     String id,
     @JsonKey(name: 'title_en') String titleEn,
     @JsonKey(name: 'title_am') String titleAm,
+    String? description,
+    @JsonKey(name: 'description_en') String? descriptionEn,
+    @JsonKey(name: 'description_am') String? descriptionAm,
     String category,
     @JsonKey(name: 'organization_en') String organizationEn,
     @JsonKey(name: 'organization_am') String organizationAm,
@@ -215,6 +241,9 @@ class __$$TenderImplCopyWithImpl<$Res>
     Object? id = null,
     Object? titleEn = null,
     Object? titleAm = null,
+    Object? description = freezed,
+    Object? descriptionEn = freezed,
+    Object? descriptionAm = freezed,
     Object? category = null,
     Object? organizationEn = null,
     Object? organizationAm = null,
@@ -241,6 +270,18 @@ class __$$TenderImplCopyWithImpl<$Res>
             ? _value.titleAm
             : titleAm // ignore: cast_nullable_to_non_nullable
                   as String,
+        description: freezed == description
+            ? _value.description
+            : description // ignore: cast_nullable_to_non_nullable
+                  as String?,
+        descriptionEn: freezed == descriptionEn
+            ? _value.descriptionEn
+            : descriptionEn // ignore: cast_nullable_to_non_nullable
+                  as String?,
+        descriptionAm: freezed == descriptionAm
+            ? _value.descriptionAm
+            : descriptionAm // ignore: cast_nullable_to_non_nullable
+                  as String?,
         category: null == category
             ? _value.category
             : category // ignore: cast_nullable_to_non_nullable
@@ -297,6 +338,9 @@ class _$TenderImpl implements _Tender {
     required this.id,
     @JsonKey(name: 'title_en') required this.titleEn,
     @JsonKey(name: 'title_am') required this.titleAm,
+    this.description,
+    @JsonKey(name: 'description_en') this.descriptionEn,
+    @JsonKey(name: 'description_am') this.descriptionAm,
     required this.category,
     @JsonKey(name: 'organization_en') required this.organizationEn,
     @JsonKey(name: 'organization_am') required this.organizationAm,
@@ -321,6 +365,14 @@ class _$TenderImpl implements _Tender {
   @override
   @JsonKey(name: 'title_am')
   final String titleAm;
+  @override
+  final String? description;
+  @override
+  @JsonKey(name: 'description_en')
+  final String? descriptionEn;
+  @override
+  @JsonKey(name: 'description_am')
+  final String? descriptionAm;
   @override
   final String category;
   @override
@@ -354,7 +406,7 @@ class _$TenderImpl implements _Tender {
 
   @override
   String toString() {
-    return 'Tender(id: $id, titleEn: $titleEn, titleAm: $titleAm, category: $category, organizationEn: $organizationEn, organizationAm: $organizationAm, deadline: $deadline, postedDate: $postedDate, cpoAmount: $cpoAmount, status: $status, minGrade: $minGrade, locationEn: $locationEn, locationAm: $locationAm, isFeatured: $isFeatured)';
+    return 'Tender(id: $id, titleEn: $titleEn, titleAm: $titleAm, description: $description, descriptionEn: $descriptionEn, descriptionAm: $descriptionAm, category: $category, organizationEn: $organizationEn, organizationAm: $organizationAm, deadline: $deadline, postedDate: $postedDate, cpoAmount: $cpoAmount, status: $status, minGrade: $minGrade, locationEn: $locationEn, locationAm: $locationAm, isFeatured: $isFeatured)';
   }
 
   @override
@@ -365,6 +417,12 @@ class _$TenderImpl implements _Tender {
             (identical(other.id, id) || other.id == id) &&
             (identical(other.titleEn, titleEn) || other.titleEn == titleEn) &&
             (identical(other.titleAm, titleAm) || other.titleAm == titleAm) &&
+            (identical(other.description, description) ||
+                other.description == description) &&
+            (identical(other.descriptionEn, descriptionEn) ||
+                other.descriptionEn == descriptionEn) &&
+            (identical(other.descriptionAm, descriptionAm) ||
+                other.descriptionAm == descriptionAm) &&
             (identical(other.category, category) ||
                 other.category == category) &&
             (identical(other.organizationEn, organizationEn) ||
@@ -395,6 +453,9 @@ class _$TenderImpl implements _Tender {
     id,
     titleEn,
     titleAm,
+    description,
+    descriptionEn,
+    descriptionAm,
     category,
     organizationEn,
     organizationAm,
@@ -427,6 +488,9 @@ abstract class _Tender implements Tender {
     required final String id,
     @JsonKey(name: 'title_en') required final String titleEn,
     @JsonKey(name: 'title_am') required final String titleAm,
+    final String? description,
+    @JsonKey(name: 'description_en') final String? descriptionEn,
+    @JsonKey(name: 'description_am') final String? descriptionAm,
     required final String category,
     @JsonKey(name: 'organization_en') required final String organizationEn,
     @JsonKey(name: 'organization_am') required final String organizationAm,
@@ -450,6 +514,14 @@ abstract class _Tender implements Tender {
   @override
   @JsonKey(name: 'title_am')
   String get titleAm;
+  @override
+  String? get description;
+  @override
+  @JsonKey(name: 'description_en')
+  String? get descriptionEn;
+  @override
+  @JsonKey(name: 'description_am')
+  String? get descriptionAm;
   @override
   String get category;
   @override

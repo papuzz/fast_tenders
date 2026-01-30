@@ -21,7 +21,7 @@ class SavedTendersScreen extends ConsumerWidget {
     if (user == null) {
       return Scaffold(
         appBar: AppBar(title: Text(l10n.drawerSavedTenders)),
-        body: const Center(child: Text('Please login to see saved tenders')),
+        body: Center(child: Text(l10n.pleaseLoginToSeeSaved)),
       );
     }
 
@@ -42,7 +42,7 @@ class SavedTendersScreen extends ConsumerWidget {
                 children: [
                   Icon(Icons.bookmark_border, size: 64, color: Colors.grey.shade400),
                   const SizedBox(height: 16),
-                  const Text('No saved tenders yet', style: TextStyle(fontSize: 18)),
+                  Text(l10n.noSavedTendersYet, style: const TextStyle(fontSize: 18)),
                 ],
               ),
             );
@@ -83,7 +83,7 @@ class SavedTendersScreen extends ConsumerWidget {
           );
         },
         loading: () => const Center(child: CircularProgressIndicator()),
-        error: (err, stack) => Center(child: Text('Error: $err')),
+        error: (err, stack) => Center(child: Text(l10n.errorWithCount(err.toString()))),
       ),
     );
   }
