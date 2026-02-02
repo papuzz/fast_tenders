@@ -69,7 +69,7 @@ BEGIN
   VALUES (new.id, new.email, new.raw_user_meta_data->>'full_name');
   RETURN NEW;
 END;
-$$ LANGUAGE plpgsql SECURITY DEFINER;
+$$ LANGUAGE PLPGSQL SECURITY DEFINER;
 
 CREATE OR REPLACE TRIGGER on_auth_user_created
   AFTER INSERT ON auth.users
@@ -136,6 +136,7 @@ CREATE POLICY "Users can remove saved tenders" ON public.saved_tenders
 CREATE TABLE IF NOT EXISTS public.notifications (
   id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
   user_id UUID REFERENCES auth.users ON DELETE CASCADE NOT NULL,
+  tender_id UUID REFERENCES public.tenders ON DELETE CASCADE,
   title TEXT NOT NULL,
   message TEXT NOT NULL,
   type TEXT DEFAULT 'general' NOT NULL,
@@ -159,8 +160,167 @@ BEGIN
     NEW.updated_at = now();
     RETURN NEW;
 END;
-$$ language 'plpgsql';
+$$ LANGUAGE 'plpgsql';
 
 CREATE TRIGGER update_profiles_updated_at BEFORE UPDATE ON public.profiles FOR EACH ROW EXECUTE PROCEDURE update_updated_at_column();
 CREATE TRIGGER update_business_profiles_updated_at BEFORE UPDATE ON public.business_profiles FOR EACH ROW EXECUTE PROCEDURE update_updated_at_column();
 CREATE TRIGGER update_tenders_updated_at BEFORE UPDATE ON public.tenders FOR EACH ROW EXECUTE PROCEDURE update_updated_at_column();
+
+
+-- 6. CORPORATE TEAMS & SUBSCRIPTIONS
+
+-- Corporate Plans Table
+CREATE TABLE IF NOT EXISTS public.corporate_plans (
+  id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
+  name TEXT NOT NULL,
+  max_seats INTEGER NOT NULL,
+  price NUMERIC,
+  duration_months INTEGER,
+  created_at TIMESTAMP WITH TIME ZONE DEFAULT timezone('utc'::text, now()) NOT NULL
+);
+
+ALTER TABLE public.corporate_plans ENABLE ROW LEVEL SECURITY;
+
+CREATE POLICY "Corporate plans are viewable by everyone" ON public.corporate_plans
+  FOR SELECT USING (true);
+
+-- User Subscriptions / Corporate Accounts
+CREATE TABLE IF NOT EXISTS public.corporate_subscriptions (
+  id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
+  admin_id UUID REFERENCES auth.users ON DELETE CASCADE NOT NULL,
+  plan_id UUID REFERENCES public.corporate_plans ON DELETE RESTRICT NOT NULL,
+  start_date TIMESTAMP WITH TIME ZONE DEFAULT timezone('utc'::text, now()) NOT NULL,
+  end_date TIMESTAMP WITH TIME ZONE NOT NULL,
+  is_active BOOLEAN DEFAULT true,
+  created_at TIMESTAMP WITH TIME ZONE DEFAULT timezone('utc'::text, now()) NOT NULL
+);
+
+ALTER TABLE public.corporate_subscriptions ENABLE ROW LEVEL SECURITY;
+
+CREATE POLICY "Users can view their own subscriptions" ON public.corporate_subscriptions
+  FOR SELECT USING (auth.uid() = admin_id);
+
+-- Team Members Table
+CREATE TABLE IF NOT EXISTS public.team_members (
+  id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
+  subscription_id UUID REFERENCES public.corporate_subscriptions ON DELETE CASCADE NOT NULL,
+  user_id UUID REFERENCES auth.users ON DELETE SET NULL, -- Null if pending
+  email TEXT NOT NULL, -- Email invited
+  role TEXT DEFAULT 'MEMBER', -- 'ADMIN', 'MEMBER'
+  status TEXT DEFAULT 'pending', -- 'active', 'pending'
+  invited_at TIMESTAMP WITH TIME ZONE DEFAULT timezone('utc'::text, now()) NOT NULL,
+  joined_at TIMESTAMP WITH TIME ZONE,
+  UNIQUE(subscription_id, email)
+);
+
+ALTER TABLE public.team_members ENABLE ROW LEVEL SECURITY;
+
+CREATE POLICY "Admins can view their team members" ON public.team_members
+  FOR SELECT USING (
+    EXISTS (
+      SELECT 1 FROM public.corporate_subscriptions
+      WHERE id = team_members.subscription_id
+      AND admin_id = auth.uid()
+    )
+  );
+
+CREATE POLICY "Members can view themselves" ON public.team_members
+  FOR SELECT USING (user_id = auth.uid());
+
+CREATE POLICY "Admins can invite members" ON public.team_members
+  FOR INSERT WITH CHECK (
+    EXISTS (
+      SELECT 1 FROM public.corporate_subscriptions
+      WHERE id = subscription_id
+      AND admin_id = auth.uid()
+    )
+  );
+
+CREATE POLICY "Admins can update members" ON public.team_members
+  FOR UPDATE USING (
+    EXISTS (
+      SELECT 1 FROM public.corporate_subscriptions
+      WHERE id = team_members.subscription_id
+      AND admin_id = auth.uid()
+    )
+  );
+
+CREATE POLICY "Admins can remove members" ON public.team_members
+  FOR DELETE USING (
+    EXISTS (
+      SELECT 1 FROM public.corporate_subscriptions
+      WHERE id = team_members.subscription_id
+      AND admin_id = auth.uid()
+    )
+  );
+
+-- 7. PERSONAL PLANS
+CREATE TABLE IF NOT EXISTS public.personal_plans (
+  id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
+  name TEXT NOT NULL,
+  price NUMERIC NOT NULL,
+  duration_months INTEGER NOT NULL,
+  description TEXT,
+  created_at TIMESTAMP WITH TIME ZONE DEFAULT timezone('utc'::text, now()) NOT NULL
+);
+
+ALTER TABLE public.personal_plans ENABLE ROW LEVEL SECURITY;
+
+CREATE POLICY "Personal plans are viewable by everyone" ON public.personal_plans
+  FOR SELECT USING (true);
+
+-- Seed Data for Corporate Plans
+INSERT INTO public.corporate_plans (name, max_seats, price, duration_months) VALUES
+('Enterprise Annual', 3, 4000, 12),
+('Business 6 Month', 3, 3000, 6),
+('Business Quarterly', 3, 2500, 3)
+ON CONFLICT DO NOTHING;
+
+-- 8. AUTOMATIC NOTIFICATIONS FOR MATCHING TENDERS
+CREATE OR REPLACE FUNCTION public.notify_on_matching_tender()
+RETURNS TRIGGER AS $$
+BEGIN
+  -- Insert notification for each user who has the tender's category in their sectors
+  -- AND has alert_match enabled
+  INSERT INTO public.notifications (user_id, tender_id, title, message, type)
+  SELECT 
+    bp.id as user_id,
+    NEW.id as tender_id,
+    'New Tender Match: ' || NEW.title_en as title,
+    'A new tender in "' || NEW.category || '" has been posted by ' || NEW.organization_en as message,
+    'tender_match' as type
+  FROM public.business_profiles bp
+  WHERE NEW.category = ANY(bp.sectors)
+  AND bp.alert_match = true;
+  
+  RETURN NEW;
+END;
+$$ LANGUAGE plpgsql SECURITY DEFINER;
+
+-- Function to check existing tenders for a user (called when they update sectors)
+CREATE OR REPLACE FUNCTION public.check_existing_tenders_for_user(target_user_id UUID)
+RETURNS void AS $$
+BEGIN
+  INSERT INTO public.notifications (user_id, tender_id, title, message, type)
+  SELECT 
+    target_user_id,
+    t.id,
+    'Previously Posted Match: ' || t.title_en,
+    'We found an existing tender in "' || t.category || '" from ' || t.organization_en,
+    'tender_match'
+  FROM public.tenders t
+  JOIN public.business_profiles bp ON bp.id = target_user_id
+  WHERE t.category = ANY(bp.sectors)
+  AND bp.alert_match = true
+  AND t.deadline > now() -- Only notify for open tenders
+  AND NOT EXISTS (
+    SELECT 1 FROM public.notifications n 
+    WHERE n.user_id = target_user_id AND n.tender_id = t.id
+  );
+END;
+$$ LANGUAGE plpgsql SECURITY DEFINER;
+
+
+CREATE OR REPLACE TRIGGER on_tender_created
+  AFTER INSERT ON public.tenders
+  FOR EACH ROW EXECUTE FUNCTION public.notify_on_matching_tender();

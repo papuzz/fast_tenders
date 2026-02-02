@@ -12,6 +12,8 @@ enum NotificationType {
   bookingReminder,
   @JsonValue('payment_success')
   paymentSuccess,
+  @JsonValue('tender_match')
+  tenderMatch,
   @JsonValue('general')
   general,
 }
@@ -21,6 +23,7 @@ class Notification with _$Notification {
   const factory Notification({
     required String id,
     @JsonKey(name: 'user_id') required String userId,
+    @JsonKey(name: 'tender_id') String? tenderId,
     required String title,
     required String message,
     required NotificationType type,

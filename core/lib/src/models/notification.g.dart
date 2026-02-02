@@ -10,6 +10,7 @@ _$NotificationImpl _$$NotificationImplFromJson(Map<String, dynamic> json) =>
     _$NotificationImpl(
       id: json['id'] as String,
       userId: json['user_id'] as String,
+      tenderId: json['tender_id'] as String?,
       title: json['title'] as String,
       message: json['message'] as String,
       type: $enumDecode(_$NotificationTypeEnumMap, json['type']),
@@ -21,6 +22,7 @@ Map<String, dynamic> _$$NotificationImplToJson(_$NotificationImpl instance) =>
     <String, dynamic>{
       'id': instance.id,
       'user_id': instance.userId,
+      'tender_id': instance.tenderId,
       'title': instance.title,
       'message': instance.message,
       'type': _$NotificationTypeEnumMap[instance.type]!,
@@ -33,5 +35,6 @@ const _$NotificationTypeEnumMap = {
   NotificationType.bookingCancelled: 'booking_cancelled',
   NotificationType.bookingReminder: 'booking_reminder',
   NotificationType.paymentSuccess: 'payment_success',
+  NotificationType.tenderMatch: 'tender_match',
   NotificationType.general: 'general',
 };

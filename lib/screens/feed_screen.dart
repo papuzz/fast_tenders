@@ -6,6 +6,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:core/core.dart';
 import 'package:fast_tenders/core/constants/app_colors.dart';
+import 'package:fast_tenders/core/constants/app_constants.dart';
 import 'package:intl/intl.dart';
 
 class TenderScreen extends ConsumerStatefulWidget {
@@ -26,14 +27,7 @@ class _TenderScreenState extends ConsumerState<TenderScreen> {
     super.dispose();
   }
 
-  final categories = [
-    'All',
-    'Construction',
-    'IT & Telecom',
-    'Health',
-    'Energy',
-    'Supply',
-  ];
+  final categories = AppConstants.tenderCategories;
 
   List<Tender> _filterTenders(List<Tender> allTenders) {
     final currentLocale = ref.read(localeProvider);
@@ -49,25 +43,80 @@ class _TenderScreenState extends ConsumerState<TenderScreen> {
         if (cat.contains('construction')) {
           matchesCategory =
               tenderCat.contains('construction') ||
+              tenderCat.contains('road') ||
+              tenderCat.contains('building') ||
+              tenderCat.contains('water') ||
               tenderCat.contains('material');
         } else if (cat.contains('it')) {
           matchesCategory =
               tenderCat.contains('it') ||
               tenderCat.contains('software') ||
-              tenderCat.contains('equipment');
-        } else if (cat.contains('supply')) {
+              tenderCat.contains('hardware') ||
+              tenderCat.contains('network') ||
+              tenderCat.contains('telecom') ||
+              tenderCat.contains('computer');
+        } else if (cat.contains('supply') || cat.contains('goods')) {
           matchesCategory =
-              tenderCat.contains('furniture') ||
               tenderCat.contains('supply') ||
-              tenderCat.contains('equipment');
+              tenderCat.contains('goods') ||
+              tenderCat.contains('furniture') ||
+              tenderCat.contains('stationery') ||
+              tenderCat.contains('equipment') ||
+              tenderCat.contains('vehicle') ||
+              tenderCat.contains('machinery');
         } else if (cat.contains('health')) {
           matchesCategory =
-              tenderCat.contains('health') || tenderCat.contains('medical');
+              tenderCat.contains('health') ||
+              tenderCat.contains('medical') ||
+              tenderCat.contains('drug') ||
+              tenderCat.contains('pharma');
         } else if (cat.contains('energy')) {
           matchesCategory =
               tenderCat.contains('energy') ||
               tenderCat.contains('power') ||
-              tenderCat.contains('solar');
+              tenderCat.contains('solar') ||
+              tenderCat.contains('electric');
+        } else if (cat.contains('agriculture')) {
+          matchesCategory =
+              tenderCat.contains('agri') ||
+              tenderCat.contains('fertilizer') ||
+              tenderCat.contains('seed') ||
+              tenderCat.contains('farm');
+        } else if (cat.contains('education')) {
+          matchesCategory =
+              tenderCat.contains('education') ||
+              tenderCat.contains('school') ||
+              tenderCat.contains('university') ||
+              tenderCat.contains('training') ||
+              tenderCat.contains('book');
+        } else if (cat.contains('finance')) {
+          matchesCategory =
+              tenderCat.contains('finance') ||
+              tenderCat.contains('insurance') ||
+              tenderCat.contains('audit') ||
+              tenderCat.contains('bank');
+        } else if (cat.contains('transport')) {
+          matchesCategory =
+              tenderCat.contains('transport') ||
+              tenderCat.contains('logistics') ||
+              tenderCat.contains('freight') ||
+              tenderCat.contains('shipping');
+        } else if (cat.contains('hotel')) {
+          matchesCategory =
+              tenderCat.contains('hotel') ||
+              tenderCat.contains('catering') ||
+              tenderCat.contains('hospitality') ||
+              tenderCat.contains('tourism');
+        } else if (cat.contains('cleaning')) {
+          matchesCategory =
+              tenderCat.contains('cleaning') ||
+              tenderCat.contains('security') ||
+              tenderCat.contains('guard') ||
+              tenderCat.contains('janitorial');
+        } else if (cat.contains('consultancy') && !cat.contains('non')) {
+          matchesCategory =
+              tenderCat.contains('consult') &&
+              !tenderCat.contains('non-consult');
         } else {
           matchesCategory = tenderCat.contains(cat);
         }
@@ -98,12 +147,15 @@ class _TenderScreenState extends ConsumerState<TenderScreen> {
         return l10n.catConstruction;
       case 'IT & Telecom':
         return l10n.catIT;
+      case 'Healthcare':
       case 'Health':
         return l10n.catHealth;
       case 'Energy':
         return l10n.catEnergy;
+      case 'Goods & Supply':
       case 'Supply':
         return l10n.catSupply;
+      // Fallback for new categories until they are added to ARB
       default:
         return key;
     }
@@ -113,6 +165,7 @@ class _TenderScreenState extends ConsumerState<TenderScreen> {
     final l10n = AppLocalizations.of(context)!;
     showModalBottomSheet(
       context: context,
+      isScrollControlled: true,
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
       ),
@@ -121,57 +174,61 @@ class _TenderScreenState extends ConsumerState<TenderScreen> {
           builder: (context, setSheetState) {
             return Container(
               padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 16),
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text(
-                        l10n.filterByCategory,
-                        style: const TextStyle(
-                          fontSize: 18,
-                          fontWeight: FontWeight.bold,
+              child: SingleChildScrollView(
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Expanded(
+                          child: Text(
+                            l10n.filterByCategory,
+                            style: const TextStyle(
+                              fontSize: 18,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
                         ),
-                      ),
-                      TextButton(
-                        onPressed: () {
-                          setState(() => selectedCategory = 0);
-                          setSheetState(() {});
-                          Navigator.pop(context);
-                        },
-                        child: Text(l10n.reset),
-                      ),
-                    ],
-                  ),
-                  const SizedBox(height: 16),
-                  Wrap(
-                    spacing: 8,
-                    runSpacing: 8,
-                    children: List.generate(categories.length, (index) {
-                      final isSelected = selectedCategory == index;
-                      return ChoiceChip(
-                        label: Text(
-                          _getCategoryLabel(context, categories[index]),
+                        TextButton(
+                          onPressed: () {
+                            setState(() => selectedCategory = 0);
+                            setSheetState(() {});
+                            Navigator.pop(context);
+                          },
+                          child: Text(l10n.reset),
                         ),
-                        selected: isSelected,
-                        onSelected: (selected) {
-                          setState(() {
-                            selectedCategory = index;
-                          });
-                          setSheetState(() {});
-                          Navigator.pop(context);
-                        },
-                        selectedColor: AppColors.primary,
-                        labelStyle: TextStyle(
-                          color: isSelected ? Colors.white : Colors.black,
-                        ),
-                      );
-                    }),
-                  ),
-                  const SizedBox(height: 20),
-                ],
+                      ],
+                    ),
+                    const SizedBox(height: 16),
+                    Wrap(
+                      spacing: 8,
+                      runSpacing: 8,
+                      children: List.generate(categories.length, (index) {
+                        final isSelected = selectedCategory == index;
+                        return ChoiceChip(
+                          label: Text(
+                            _getCategoryLabel(context, categories[index]),
+                          ),
+                          selected: isSelected,
+                          onSelected: (selected) {
+                            setState(() {
+                              selectedCategory = index;
+                            });
+                            setSheetState(() {});
+                            Navigator.pop(context);
+                          },
+                          selectedColor: AppColors.primary,
+                          labelStyle: TextStyle(
+                            color: isSelected ? Colors.white : Colors.black,
+                          ),
+                        );
+                      }),
+                    ),
+                    const SizedBox(height: 20),
+                  ],
+                ),
               ),
             );
           },
@@ -434,7 +491,8 @@ class _TenderScreenState extends ConsumerState<TenderScreen> {
                         postedLabel = l10n.postedAgo(l10n.yesterday);
                       } else {
                         postedLabel = l10n.postedAgo(
-                            l10n.daysAgo(postedDiff.inDays));
+                          l10n.daysAgo(postedDiff.inDays),
+                        );
                       }
 
                       // Format dates
@@ -456,7 +514,8 @@ class _TenderScreenState extends ConsumerState<TenderScreen> {
                         color = Colors.green;
                       }
 
-                      final isPro = tender.cpoAmount == null ||
+                      final isPro =
+                          tender.cpoAmount == null ||
                           (tender.cpoAmount ?? 0) > 100000;
 
                       return GestureDetector(
@@ -471,9 +530,7 @@ class _TenderScreenState extends ConsumerState<TenderScreen> {
                           title: tender.getOrganization(
                             currentLocale.languageCode,
                           ),
-                          subtitle: tender.getTitle(
-                            currentLocale.languageCode,
-                          ),
+                          subtitle: tender.getTitle(currentLocale.languageCode),
                           daysLeft: daysLeft,
                           location: tender.getLocation(
                             currentLocale.languageCode,
@@ -520,9 +577,7 @@ class _TenderScreenState extends ConsumerState<TenderScreen> {
                   ),
                 );
               },
-              loading: () => const Center(
-                child: CircularProgressIndicator(),
-              ),
+              loading: () => const Center(child: CircularProgressIndicator()),
             ),
           ),
         ],
@@ -653,10 +708,11 @@ class TenderCard extends StatelessWidget {
                 ],
               ),
               const SizedBox(height: 12),
-              Row(
+              Wrap(
+                spacing: 8,
+                runSpacing: 8,
                 children: [
                   _buildChip(daysLeft, urgent ? Colors.red : Colors.orange),
-                  const SizedBox(width: 8),
                   _buildChip(location, Colors.blueGrey),
                 ],
               ),

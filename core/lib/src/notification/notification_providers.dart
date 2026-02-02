@@ -17,3 +17,14 @@ final notificationsProvider = FutureProvider<List<Notification>>((ref) async {
   final notificationRepo = ref.watch(notificationRepositoryProvider);
   return notificationRepo.getNotifications(user.id);
 });
+
+// Stream provider for real-time notifications
+final notificationsStreamProvider =
+    StreamProvider<List<Notification>>((ref) {
+      final user = ref.watch(currentUserProvider).value;
+      if (user == null) {
+        return Stream.value([]);
+      }
+      final notificationRepo = ref.watch(notificationRepositoryProvider);
+      return notificationRepo.streamNotifications(user.id);
+    });

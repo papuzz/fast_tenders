@@ -9,10 +9,24 @@ abstract class NotificationRepository {
   Future<void> deleteNotification(String id);
   Future<void> markAsRead(String id);
   Future<void> markAllAsRead(String userId);
+  Stream<List<Notification>> streamNotifications(String userId);
 }
 
 class SupabaseNotificationRepository implements NotificationRepository {
   final SupabaseClient _supabase = Supabase.instance.client;
+
+  @override
+  Stream<List<Notification>> streamNotifications(String userId) {
+    return _supabase
+        .from('notifications')
+        .stream(primaryKey: ['id'])
+        .eq('user_id', userId)
+        .order('created_at', ascending: false)
+        .map((data) => data.map((json) {
+              if (json['type'] == null) json['type'] = 'general';
+              return Notification.fromJson(json);
+            }).toList());
+  }
 
   @override
   Future<List<Notification>> getNotifications(String userId) async {

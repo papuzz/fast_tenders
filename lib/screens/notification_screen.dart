@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 import 'package:core/core.dart';
 import 'package:intl/intl.dart';
 import '../core/constants/app_colors.dart';
@@ -9,7 +10,7 @@ class NotificationScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final notificationsAsync = ref.watch(notificationsProvider);
+    final notificationsAsync = ref.watch(notificationsStreamProvider);
     final theme = Theme.of(context);
 
     return Scaffold(
@@ -21,13 +22,21 @@ class NotificationScreen extends ConsumerWidget {
           IconButton(
             icon: const Icon(Icons.done_all),
             tooltip: 'Mark all as read',
-            onPressed: () async {
-               final user = ref.read(currentUserProvider).value;
-               if (user != null) {
-                 await ref.read(notificationRepositoryProvider).markAllAsRead(user.id);
-                 ref.invalidate(notificationsProvider);
-               }
-            },
+                        onPressed: () async {
+                          final user = ref.read(currentUserProvider).value;
+                          if (user != null) {
+                            await ref
+                                .read(notificationRepositoryProvider)
+                                .markAllAsRead(user.id);
+                            // The stream will auto-update, but we can also force a refresh if needed
+                            if (context.mounted) {
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                const SnackBar(
+                                    content: Text('All notifications marked as read')),
+                              );
+                            }
+                          }
+                        },
           ),
         ],
       ),
@@ -38,7 +47,8 @@ class NotificationScreen extends ConsumerWidget {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Icon(Icons.notifications_none, size: 64, color: Colors.grey.shade400),
+                  Icon(Icons.notifications_none,
+                      size: 64, color: Colors.grey.shade400),
                   const SizedBox(height: 16),
                   const Text(
                     'No notifications yet',
@@ -54,20 +64,29 @@ class NotificationScreen extends ConsumerWidget {
             separatorBuilder: (context, index) => const Divider(height: 1),
             itemBuilder: (context, index) {
               final notification = notifications[index];
+              IconData iconData = Icons.notifications;
+              if (notification.type == NotificationType.tenderMatch) {
+                iconData = Icons.assignment_turned_in;
+              } else if (notification.type == NotificationType.paymentSuccess) {
+                iconData = Icons.account_balance_wallet;
+              }
+
               return ListTile(
                 leading: CircleAvatar(
-                  backgroundColor: notification.isRead 
-                      ? Colors.grey.shade200 
-                      : AppColors.primary.withOpacity(0.1),
+                  backgroundColor: notification.isRead
+                      ? Colors.grey.shade200
+                      : AppColors.primary.withValues(alpha: 0.1),
                   child: Icon(
-                    Icons.notifications,
+                    iconData,
                     color: notification.isRead ? Colors.grey : AppColors.primary,
                   ),
                 ),
                 title: Text(
                   notification.title,
                   style: TextStyle(
-                    fontWeight: notification.isRead ? FontWeight.normal : FontWeight.bold,
+                    fontWeight: notification.isRead
+                        ? FontWeight.normal
+                        : FontWeight.bold,
                   ),
                 ),
                 subtitle: Column(
@@ -76,18 +95,44 @@ class NotificationScreen extends ConsumerWidget {
                     Text(notification.message),
                     const SizedBox(height: 4),
                     Text(
-                      DateFormat('MMM dd, hh:mm a').format(notification.createdAt),
-                      style: TextStyle(fontSize: 12, color: Colors.grey.shade500),
+                      DateFormat('MMM dd, hh:mm a')
+                          .format(notification.createdAt),
+                      style:
+                          TextStyle(fontSize: 12, color: Colors.grey.shade500),
                     ),
                   ],
                 ),
                 onTap: () async {
                   if (!notification.isRead) {
-                    await ref.read(notificationRepositoryProvider).markAsRead(notification.id);
-                    ref.invalidate(notificationsProvider);
+                    await ref
+                        .read(notificationRepositoryProvider)
+                        .markAsRead(notification.id);
+                  }
+
+                  if (notification.tenderId != null) {
+                    // Fetch tender and navigate
+                    final tender = await ref
+                        .read(tenderRepositoryProvider)
+                        .getTender(notification.tenderId!);
+                    if (tender != null && context.mounted) {
+                      GoRouter.of(context).push(
+                        '/tender-details',
+                        extra: {
+                          'tenders': [tender],
+                          'initialIndex': 0,
+                        },
+                      );
+                    } else if (context.mounted) {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(
+                            content: Text('Tender not found or removed')),
+                      );
+                    }
                   }
                 },
-                tileColor: notification.isRead ? null : AppColors.primary.withOpacity(0.05),
+                tileColor: notification.isRead
+                    ? null
+                    : AppColors.primary.withValues(alpha: 0.05),
               );
             },
           );

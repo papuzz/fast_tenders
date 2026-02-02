@@ -10,3 +10,7 @@ export 'src/payment/payment_repo.dart';
 export 'src/payment/payment_providers.dart';
 export 'src/notification/notification_repo.dart';
 export 'src/notification/notification_providers.dart';
+export 'src/corporate/models/team_member.dart';
+export 'src/corporate/models/corporate_plan.dart';
+export 'src/corporate/corporate_repository.dart';
+export 'src/corporate/corporate_provider.dart';

@@ -13,7 +13,8 @@ import 'package:fast_tenders/l10n/app_localizations.dart';
 import '../features/auth/data/auth_controller.dart';
 
 class BusinessProfileScreen extends ConsumerStatefulWidget {
-  const BusinessProfileScreen({super.key});
+  final int initialStep;
+  const BusinessProfileScreen({super.key, this.initialStep = 0});
 
   @override
   ConsumerState<BusinessProfileScreen> createState() =>
@@ -21,8 +22,8 @@ class BusinessProfileScreen extends ConsumerStatefulWidget {
 }
 
 class _BusinessProfileScreenState extends ConsumerState<BusinessProfileScreen> {
-  final PageController _pageController = PageController();
-  int _currentStep = 0;
+  late final PageController _pageController;
+  late int _currentStep;
   final int _totalSteps = 5;
   bool _isLoading = true;
 
@@ -50,6 +51,8 @@ class _BusinessProfileScreenState extends ConsumerState<BusinessProfileScreen> {
   @override
   void initState() {
     super.initState();
+    _currentStep = widget.initialStep;
+    _pageController = PageController(initialPage: _currentStep);
     _loadSavedProgress();
   }
 

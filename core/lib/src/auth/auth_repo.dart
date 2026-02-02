@@ -147,27 +147,61 @@ class SupabaseAuthRepository implements AuthRepository {
     if (user == null) throw Exception('No user logged in');
 
     // Map UI camelCase keys to database snake_case columns
-    final mappedData = {
-      'id': user.id,
-      'business_name': data['businessName'],
-      'business_type': data['businessType'],
-      'sectors': data['sectors'],
-      'license_category': data['licenseCategory'],
-      'license_grade': data['licenseGrade'],
-      'vat_registered': data['vatRegistered'],
-      'tax_compliance': data['taxCompliance'],
-      'max_contract_size': data['maxContractSize'],
-      'bid_bond_comfort': data['bidBondComfort'],
-      'years_in_operation': data['yearsInOperation'],
-      'projects_completed': data['projectsCompleted'],
-      'major_client': data['majorClient'],
-      'preferred_institutions': data['preferredInstitutions'],
-      'operating_regions': data['operatingRegions'],
-      'alert_match': data['alertMatch'],
-      'alert_favorite': data['alertFavorite'],
-      'alert_deadline': data['alertDeadline'],
-      'alert_competitor': data['alertCompetitor'],
-    };
+    // We use a conditional map to allow partial updates (don't overwrite with nulls if key is missing)
+    final Map<String, dynamic> mappedData = {'id': user.id};
+
+    if (data.containsKey('businessName')) {
+      mappedData['business_name'] = data['businessName'];
+    }
+    if (data.containsKey('businessType')) {
+      mappedData['business_type'] = data['businessType'];
+    }
+    if (data.containsKey('sectors')) mappedData['sectors'] = data['sectors'];
+    if (data.containsKey('licenseCategory')) {
+      mappedData['license_category'] = data['licenseCategory'];
+    }
+    if (data.containsKey('licenseGrade')) {
+      mappedData['license_grade'] = data['licenseGrade'];
+    }
+    if (data.containsKey('vatRegistered')) {
+      mappedData['vat_registered'] = data['vatRegistered'];
+    }
+    if (data.containsKey('taxCompliance')) {
+      mappedData['tax_compliance'] = data['taxCompliance'];
+    }
+    if (data.containsKey('maxContractSize')) {
+      mappedData['max_contract_size'] = data['maxContractSize'];
+    }
+    if (data.containsKey('bidBondComfort')) {
+      mappedData['bid_bond_comfort'] = data['bidBondComfort'];
+    }
+    if (data.containsKey('yearsInOperation')) {
+      mappedData['years_in_operation'] = data['yearsInOperation'];
+    }
+    if (data.containsKey('projectsCompleted')) {
+      mappedData['projects_completed'] = data['projectsCompleted'];
+    }
+    if (data.containsKey('majorClient')) {
+      mappedData['major_client'] = data['majorClient'];
+    }
+    if (data.containsKey('preferredInstitutions')) {
+      mappedData['preferred_institutions'] = data['preferredInstitutions'];
+    }
+    if (data.containsKey('operatingRegions')) {
+      mappedData['operating_regions'] = data['operatingRegions'];
+    }
+    if (data.containsKey('alertMatch')) {
+      mappedData['alert_match'] = data['alertMatch'];
+    }
+    if (data.containsKey('alertFavorite')) {
+      mappedData['alert_favorite'] = data['alertFavorite'];
+    }
+    if (data.containsKey('alertDeadline')) {
+      mappedData['alert_deadline'] = data['alertDeadline'];
+    }
+    if (data.containsKey('alertCompetitor')) {
+      mappedData['alert_competitor'] = data['alertCompetitor'];
+    }
 
     await _supabase.from('business_profiles').upsert(mappedData);
   }

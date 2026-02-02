@@ -24,6 +24,8 @@ mixin _$Notification {
   String get id => throw _privateConstructorUsedError;
   @JsonKey(name: 'user_id')
   String get userId => throw _privateConstructorUsedError;
+  @JsonKey(name: 'tender_id')
+  String? get tenderId => throw _privateConstructorUsedError;
   String get title => throw _privateConstructorUsedError;
   String get message => throw _privateConstructorUsedError;
   NotificationType get type => throw _privateConstructorUsedError;
@@ -52,6 +54,7 @@ abstract class $NotificationCopyWith<$Res> {
   $Res call({
     String id,
     @JsonKey(name: 'user_id') String userId,
+    @JsonKey(name: 'tender_id') String? tenderId,
     String title,
     String message,
     NotificationType type,
@@ -77,6 +80,7 @@ class _$NotificationCopyWithImpl<$Res, $Val extends Notification>
   $Res call({
     Object? id = null,
     Object? userId = null,
+    Object? tenderId = freezed,
     Object? title = null,
     Object? message = null,
     Object? type = null,
@@ -93,6 +97,10 @@ class _$NotificationCopyWithImpl<$Res, $Val extends Notification>
                 ? _value.userId
                 : userId // ignore: cast_nullable_to_non_nullable
                       as String,
+            tenderId: freezed == tenderId
+                ? _value.tenderId
+                : tenderId // ignore: cast_nullable_to_non_nullable
+                      as String?,
             title: null == title
                 ? _value.title
                 : title // ignore: cast_nullable_to_non_nullable
@@ -131,6 +139,7 @@ abstract class _$$NotificationImplCopyWith<$Res>
   $Res call({
     String id,
     @JsonKey(name: 'user_id') String userId,
+    @JsonKey(name: 'tender_id') String? tenderId,
     String title,
     String message,
     NotificationType type,
@@ -155,6 +164,7 @@ class __$$NotificationImplCopyWithImpl<$Res>
   $Res call({
     Object? id = null,
     Object? userId = null,
+    Object? tenderId = freezed,
     Object? title = null,
     Object? message = null,
     Object? type = null,
@@ -171,6 +181,10 @@ class __$$NotificationImplCopyWithImpl<$Res>
             ? _value.userId
             : userId // ignore: cast_nullable_to_non_nullable
                   as String,
+        tenderId: freezed == tenderId
+            ? _value.tenderId
+            : tenderId // ignore: cast_nullable_to_non_nullable
+                  as String?,
         title: null == title
             ? _value.title
             : title // ignore: cast_nullable_to_non_nullable
@@ -202,6 +216,7 @@ class _$NotificationImpl implements _Notification {
   const _$NotificationImpl({
     required this.id,
     @JsonKey(name: 'user_id') required this.userId,
+    @JsonKey(name: 'tender_id') this.tenderId,
     required this.title,
     required this.message,
     required this.type,
@@ -218,6 +233,9 @@ class _$NotificationImpl implements _Notification {
   @JsonKey(name: 'user_id')
   final String userId;
   @override
+  @JsonKey(name: 'tender_id')
+  final String? tenderId;
+  @override
   final String title;
   @override
   final String message;
@@ -232,7 +250,7 @@ class _$NotificationImpl implements _Notification {
 
   @override
   String toString() {
-    return 'Notification(id: $id, userId: $userId, title: $title, message: $message, type: $type, isRead: $isRead, createdAt: $createdAt)';
+    return 'Notification(id: $id, userId: $userId, tenderId: $tenderId, title: $title, message: $message, type: $type, isRead: $isRead, createdAt: $createdAt)';
   }
 
   @override
@@ -242,6 +260,8 @@ class _$NotificationImpl implements _Notification {
             other is _$NotificationImpl &&
             (identical(other.id, id) || other.id == id) &&
             (identical(other.userId, userId) || other.userId == userId) &&
+            (identical(other.tenderId, tenderId) ||
+                other.tenderId == tenderId) &&
             (identical(other.title, title) || other.title == title) &&
             (identical(other.message, message) || other.message == message) &&
             (identical(other.type, type) || other.type == type) &&
@@ -256,6 +276,7 @@ class _$NotificationImpl implements _Notification {
     runtimeType,
     id,
     userId,
+    tenderId,
     title,
     message,
     type,
@@ -281,6 +302,7 @@ abstract class _Notification implements Notification {
   const factory _Notification({
     required final String id,
     @JsonKey(name: 'user_id') required final String userId,
+    @JsonKey(name: 'tender_id') final String? tenderId,
     required final String title,
     required final String message,
     required final NotificationType type,
@@ -296,6 +318,9 @@ abstract class _Notification implements Notification {
   @override
   @JsonKey(name: 'user_id')
   String get userId;
+  @override
+  @JsonKey(name: 'tender_id')
+  String? get tenderId;
   @override
   String get title;
   @override

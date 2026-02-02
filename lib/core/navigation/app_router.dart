@@ -4,7 +4,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'dart:async';
 import 'package:fast_tenders/screens/feed_screen.dart';
-import 'package:fast_tenders/screens/cpo_calculator_screen.dart';
 import 'package:fast_tenders/screens/profile_screen.dart';
 import 'package:fast_tenders/screens/login_screen.dart';
 import 'package:fast_tenders/screens/signup_screen.dart';
@@ -14,6 +13,9 @@ import 'package:fast_tenders/screens/buisness_profile_screen.dart';
 import 'package:fast_tenders/screens/notification_screen.dart';
 import 'package:fast_tenders/screens/saved_tenders_screen.dart';
 import 'package:fast_tenders/screens/generic_tender_list_screen.dart';
+import 'package:fast_tenders/screens/membership_selection_screen.dart';
+import 'package:fast_tenders/screens/industry_alerts_screen.dart';
+import 'package:fast_tenders/screens/corporate_team_management_screen.dart';
 import 'package:core/core.dart';
 
 import '../../l10n/app_localizations.dart';
@@ -76,8 +78,24 @@ final routerProvider = Provider<GoRouter>((ref) {
         builder: (context, state) => const ForgotPasswordScreen(),
       ),
       GoRoute(
+        path: '/membership',
+        builder: (context, state) => const MembershipSelectionScreen(),
+      ),
+      GoRoute(
+        path: '/corporate-team',
+        builder: (context, state) => const CorporateTeamManagementScreen(),
+      ),
+      GoRoute(
+        path: '/industry-alerts',
+        builder: (context, state) => const IndustryAlertsScreen(),
+      ),
+      GoRoute(
         path: '/business-profile',
-        builder: (context, state) => const BusinessProfileScreen(),
+        builder: (context, state) {
+          final step = state.uri.queryParameters['step'];
+          final initialStep = step != null ? int.tryParse(step) ?? 0 : 0;
+          return BusinessProfileScreen(initialStep: initialStep);
+        },
       ),
       GoRoute(
         path: '/notifications',
