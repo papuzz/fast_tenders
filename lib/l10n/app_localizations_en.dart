@@ -304,6 +304,24 @@ class AppLocalizationsEn extends AppLocalizations {
   String get industryAlerts => 'Industry Alerts';
 
   @override
+  String get selectIndustries => 'Select Industries';
+
+  @override
+  String get chooseSectorsAlerts =>
+      'Choose the sectors you want to receive alerts for. You will be notified when new tenders match these categories.';
+
+  @override
+  String get saveChanges => 'Save Changes';
+
+  @override
+  String get alertPreferencesUpdated => 'Alert preferences updated';
+
+  @override
+  String errorSavingPreferences(String error) {
+    return 'Error saving preferences: $error';
+  }
+
+  @override
   String get industries => 'Construction, IT, Logistics';
 
   @override
@@ -327,6 +345,113 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get appVersion => 'TenderEthiopia v2.4.0 (Build 88)';
+
+  @override
+  String get membershipPlan => 'Membership Plan';
+
+  @override
+  String get currentStatus => 'CURRENT STATUS';
+
+  @override
+  String get annualPremiumAccess => 'Annual Premium Access';
+
+  @override
+  String validUntil(String date) {
+    return 'Valid until $date';
+  }
+
+  @override
+  String get upgradeOrChangePlan => 'Upgrade or Change Plan';
+
+  @override
+  String get updateBusinessProfile => 'Update Business Profile';
+
+  @override
+  String get updateBusinessProfileSubtitle =>
+      'Refine your preferences and matches';
+
+  @override
+  String get teamManagementSubtitle => 'Manage corporate access';
+
+  @override
+  String get noSectorsSelected => 'No sectors selected';
+
+  @override
+  String get loading => 'Loading...';
+
+  @override
+  String get catConsultancy => 'Consultancy';
+
+  @override
+  String get catNonConsultancy => 'Non-Consultancy';
+
+  @override
+  String get catAgriculture => 'Agriculture';
+
+  @override
+  String get catEducation => 'Education';
+
+  @override
+  String get catFinance => 'Finance & Insurance';
+
+  @override
+  String get catTransport => 'Transport';
+
+  @override
+  String get catManufacturing => 'Manufacturing';
+
+  @override
+  String get catHotel => 'Hotel & Services';
+
+  @override
+  String get catCleaning => 'Cleaning & Security';
+
+  @override
+  String get supplier => 'Supplier';
+
+  @override
+  String get contractor => 'Contractor';
+
+  @override
+  String get consultant => 'Consultant';
+
+  @override
+  String get generalTrading => 'General Trading';
+
+  @override
+  String get service => 'Service';
+
+  @override
+  String grade(String grade) {
+    return 'Grade $grade';
+  }
+
+  @override
+  String get na => 'N/A';
+
+  @override
+  String get ministries => 'Ministries';
+
+  @override
+  String get universities => 'Universities';
+
+  @override
+  String get ngos => 'NGOs';
+
+  @override
+  String get soes => 'SOEs';
+
+  @override
+  String get addisAbaba => 'Addis Ababa';
+
+  @override
+  String get oromia => 'Oromia';
+
+  @override
+  String get amhara => 'Amhara';
+
+  @override
+  String get nationwide => 'Nationwide';
 
   @override
   String get profileSetupTitle => 'Setup Profile';
@@ -580,4 +705,187 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get aiSummaryError => 'Failed to generate summary.';
+
+  @override
+  String get activePlan => 'ACTIVE PLAN';
+
+  @override
+  String get active => 'ACTIVE';
+
+  @override
+  String get seatAllocation => 'Seat Allocation';
+
+  @override
+  String get used => 'Used';
+
+  @override
+  String renewsOn(String date) {
+    return 'Renews on $date';
+  }
+
+  @override
+  String get upgradeOrRenew => 'Upgrade or Renew';
+
+  @override
+  String get teamMembers => 'Team Members';
+
+  @override
+  String manageAccessSlots(int count) {
+    return 'Manage access for your $count corporate slots';
+  }
+
+  @override
+  String slotAvailable(int count) {
+    return 'Slot $count: Available';
+  }
+
+  @override
+  String get inviteViaEmailPhone => 'Invite via email or phone number';
+
+  @override
+  String get emailPhoneHint => 'Email or +251...';
+
+  @override
+  String inviteSentTo(String text) {
+    return 'Invite sent to $text';
+  }
+
+  @override
+  String get enterEmailPhoneError => 'Please enter an email or phone number';
+
+  @override
+  String get invite => 'Invite';
+
+  @override
+  String get email => 'Email';
+
+  @override
+  String get phoneWithPrefix => 'Phone (+251)';
+
+  @override
+  String get inviteThirdMember => 'Invite a third team member';
+
+  @override
+  String get add => 'Add';
+
+  @override
+  String get slot3Config => 'Slot 3 configuration';
+
+  @override
+  String get pendingStatus => 'PENDING STATUS';
+
+  @override
+  String get invitePending => 'Invite pending';
+
+  @override
+  String get invitationResent => 'Invitation resent';
+
+  @override
+  String get resend => 'Resend';
+
+  @override
+  String get invitationCancelled => 'Invitation cancelled';
+
+  @override
+  String get cancel => 'Cancel';
+
+  @override
+  String get collaborativeTendering => 'Collaborative Tendering';
+
+  @override
+  String get collaborativeTenderingDesc =>
+      'Team members share your corporate OCR quota (500 pages/mo) and can contribute to tender bidding analysis in real-time.';
+
+  @override
+  String get ethiopianMarketEnterprise => 'ETHIOPIAN MARKET ENTERPRISE';
+
+  @override
+  String get teamManagementTitle => 'Team Management';
+
+  @override
+  String get membership => 'Membership';
+
+  @override
+  String get corporate => 'Corporate';
+
+  @override
+  String get personal => 'Personal';
+
+  @override
+  String pricePerYear(String price) {
+    return '$price ETB / year';
+  }
+
+  @override
+  String pricePer6Mo(String price) {
+    return '$price ETB / 6 mo';
+  }
+
+  @override
+  String pricePer3Mo(String price) {
+    return '$price ETB / 3 mo';
+  }
+
+  @override
+  String get oneYearPremiumAccess => '1 Year Premium Access';
+
+  @override
+  String get bestValue => 'Best Value';
+
+  @override
+  String get realTimeAlerts => 'Real-time Alerts';
+
+  @override
+  String get sixMonthsPro => '6 Months Pro';
+
+  @override
+  String get threeMonthsBasic => '3 Months Basic';
+
+  @override
+  String get enterpriseAnnual => 'Enterprise Annual';
+
+  @override
+  String get threeUserLicenses => '3 User Licenses';
+
+  @override
+  String get multiUserDashboard => 'Multi-user Dashboard';
+
+  @override
+  String get business6Month => 'Business 6 Month';
+
+  @override
+  String get businessQuarterly => 'Business Quarterly';
+
+  @override
+  String get payWithTelebirrChapa => 'Pay with Telebirr / Chapa';
+
+  @override
+  String get subscriptionTerms =>
+      'By subscribing, you agree to our Terms of Service. Secure encrypted payment processing.';
+
+  @override
+  String get completePayment => 'Complete Payment';
+
+  @override
+  String get userNotLoggedIn =>
+      'User not logged in. Please log in to continue.';
+
+  @override
+  String get redirectingToChapa => 'Redirecting to Chapa...';
+
+  @override
+  String get couldNotLaunchPayment => 'Could not launch payment URL';
+
+  @override
+  String get payNowWithChapa => 'Pay Now with Chapa';
+
+  @override
+  String get paymentSuccessful => 'Payment Successful!';
+
+  @override
+  String get subscriptionActivated =>
+      'Your subscription has been activated. You can now access all premium features.';
+
+  @override
+  String get goToDashboard => 'Go to Dashboard';
 }

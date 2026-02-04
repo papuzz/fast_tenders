@@ -37,14 +37,16 @@ class _TenderDetailScreenState extends ConsumerState<TenderDetailScreen> {
   void initState() {
     super.initState();
     currentIndex = widget.initialIndex;
+    WidgetsBinding.instance.addPostFrameCallback((_) => _generateAiSummary());
   }
 
   Tender get tender => widget.tenders[currentIndex];
   bool get isAlertSet => _alertStates[tender.id] ?? false;
 
-  Future<void> _generateAiSummary(String langCode) async {
+  Future<void> _generateAiSummary() async {
     if (_aiSummaries.containsKey(tender.id)) return;
 
+    final langCode = ref.read(localeProvider).languageCode;
     setState(() => _isGeneratingSummary = true);
     try {
       final geminiService = ref.read(geminiServiceProvider);
@@ -147,8 +149,13 @@ Description: ${tender.getDescription(langCode)}
           IconButton(
             icon: const Icon(Icons.share_outlined, color: Colors.white),
             onPressed: () {
+              final summary = _aiSummaries[tender.id];
+              final aiSummaryText =
+                  (summary != null && summary.isNotEmpty)
+                      ? "\n\nAI Summary:\n$summary"
+                      : "";
               final text =
-                  "${tender.getOrganization(langCode)}\n${tender.getTitle(langCode)}\nDeadline: ${DateFormat('MMM dd, yyyy').format(tender.deadline)}";
+                  "${tender.getOrganization(langCode)}\n${tender.getTitle(langCode)}\nDeadline: ${DateFormat('MMM dd, yyyy').format(tender.deadline)}$aiSummaryText";
               Share.share(text);
             },
           ),
@@ -256,7 +263,7 @@ Description: ${tender.getDescription(langCode)}
                               ],
                             )
                           : ElevatedButton.icon(
-                              onPressed: () => _generateAiSummary(langCode),
+                              onPressed: _generateAiSummary,
                               icon: const Icon(Icons.auto_awesome, size: 18),
                               label: Text(l10n.generateSummary),
                               style: ElevatedButton.styleFrom(
@@ -515,7 +522,10 @@ Description: ${tender.getDescription(langCode)}
           children: [
             IconButton(
               onPressed: currentIndex > 0
-                  ? () => setState(() => currentIndex--)
+                  ? () {
+                      setState(() => currentIndex--);
+                      _generateAiSummary();
+                    }
                   : null,
               icon: Icon(
                 Icons.arrow_back_ios,
@@ -607,7 +617,10 @@ Description: ${tender.getDescription(langCode)}
             const SizedBox(width: 8),
             IconButton(
               onPressed: currentIndex < widget.tenders.length - 1
-                  ? () => setState(() => currentIndex++)
+                  ? () {
+                      setState(() => currentIndex++);
+                      _generateAiSummary();
+                    }
                   : null,
               icon: Icon(
                 Icons.arrow_forward_ios,

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'core/constants/app_theme.dart';
 import 'core/navigation/app_router.dart';
 import 'core/providers/locale_provider.dart';
@@ -11,11 +12,11 @@ import 'l10n/app_localizations.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  await dotenv.load(fileName: ".env");
 
   await SupabaseClientWrapper.initialize(
-    url: 'https://sqbqjagpflsynyzbpbtg.supabase.co',
-    anonKey:
-        'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNxYnFqYWdwZmxzeW55emJwYnRnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Njg0NTc1OTgsImV4cCI6MjA4NDAzMzU5OH0.Mg6wVqSD0ZHnCeIrL_Wt-URc_mvkj-l0UEximp_HvnY',
+    url: dotenv.get('SUPABASE_URL'),
+    anonKey: dotenv.get('SUPABASE_ANON_KEY'),
   );
 
   runApp(const ProviderScope(child: TenderWinApp()));

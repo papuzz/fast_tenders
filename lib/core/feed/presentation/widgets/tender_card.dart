@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:core/core.dart';
 import '../../../../l10n/app_localizations.dart';
 import '../../../constants/app_colors.dart';
-import '../../../utils/currency_formatter.dart';
 
 class TenderCard extends StatelessWidget {
   final Tender tender;
@@ -89,16 +88,6 @@ class TenderCard extends StatelessWidget {
                       Text(
                         AppLocalizations.of(context)!.cpoRequired,
                         style: TextStyle(color: Colors.grey[500], fontSize: 10),
-                      ),
-                      Text(
-                        CurrencyFormatter.formatETB(
-                          tender.cpoAmount!,
-                          langCode,
-                        ),
-                        style: const TextStyle(
-                          fontWeight: FontWeight.w600,
-                          fontSize: 14,
-                        ),
                       ),
                     ],
                   )

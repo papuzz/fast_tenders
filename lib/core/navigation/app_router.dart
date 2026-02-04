@@ -16,6 +16,7 @@ import 'package:fast_tenders/screens/generic_tender_list_screen.dart';
 import 'package:fast_tenders/screens/membership_selection_screen.dart';
 import 'package:fast_tenders/screens/industry_alerts_screen.dart';
 import 'package:fast_tenders/screens/corporate_team_management_screen.dart';
+import 'package:fast_tenders/screens/payment_success_screen.dart';
 import 'package:core/core.dart';
 
 import '../../l10n/app_localizations.dart';
@@ -102,6 +103,10 @@ final routerProvider = Provider<GoRouter>((ref) {
         builder: (context, state) => const NotificationScreen(),
       ),
       GoRoute(
+        path: '/payment-success',
+        builder: (context, state) => const PaymentSuccessScreen(),
+      ),
+      GoRoute(
         path: '/saved-tenders',
         builder: (context, state) => const SavedTendersScreen(),
       ),
@@ -130,7 +135,7 @@ final routerProvider = Provider<GoRouter>((ref) {
         path: '/tender-details',
         builder: (context, state) {
           final extra = state.extra as Map<String, dynamic>;
-          final tenders = extra['tenders'] as List<Tender>;
+          final tenders = (extra['tenders'] as List).cast<Tender>();
           final initialIndex = extra['initialIndex'] as int;
           return TenderDetailScreen(
             tenders: tenders,

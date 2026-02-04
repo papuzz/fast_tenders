@@ -603,7 +603,8 @@ class __$$ChapaPaymentRequestImplCopyWithImpl<$Res>
 }
 
 /// @nodoc
-@JsonSerializable()
+
+@JsonSerializable(fieldRename: FieldRename.snake)
 class _$ChapaPaymentRequestImpl implements _ChapaPaymentRequest {
   const _$ChapaPaymentRequestImpl({
     required this.amount,
@@ -899,7 +900,8 @@ class __$$ChapaPaymentResponseImplCopyWithImpl<$Res>
 }
 
 /// @nodoc
-@JsonSerializable()
+
+@JsonSerializable(fieldRename: FieldRename.snake)
 class _$ChapaPaymentResponseImpl implements _ChapaPaymentResponse {
   const _$ChapaPaymentResponseImpl({
     required this.message,
@@ -1072,7 +1074,8 @@ class __$$ChapaPaymentDataImplCopyWithImpl<$Res>
 }
 
 /// @nodoc
-@JsonSerializable()
+
+@JsonSerializable(fieldRename: FieldRename.snake)
 class _$ChapaPaymentDataImpl implements _ChapaPaymentData {
   const _$ChapaPaymentDataImpl({required this.checkoutUrl});
 
@@ -1237,7 +1240,8 @@ class __$$ChapaWebhookDataImplCopyWithImpl<$Res>
 }
 
 /// @nodoc
-@JsonSerializable()
+
+@JsonSerializable(fieldRename: FieldRename.snake)
 class _$ChapaWebhookDataImpl implements _ChapaWebhookData {
   const _$ChapaWebhookDataImpl({required this.txRef, required this.status});
 

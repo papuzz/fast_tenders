@@ -1,3 +1,5 @@
+import 'package:fast_tenders/core/utils/l10n_utils.dart';
+import 'package:intl/intl.dart';
 import 'package:fast_tenders/core/constants/app_colors.dart';
 import 'package:fast_tenders/core/providers/locale_provider.dart';
 import 'package:fast_tenders/features/auth/data/auth_controller.dart';
@@ -136,7 +138,7 @@ class ProfileScreen extends ConsumerWidget {
                 const SizedBox(height: 32),
 
                 // Membership Section
-                _buildSectionTitle(context, "Membership Plan"),
+                _buildSectionTitle(context, l10n.membershipPlan),
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 16),
                   child: Container(
@@ -162,9 +164,9 @@ class ProfileScreen extends ConsumerWidget {
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            const Text(
-                              "CURRENT STATUS",
-                              style: TextStyle(
+                            Text(
+                              l10n.currentStatus,
+                              style: const TextStyle(
                                 color: Colors.white70,
                                 fontSize: 12,
                                 fontWeight: FontWeight.bold,
@@ -192,18 +194,18 @@ class ProfileScreen extends ConsumerWidget {
                           ],
                         ),
                         const SizedBox(height: 12),
-                        const Text(
-                          "Annual Premium Access",
-                          style: TextStyle(
+                        Text(
+                          l10n.annualPremiumAccess,
+                          style: const TextStyle(
                             color: Colors.white,
                             fontSize: 20,
                             fontWeight: FontWeight.bold,
                           ),
                         ),
                         const SizedBox(height: 4),
-                        const Text(
-                          "Valid until Jan 31, 2027",
-                          style: TextStyle(color: Colors.white70, fontSize: 14),
+                        Text(
+                          l10n.validUntil(DateFormat.yMMMd(locale.languageCode).format(DateTime(2027, 1, 31))),
+                          style: const TextStyle(color: Colors.white70, fontSize: 14),
                         ),
                         const SizedBox(height: 20),
                         ElevatedButton(
@@ -216,9 +218,9 @@ class ProfileScreen extends ConsumerWidget {
                               borderRadius: BorderRadius.circular(12),
                             ),
                           ),
-                          child: const Text(
-                            "Upgrade or Change Plan",
-                            style: TextStyle(fontWeight: FontWeight.bold),
+                          child: Text(
+                            l10n.upgradeOrChangePlan,
+                            style: const TextStyle(fontWeight: FontWeight.bold),
                           ),
                         ),
                       ],
@@ -313,16 +315,16 @@ class ProfileScreen extends ConsumerWidget {
                                 child: Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    const Text(
-                                      'Update Business Profile',
-                                      style: TextStyle(
+                                    Text(
+                                      l10n.updateBusinessProfile,
+                                      style: const TextStyle(
                                         fontSize: 14,
                                         fontWeight: FontWeight.w500,
                                       ),
                                     ),
                                     const SizedBox(height: 2),
                                     Text(
-                                      'Refine your preferences and matches',
+                                      l10n.updateBusinessProfileSubtitle,
                                       style: TextStyle(
                                         fontSize: 12,
                                         color: theme.colorScheme.primary,
@@ -364,16 +366,16 @@ class ProfileScreen extends ConsumerWidget {
                                 child: Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    const Text(
-                                      'Team Management',
-                                      style: TextStyle(
+                                    Text(
+                                      l10n.teamManagementTitle,
+                                      style: const TextStyle(
                                         fontSize: 14,
                                         fontWeight: FontWeight.w500,
                                       ),
                                     ),
                                     const SizedBox(height: 2),
                                     Text(
-                                      'Manage corporate access',
+                                      l10n.teamManagementSubtitle,
                                       style: TextStyle(
                                         fontSize: 12,
                                         color: theme.colorScheme.primary,
@@ -428,8 +430,8 @@ class ProfileScreen extends ConsumerWidget {
                                         .when(
                                           data: (sectors) => Text(
                                             sectors.isEmpty
-                                                ? 'No sectors selected'
-                                                : sectors.join(', '),
+                                                ? l10n.noSectorsSelected
+                                                : sectors.map((s) => L10nUtils.getCategoryLabel(context, s)).join(', '),
                                             style: const TextStyle(
                                               fontSize: 12,
                                               color: AppColors.primary,
@@ -438,9 +440,9 @@ class ProfileScreen extends ConsumerWidget {
                                             maxLines: 1,
                                             overflow: TextOverflow.ellipsis,
                                           ),
-                                          loading: () => const Text(
-                                            'Loading...',
-                                            style: TextStyle(
+                                          loading: () => Text(
+                                            l10n.loading,
+                                            style: const TextStyle(
                                               fontSize: 12,
                                               color: AppColors.primary,
                                               fontWeight: FontWeight.w500,
@@ -470,66 +472,13 @@ class ProfileScreen extends ConsumerWidget {
                   ),
                 ),
 
+
                 // Help & Support Section
                 _buildSectionTitle(context, l10n.helpSupport),
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 16),
                   child: Column(
                     children: [
-                      Container(
-                        padding: const EdgeInsets.all(16),
-                        margin: const EdgeInsets.only(bottom: 8),
-                        decoration: BoxDecoration(
-                          color: AppColors.primary.withValues(alpha: 0.1),
-                          borderRadius: BorderRadius.circular(12),
-                          border: Border.all(
-                            color: AppColors.primary.withValues(alpha: 0.3),
-                          ),
-                        ),
-                        child: Row(
-                          children: [
-                            Container(
-                              padding: const EdgeInsets.all(12),
-                              decoration: BoxDecoration(
-                                color: AppColors.primary,
-                                borderRadius: BorderRadius.circular(8),
-                              ),
-                              child: const Icon(
-                                Icons.document_scanner,
-                                color: Colors.white,
-                                size: 24,
-                              ),
-                            ),
-                            const SizedBox(width: 16),
-                            Expanded(
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    l10n.ocrScanningTitle,
-                                    style: const TextStyle(
-                                      fontSize: 14,
-                                      fontWeight: FontWeight.bold,
-                                      color: AppColors.primary,
-                                    ),
-                                  ),
-                                  Text(
-                                    l10n.ocrScanningDesc,
-                                    style: const TextStyle(
-                                      fontSize: 12,
-                                      color: AppColors.textSecondary,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                            const Icon(
-                              Icons.play_circle_fill,
-                              color: AppColors.primary,
-                            ),
-                          ],
-                        ),
-                      ),
                       _buildListTile(
                         context: context,
                         icon: Icons.help_outline,

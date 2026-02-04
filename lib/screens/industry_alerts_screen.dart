@@ -1,3 +1,4 @@
+import 'package:fast_tenders/core/utils/l10n_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:fast_tenders/core/constants/app_colors.dart';
@@ -6,6 +7,7 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:core/core.dart';
 import 'package:fast_tenders/features/auth/data/auth_controller.dart';
 import 'package:fast_tenders/core/providers/user_profile_provider.dart';
+import 'package:fast_tenders/l10n/app_localizations.dart';
 
 class IndustryAlertsScreen extends ConsumerStatefulWidget {
   const IndustryAlertsScreen({super.key});
@@ -51,6 +53,7 @@ class _IndustryAlertsScreenState extends ConsumerState<IndustryAlertsScreen> {
   }
 
   Future<void> _saveSectors() async {
+    final l10n = AppLocalizations.of(context)!;
     setState(() {
       _isSaving = true;
     });
@@ -78,7 +81,7 @@ class _IndustryAlertsScreenState extends ConsumerState<IndustryAlertsScreen> {
         
         if (mounted) {
           ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(content: Text('Alert preferences updated')),
+            SnackBar(content: Text(l10n.alertPreferencesUpdated)),
           );
           Navigator.pop(context);
         }
@@ -86,7 +89,7 @@ class _IndustryAlertsScreenState extends ConsumerState<IndustryAlertsScreen> {
     } catch (e) {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Error saving preferences: $e')),
+          SnackBar(content: Text(l10n.errorSavingPreferences(e.toString()))),
         );
       }
     } finally {
@@ -100,6 +103,7 @@ class _IndustryAlertsScreenState extends ConsumerState<IndustryAlertsScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
     // Exclude 'All' from selection
     final categories = AppConstants.tenderCategories
         .where((c) => c != 'All')
@@ -107,20 +111,20 @@ class _IndustryAlertsScreenState extends ConsumerState<IndustryAlertsScreen> {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Industry Alerts'),
+        title: Text(l10n.industryAlerts),
       ),
       body: _isLoading
           ? const Center(child: CircularProgressIndicator())
           : ListView(
               padding: const EdgeInsets.all(16),
               children: [
-                const Text(
-                  'Select Industries',
-                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                Text(
+                  l10n.selectIndustries,
+                  style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                 ),
                 const SizedBox(height: 8),
                 Text(
-                  'Choose the sectors you want to receive alerts for. You will be notified when new tenders match these categories.',
+                  l10n.chooseSectorsAlerts,
                   style: TextStyle(color: Colors.grey[600]),
                 ),
                 const SizedBox(height: 24),
@@ -130,7 +134,7 @@ class _IndustryAlertsScreenState extends ConsumerState<IndustryAlertsScreen> {
                   children: categories.map((category) {
                     final isSelected = _selectedSectors.contains(category);
                     return FilterChip(
-                      label: Text(category),
+                      label: Text(L10nUtils.getCategoryLabel(context, category)),
                       selected: isSelected,
                       selectedColor: AppColors.primary.withValues(alpha: 0.2),
                       checkmarkColor: AppColors.primary,
@@ -166,9 +170,9 @@ class _IndustryAlertsScreenState extends ConsumerState<IndustryAlertsScreen> {
                             strokeWidth: 2,
                           ),
                         )
-                      : const Text(
-                          'Save Changes',
-                          style: TextStyle(
+                      : Text(
+                          l10n.saveChanges,
+                          style: const TextStyle(
                             fontSize: 16,
                             fontWeight: FontWeight.bold,
                           ),

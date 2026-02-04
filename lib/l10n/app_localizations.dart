@@ -656,6 +656,36 @@ abstract class AppLocalizations {
   /// **'Industry Alerts'**
   String get industryAlerts;
 
+  /// No description provided for @selectIndustries.
+  ///
+  /// In en, this message translates to:
+  /// **'Select Industries'**
+  String get selectIndustries;
+
+  /// No description provided for @chooseSectorsAlerts.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose the sectors you want to receive alerts for. You will be notified when new tenders match these categories.'**
+  String get chooseSectorsAlerts;
+
+  /// No description provided for @saveChanges.
+  ///
+  /// In en, this message translates to:
+  /// **'Save Changes'**
+  String get saveChanges;
+
+  /// No description provided for @alertPreferencesUpdated.
+  ///
+  /// In en, this message translates to:
+  /// **'Alert preferences updated'**
+  String get alertPreferencesUpdated;
+
+  /// No description provided for @errorSavingPreferences.
+  ///
+  /// In en, this message translates to:
+  /// **'Error saving preferences: {error}'**
+  String errorSavingPreferences(String error);
+
   /// No description provided for @industries.
   ///
   /// In en, this message translates to:
@@ -703,6 +733,210 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'TenderEthiopia v2.4.0 (Build 88)'**
   String get appVersion;
+
+  /// No description provided for @membershipPlan.
+  ///
+  /// In en, this message translates to:
+  /// **'Membership Plan'**
+  String get membershipPlan;
+
+  /// No description provided for @currentStatus.
+  ///
+  /// In en, this message translates to:
+  /// **'CURRENT STATUS'**
+  String get currentStatus;
+
+  /// No description provided for @annualPremiumAccess.
+  ///
+  /// In en, this message translates to:
+  /// **'Annual Premium Access'**
+  String get annualPremiumAccess;
+
+  /// No description provided for @validUntil.
+  ///
+  /// In en, this message translates to:
+  /// **'Valid until {date}'**
+  String validUntil(String date);
+
+  /// No description provided for @upgradeOrChangePlan.
+  ///
+  /// In en, this message translates to:
+  /// **'Upgrade or Change Plan'**
+  String get upgradeOrChangePlan;
+
+  /// No description provided for @updateBusinessProfile.
+  ///
+  /// In en, this message translates to:
+  /// **'Update Business Profile'**
+  String get updateBusinessProfile;
+
+  /// No description provided for @updateBusinessProfileSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Refine your preferences and matches'**
+  String get updateBusinessProfileSubtitle;
+
+  /// No description provided for @teamManagementSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Manage corporate access'**
+  String get teamManagementSubtitle;
+
+  /// No description provided for @noSectorsSelected.
+  ///
+  /// In en, this message translates to:
+  /// **'No sectors selected'**
+  String get noSectorsSelected;
+
+  /// No description provided for @loading.
+  ///
+  /// In en, this message translates to:
+  /// **'Loading...'**
+  String get loading;
+
+  /// No description provided for @catConsultancy.
+  ///
+  /// In en, this message translates to:
+  /// **'Consultancy'**
+  String get catConsultancy;
+
+  /// No description provided for @catNonConsultancy.
+  ///
+  /// In en, this message translates to:
+  /// **'Non-Consultancy'**
+  String get catNonConsultancy;
+
+  /// No description provided for @catAgriculture.
+  ///
+  /// In en, this message translates to:
+  /// **'Agriculture'**
+  String get catAgriculture;
+
+  /// No description provided for @catEducation.
+  ///
+  /// In en, this message translates to:
+  /// **'Education'**
+  String get catEducation;
+
+  /// No description provided for @catFinance.
+  ///
+  /// In en, this message translates to:
+  /// **'Finance & Insurance'**
+  String get catFinance;
+
+  /// No description provided for @catTransport.
+  ///
+  /// In en, this message translates to:
+  /// **'Transport'**
+  String get catTransport;
+
+  /// No description provided for @catManufacturing.
+  ///
+  /// In en, this message translates to:
+  /// **'Manufacturing'**
+  String get catManufacturing;
+
+  /// No description provided for @catHotel.
+  ///
+  /// In en, this message translates to:
+  /// **'Hotel & Services'**
+  String get catHotel;
+
+  /// No description provided for @catCleaning.
+  ///
+  /// In en, this message translates to:
+  /// **'Cleaning & Security'**
+  String get catCleaning;
+
+  /// No description provided for @supplier.
+  ///
+  /// In en, this message translates to:
+  /// **'Supplier'**
+  String get supplier;
+
+  /// No description provided for @contractor.
+  ///
+  /// In en, this message translates to:
+  /// **'Contractor'**
+  String get contractor;
+
+  /// No description provided for @consultant.
+  ///
+  /// In en, this message translates to:
+  /// **'Consultant'**
+  String get consultant;
+
+  /// No description provided for @generalTrading.
+  ///
+  /// In en, this message translates to:
+  /// **'General Trading'**
+  String get generalTrading;
+
+  /// No description provided for @service.
+  ///
+  /// In en, this message translates to:
+  /// **'Service'**
+  String get service;
+
+  /// No description provided for @grade.
+  ///
+  /// In en, this message translates to:
+  /// **'Grade {grade}'**
+  String grade(String grade);
+
+  /// No description provided for @na.
+  ///
+  /// In en, this message translates to:
+  /// **'N/A'**
+  String get na;
+
+  /// No description provided for @ministries.
+  ///
+  /// In en, this message translates to:
+  /// **'Ministries'**
+  String get ministries;
+
+  /// No description provided for @universities.
+  ///
+  /// In en, this message translates to:
+  /// **'Universities'**
+  String get universities;
+
+  /// No description provided for @ngos.
+  ///
+  /// In en, this message translates to:
+  /// **'NGOs'**
+  String get ngos;
+
+  /// No description provided for @soes.
+  ///
+  /// In en, this message translates to:
+  /// **'SOEs'**
+  String get soes;
+
+  /// No description provided for @addisAbaba.
+  ///
+  /// In en, this message translates to:
+  /// **'Addis Ababa'**
+  String get addisAbaba;
+
+  /// No description provided for @oromia.
+  ///
+  /// In en, this message translates to:
+  /// **'Oromia'**
+  String get oromia;
+
+  /// No description provided for @amhara.
+  ///
+  /// In en, this message translates to:
+  /// **'Amhara'**
+  String get amhara;
+
+  /// No description provided for @nationwide.
+  ///
+  /// In en, this message translates to:
+  /// **'Nationwide'**
+  String get nationwide;
 
   /// No description provided for @profileSetupTitle.
   ///
@@ -1171,6 +1405,336 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Failed to generate summary.'**
   String get aiSummaryError;
+
+  /// No description provided for @activePlan.
+  ///
+  /// In en, this message translates to:
+  /// **'ACTIVE PLAN'**
+  String get activePlan;
+
+  /// No description provided for @active.
+  ///
+  /// In en, this message translates to:
+  /// **'ACTIVE'**
+  String get active;
+
+  /// No description provided for @seatAllocation.
+  ///
+  /// In en, this message translates to:
+  /// **'Seat Allocation'**
+  String get seatAllocation;
+
+  /// No description provided for @used.
+  ///
+  /// In en, this message translates to:
+  /// **'Used'**
+  String get used;
+
+  /// No description provided for @renewsOn.
+  ///
+  /// In en, this message translates to:
+  /// **'Renews on {date}'**
+  String renewsOn(String date);
+
+  /// No description provided for @upgradeOrRenew.
+  ///
+  /// In en, this message translates to:
+  /// **'Upgrade or Renew'**
+  String get upgradeOrRenew;
+
+  /// No description provided for @teamMembers.
+  ///
+  /// In en, this message translates to:
+  /// **'Team Members'**
+  String get teamMembers;
+
+  /// No description provided for @manageAccessSlots.
+  ///
+  /// In en, this message translates to:
+  /// **'Manage access for your {count} corporate slots'**
+  String manageAccessSlots(int count);
+
+  /// No description provided for @slotAvailable.
+  ///
+  /// In en, this message translates to:
+  /// **'Slot {count}: Available'**
+  String slotAvailable(int count);
+
+  /// No description provided for @inviteViaEmailPhone.
+  ///
+  /// In en, this message translates to:
+  /// **'Invite via email or phone number'**
+  String get inviteViaEmailPhone;
+
+  /// No description provided for @emailPhoneHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Email or +251...'**
+  String get emailPhoneHint;
+
+  /// No description provided for @inviteSentTo.
+  ///
+  /// In en, this message translates to:
+  /// **'Invite sent to {text}'**
+  String inviteSentTo(String text);
+
+  /// No description provided for @enterEmailPhoneError.
+  ///
+  /// In en, this message translates to:
+  /// **'Please enter an email or phone number'**
+  String get enterEmailPhoneError;
+
+  /// No description provided for @invite.
+  ///
+  /// In en, this message translates to:
+  /// **'Invite'**
+  String get invite;
+
+  /// No description provided for @email.
+  ///
+  /// In en, this message translates to:
+  /// **'Email'**
+  String get email;
+
+  /// No description provided for @phoneWithPrefix.
+  ///
+  /// In en, this message translates to:
+  /// **'Phone (+251)'**
+  String get phoneWithPrefix;
+
+  /// No description provided for @inviteThirdMember.
+  ///
+  /// In en, this message translates to:
+  /// **'Invite a third team member'**
+  String get inviteThirdMember;
+
+  /// No description provided for @add.
+  ///
+  /// In en, this message translates to:
+  /// **'Add'**
+  String get add;
+
+  /// No description provided for @slot3Config.
+  ///
+  /// In en, this message translates to:
+  /// **'Slot 3 configuration'**
+  String get slot3Config;
+
+  /// No description provided for @pendingStatus.
+  ///
+  /// In en, this message translates to:
+  /// **'PENDING STATUS'**
+  String get pendingStatus;
+
+  /// No description provided for @invitePending.
+  ///
+  /// In en, this message translates to:
+  /// **'Invite pending'**
+  String get invitePending;
+
+  /// No description provided for @invitationResent.
+  ///
+  /// In en, this message translates to:
+  /// **'Invitation resent'**
+  String get invitationResent;
+
+  /// No description provided for @resend.
+  ///
+  /// In en, this message translates to:
+  /// **'Resend'**
+  String get resend;
+
+  /// No description provided for @invitationCancelled.
+  ///
+  /// In en, this message translates to:
+  /// **'Invitation cancelled'**
+  String get invitationCancelled;
+
+  /// No description provided for @cancel.
+  ///
+  /// In en, this message translates to:
+  /// **'Cancel'**
+  String get cancel;
+
+  /// No description provided for @collaborativeTendering.
+  ///
+  /// In en, this message translates to:
+  /// **'Collaborative Tendering'**
+  String get collaborativeTendering;
+
+  /// No description provided for @collaborativeTenderingDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Team members share your corporate OCR quota (500 pages/mo) and can contribute to tender bidding analysis in real-time.'**
+  String get collaborativeTenderingDesc;
+
+  /// No description provided for @ethiopianMarketEnterprise.
+  ///
+  /// In en, this message translates to:
+  /// **'ETHIOPIAN MARKET ENTERPRISE'**
+  String get ethiopianMarketEnterprise;
+
+  /// No description provided for @teamManagementTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Team Management'**
+  String get teamManagementTitle;
+
+  /// No description provided for @membership.
+  ///
+  /// In en, this message translates to:
+  /// **'Membership'**
+  String get membership;
+
+  /// No description provided for @corporate.
+  ///
+  /// In en, this message translates to:
+  /// **'Corporate'**
+  String get corporate;
+
+  /// No description provided for @personal.
+  ///
+  /// In en, this message translates to:
+  /// **'Personal'**
+  String get personal;
+
+  /// No description provided for @pricePerYear.
+  ///
+  /// In en, this message translates to:
+  /// **'{price} ETB / year'**
+  String pricePerYear(String price);
+
+  /// No description provided for @pricePer6Mo.
+  ///
+  /// In en, this message translates to:
+  /// **'{price} ETB / 6 mo'**
+  String pricePer6Mo(String price);
+
+  /// No description provided for @pricePer3Mo.
+  ///
+  /// In en, this message translates to:
+  /// **'{price} ETB / 3 mo'**
+  String pricePer3Mo(String price);
+
+  /// No description provided for @oneYearPremiumAccess.
+  ///
+  /// In en, this message translates to:
+  /// **'1 Year Premium Access'**
+  String get oneYearPremiumAccess;
+
+  /// No description provided for @bestValue.
+  ///
+  /// In en, this message translates to:
+  /// **'Best Value'**
+  String get bestValue;
+
+  /// No description provided for @realTimeAlerts.
+  ///
+  /// In en, this message translates to:
+  /// **'Real-time Alerts'**
+  String get realTimeAlerts;
+
+  /// No description provided for @sixMonthsPro.
+  ///
+  /// In en, this message translates to:
+  /// **'6 Months Pro'**
+  String get sixMonthsPro;
+
+  /// No description provided for @threeMonthsBasic.
+  ///
+  /// In en, this message translates to:
+  /// **'3 Months Basic'**
+  String get threeMonthsBasic;
+
+  /// No description provided for @enterpriseAnnual.
+  ///
+  /// In en, this message translates to:
+  /// **'Enterprise Annual'**
+  String get enterpriseAnnual;
+
+  /// No description provided for @threeUserLicenses.
+  ///
+  /// In en, this message translates to:
+  /// **'3 User Licenses'**
+  String get threeUserLicenses;
+
+  /// No description provided for @multiUserDashboard.
+  ///
+  /// In en, this message translates to:
+  /// **'Multi-user Dashboard'**
+  String get multiUserDashboard;
+
+  /// No description provided for @business6Month.
+  ///
+  /// In en, this message translates to:
+  /// **'Business 6 Month'**
+  String get business6Month;
+
+  /// No description provided for @businessQuarterly.
+  ///
+  /// In en, this message translates to:
+  /// **'Business Quarterly'**
+  String get businessQuarterly;
+
+  /// No description provided for @payWithTelebirrChapa.
+  ///
+  /// In en, this message translates to:
+  /// **'Pay with Telebirr / Chapa'**
+  String get payWithTelebirrChapa;
+
+  /// No description provided for @subscriptionTerms.
+  ///
+  /// In en, this message translates to:
+  /// **'By subscribing, you agree to our Terms of Service. Secure encrypted payment processing.'**
+  String get subscriptionTerms;
+
+  /// No description provided for @completePayment.
+  ///
+  /// In en, this message translates to:
+  /// **'Complete Payment'**
+  String get completePayment;
+
+  /// No description provided for @userNotLoggedIn.
+  ///
+  /// In en, this message translates to:
+  /// **'User not logged in. Please log in to continue.'**
+  String get userNotLoggedIn;
+
+  /// No description provided for @redirectingToChapa.
+  ///
+  /// In en, this message translates to:
+  /// **'Redirecting to Chapa...'**
+  String get redirectingToChapa;
+
+  /// No description provided for @couldNotLaunchPayment.
+  ///
+  /// In en, this message translates to:
+  /// **'Could not launch payment URL'**
+  String get couldNotLaunchPayment;
+
+  /// No description provided for @payNowWithChapa.
+  ///
+  /// In en, this message translates to:
+  /// **'Pay Now with Chapa'**
+  String get payNowWithChapa;
+
+  /// No description provided for @paymentSuccessful.
+  ///
+  /// In en, this message translates to:
+  /// **'Payment Successful!'**
+  String get paymentSuccessful;
+
+  /// No description provided for @subscriptionActivated.
+  ///
+  /// In en, this message translates to:
+  /// **'Your subscription has been activated. You can now access all premium features.'**
+  String get subscriptionActivated;
+
+  /// No description provided for @goToDashboard.
+  ///
+  /// In en, this message translates to:
+  /// **'Go to Dashboard'**
+  String get goToDashboard;
 }
 
 class _AppLocalizationsDelegate

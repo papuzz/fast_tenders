@@ -1,3 +1,4 @@
+import 'package:fast_tenders/core/utils/l10n_utils.dart';
 import 'dart:convert';
 import 'package:core/core.dart';
 import 'package:flutter/material.dart';
@@ -354,7 +355,7 @@ class _BusinessBasicsStepState extends State<_BusinessBasicsStep>
             children: _businessTypes.map((type) {
               final isSelected = widget.formData['businessType'] == type;
               return ChoiceChip(
-                label: Text(type),
+                label: Text(L10nUtils.getCategoryLabel(context, type)),
                 selected: isSelected,
                 onSelected: (selected) {
                   if (selected) widget.onChanged('businessType', type);
@@ -380,7 +381,7 @@ class _BusinessBasicsStepState extends State<_BusinessBasicsStep>
             children: _sectors.map((sector) {
               final isSelected = selectedSectors.contains(sector);
               return FilterChip(
-                label: Text(sector),
+                label: Text(L10nUtils.getCategoryLabel(context, sector)),
                 selected: isSelected,
                 onSelected: (selected) {
                   final newSectors = List<String>.from(selectedSectors);
@@ -447,7 +448,7 @@ class _LegalLicenseStepState extends State<_LegalLicenseStep>
               labelText: l10n.tradeLicenseCategoryLabel,
             ),
             items: _categories
-                .map((c) => DropdownMenuItem(value: c, child: Text(c)))
+                .map((c) => DropdownMenuItem(value: c, child: Text(L10nUtils.getCategoryLabel(context, c))))
                 .toList(),
             onChanged: (val) => widget.onChanged('licenseCategory', val),
           ),
@@ -459,7 +460,7 @@ class _LegalLicenseStepState extends State<_LegalLicenseStep>
               labelText: l10n.licenseGradeLabel,
             ),
             items: _grades
-                .map((g) => DropdownMenuItem(value: g, child: Text(g)))
+                .map((g) => DropdownMenuItem(value: g, child: Text(L10nUtils.getCategoryLabel(context, g))))
                 .toList(),
             onChanged: (val) => widget.onChanged('licenseGrade', val),
           ),
@@ -563,7 +564,7 @@ class _TargetInstitutionsStepState extends State<_TargetInstitutionsStep>
             children: _institutions.map((inst) {
               final isSelected = selectedInstitutions.contains(inst);
               return FilterChip(
-                label: Text(inst),
+                label: Text(L10nUtils.getCategoryLabel(context, inst)),
                 selected: isSelected,
                 onSelected: (selected) {
                   final list = List<String>.from(selectedInstitutions);
@@ -584,7 +585,7 @@ class _TargetInstitutionsStepState extends State<_TargetInstitutionsStep>
             children: _regions.map((reg) {
               final isSelected = selectedRegions.contains(reg);
               return FilterChip(
-                label: Text(reg),
+                label: Text(L10nUtils.getCategoryLabel(context, reg)),
                 selected: isSelected,
                 onSelected: (selected) {
                   final list = List<String>.from(selectedRegions);

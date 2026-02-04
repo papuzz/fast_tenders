@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:fast_tenders/core/constants/app_colors.dart';
+import 'package:fast_tenders/screens/payment_screen.dart';
+import 'package:fast_tenders/l10n/app_localizations.dart';
 import 'dart:math' as math;
 
 class MembershipSelectionScreen extends ConsumerStatefulWidget {
@@ -35,6 +37,7 @@ class _MembershipSelectionScreenState
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
     final isDark = Theme.of(context).brightness == Brightness.dark;
 
     return Scaffold(
@@ -43,9 +46,9 @@ class _MembershipSelectionScreenState
           icon: const Icon(Icons.arrow_back_ios_new),
           onPressed: () => Navigator.of(context).pop(),
         ),
-        title: const Text(
-          'Membership',
-          style: TextStyle(fontWeight: FontWeight.bold),
+        title: Text(
+          l10n.membership,
+          style: const TextStyle(fontWeight: FontWeight.bold),
         ),
         actions: [
           IconButton(icon: const Icon(Icons.help_outline), onPressed: () {}),
@@ -94,7 +97,7 @@ class _MembershipSelectionScreenState
                           ),
                           alignment: Alignment.center,
                           child: Text(
-                            'Corporate',
+                            l10n.corporate,
                             style: TextStyle(
                               color: !_isPersonal
                                   ? AppColors.primary
@@ -128,7 +131,7 @@ class _MembershipSelectionScreenState
                           ),
                           alignment: Alignment.center,
                           child: Text(
-                            'Personal',
+                            l10n.personal,
                             style: TextStyle(
                               color: _isPersonal
                                   ? AppColors.primary
@@ -148,72 +151,72 @@ class _MembershipSelectionScreenState
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 24.0),
               child: _isPersonal
-                  ? _buildPersonalPlans()
-                  : _buildCorporatePlans(),
+                  ? _buildPersonalPlans(l10n)
+                  : _buildCorporatePlans(l10n),
             ),
             const SizedBox(height: 120), // Space for fixed footer
           ],
         ),
       ),
-      bottomSheet: _buildFooter(isDark),
+      bottomSheet: _buildFooter(isDark, l10n),
     );
   }
 
-  Widget _buildPersonalPlans() {
+  Widget _buildPersonalPlans(AppLocalizations l10n) {
     return Column(
       children: [
         _buildPlanCard(
           id: 'personal_year',
-          title: '3,500 ETB',
-          subtitle: '/ year',
-          description: '1 Year Premium Access',
-          badge: 'Best Value',
-          features: ['Real-time Alerts'],
+          title: '3,500',
+          subtitle: l10n.pricePerYear(''),
+          description: l10n.oneYearPremiumAccess,
+          badge: l10n.bestValue,
+          features: [l10n.realTimeAlerts],
           isPopular: true,
         ),
         const SizedBox(height: 16),
         _buildPlanCard(
           id: 'personal_6mo',
-          title: '2,500 ETB',
-          subtitle: '/ 6 mo',
-          description: '6 Months Pro',
+          title: '2,500',
+          subtitle: l10n.pricePer6Mo(''),
+          description: l10n.sixMonthsPro,
         ),
         const SizedBox(height: 16),
         _buildPlanCard(
           id: 'personal_3mo',
-          title: '2,000 ETB',
-          subtitle: '/ 3 mo',
-          description: '3 Months Basic',
+          title: '2,000',
+          subtitle: l10n.pricePer3Mo(''),
+          description: l10n.threeMonthsBasic,
         ),
       ],
     );
   }
 
-  Widget _buildCorporatePlans() {
+  Widget _buildCorporatePlans(AppLocalizations l10n) {
     return Column(
       children: [
         _buildPlanCard(
           id: 'corporate_year',
-          title: '4,000 ETB',
-          subtitle: '/ year',
-          description: 'Enterprise Annual',
-          badge: '3 User Licenses',
-          features: ['Multi-user Dashboard', 'Real-time Alerts'],
+          title: '4,000',
+          subtitle: l10n.pricePerYear(''),
+          description: l10n.enterpriseAnnual,
+          badge: l10n.threeUserLicenses,
+          features: [l10n.multiUserDashboard, l10n.realTimeAlerts],
           isCorporate: true,
         ),
         const SizedBox(height: 16),
         _buildPlanCard(
           id: 'corporate_6mo',
-          title: '3,000 ETB',
-          subtitle: '/ 6 mo',
-          description: 'Business 6 Month',
+          title: '3,000',
+          subtitle: l10n.pricePer6Mo(''),
+          description: l10n.business6Month,
         ),
         const SizedBox(height: 16),
         _buildPlanCard(
           id: 'corporate_3mo',
-          title: '2,500 ETB',
-          subtitle: '/ 3 mo',
-          description: 'Business Quarterly',
+          title: '2,500',
+          subtitle: l10n.pricePer3Mo(''),
+          description: l10n.businessQuarterly,
         ),
       ],
     );
@@ -390,7 +393,7 @@ class _MembershipSelectionScreenState
     );
   }
 
-  Widget _buildFooter(bool isDark) {
+  Widget _buildFooter(bool isDark, AppLocalizations l10n) {
     return Container(
       padding: const EdgeInsets.fromLTRB(24, 16, 24, 40),
       decoration: BoxDecoration(
@@ -410,7 +413,48 @@ class _MembershipSelectionScreenState
           ),
           const SizedBox(height: 16),
           ElevatedButton(
-            onPressed: () {},
+            onPressed: () {
+              double amount = 0;
+              String planName = '';
+
+              switch (_selectedPlanId) {
+                case 'personal_year':
+                  amount = 3500;
+                  planName = l10n.oneYearPremiumAccess;
+                  break;
+                case 'personal_6mo':
+                  amount = 2500;
+                  planName = l10n.sixMonthsPro;
+                  break;
+                case 'personal_3mo':
+                  amount = 2000;
+                  planName = l10n.threeMonthsBasic;
+                  break;
+                case 'corporate_year':
+                  amount = 4000;
+                  planName = l10n.enterpriseAnnual;
+                  break;
+                case 'corporate_6mo':
+                  amount = 3000;
+                  planName = l10n.business6Month;
+                  break;
+                case 'corporate_3mo':
+                  amount = 2500;
+                  planName = l10n.businessQuarterly;
+                  break;
+              }
+
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => PaymentScreen(
+                    amount: amount,
+                    planId: _selectedPlanId,
+                    planName: planName,
+                  ),
+                ),
+              );
+            },
             style: ElevatedButton.styleFrom(
               backgroundColor: AppColors.primary,
               foregroundColor: Colors.white,
@@ -421,23 +465,23 @@ class _MembershipSelectionScreenState
               elevation: 4,
               shadowColor: AppColors.primary.withValues(alpha: 0.4),
             ),
-            child: const Row(
+            child: Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Icon(Icons.lock, size: 20),
-                SizedBox(width: 8),
+                const Icon(Icons.lock, size: 20),
+                const SizedBox(width: 8),
                 Text(
-                  'Pay with Telebirr / Chapa',
-                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                  l10n.payWithTelebirrChapa,
+                  style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
                 ),
               ],
             ),
           ),
           const SizedBox(height: 12),
-          const Text(
-            'By subscribing, you agree to our Terms of Service. Secure encrypted payment processing.',
+          Text(
+            l10n.subscriptionTerms,
             textAlign: TextAlign.center,
-            style: TextStyle(fontSize: 10, color: Colors.grey),
+            style: const TextStyle(fontSize: 10, color: Colors.grey),
           ),
         ],
       ),

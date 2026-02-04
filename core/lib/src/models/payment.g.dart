@@ -49,14 +49,14 @@ _$ChapaPaymentRequestImpl _$$ChapaPaymentRequestImplFromJson(
   amount: (json['amount'] as num).toDouble(),
   currency: json['currency'] as String,
   email: json['email'] as String,
-  firstName: json['firstName'] as String,
-  lastName: json['lastName'] as String?,
-  phoneNumber: json['phoneNumber'] as String?,
-  txRef: json['txRef'] as String,
-  callbackUrl: json['callbackUrl'] as String?,
-  returnUrl: json['returnUrl'] as String?,
-  customizationTitle: json['customizationTitle'] as String?,
-  customizationDescription: json['customizationDescription'] as String?,
+  firstName: json['first_name'] as String,
+  lastName: json['last_name'] as String?,
+  phoneNumber: json['phone_number'] as String?,
+  txRef: json['tx_ref'] as String,
+  callbackUrl: json['callback_url'] as String?,
+  returnUrl: json['return_url'] as String?,
+  customizationTitle: json['customization_title'] as String?,
+  customizationDescription: json['customization_description'] as String?,
 );
 
 Map<String, dynamic> _$$ChapaPaymentRequestImplToJson(
@@ -65,14 +65,14 @@ Map<String, dynamic> _$$ChapaPaymentRequestImplToJson(
   'amount': instance.amount,
   'currency': instance.currency,
   'email': instance.email,
-  'firstName': instance.firstName,
-  'lastName': instance.lastName,
-  'phoneNumber': instance.phoneNumber,
-  'txRef': instance.txRef,
-  'callbackUrl': instance.callbackUrl,
-  'returnUrl': instance.returnUrl,
-  'customizationTitle': instance.customizationTitle,
-  'customizationDescription': instance.customizationDescription,
+  'first_name': instance.firstName,
+  'last_name': instance.lastName,
+  'phone_number': instance.phoneNumber,
+  'tx_ref': instance.txRef,
+  'callback_url': instance.callbackUrl,
+  'return_url': instance.returnUrl,
+  'customization_title': instance.customizationTitle,
+  'customization_description': instance.customizationDescription,
 };
 
 _$ChapaPaymentResponseImpl _$$ChapaPaymentResponseImplFromJson(
@@ -93,19 +93,19 @@ Map<String, dynamic> _$$ChapaPaymentResponseImplToJson(
 
 _$ChapaPaymentDataImpl _$$ChapaPaymentDataImplFromJson(
   Map<String, dynamic> json,
-) => _$ChapaPaymentDataImpl(checkoutUrl: json['checkoutUrl'] as String);
+) => _$ChapaPaymentDataImpl(checkoutUrl: json['checkout_url'] as String);
 
 Map<String, dynamic> _$$ChapaPaymentDataImplToJson(
   _$ChapaPaymentDataImpl instance,
-) => <String, dynamic>{'checkoutUrl': instance.checkoutUrl};
+) => <String, dynamic>{'checkout_url': instance.checkoutUrl};
 
 _$ChapaWebhookDataImpl _$$ChapaWebhookDataImplFromJson(
   Map<String, dynamic> json,
 ) => _$ChapaWebhookDataImpl(
-  txRef: json['txRef'] as String,
+  txRef: json['tx_ref'] as String,
   status: json['status'] as String,
 );
 
 Map<String, dynamic> _$$ChapaWebhookDataImplToJson(
   _$ChapaWebhookDataImpl instance,
-) => <String, dynamic>{'txRef': instance.txRef, 'status': instance.status};
+) => <String, dynamic>{'tx_ref': instance.txRef, 'status': instance.status};

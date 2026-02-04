@@ -35,6 +35,7 @@ class Payment with _$Payment {
 
 @freezed
 class ChapaPaymentRequest with _$ChapaPaymentRequest {
+  @JsonSerializable(fieldRename: FieldRename.snake)
   const factory ChapaPaymentRequest({
     required double amount,
     required String currency,
@@ -55,6 +56,7 @@ class ChapaPaymentRequest with _$ChapaPaymentRequest {
 
 @freezed
 class ChapaPaymentResponse with _$ChapaPaymentResponse {
+  @JsonSerializable(fieldRename: FieldRename.snake)
   const factory ChapaPaymentResponse({
     required String message,
     required String status,
@@ -67,6 +69,7 @@ class ChapaPaymentResponse with _$ChapaPaymentResponse {
 
 @freezed
 class ChapaPaymentData with _$ChapaPaymentData {
+  @JsonSerializable(fieldRename: FieldRename.snake)
   const factory ChapaPaymentData({required String checkoutUrl}) =
       _ChapaPaymentData;
 
@@ -76,6 +79,7 @@ class ChapaPaymentData with _$ChapaPaymentData {
 
 @freezed
 class ChapaWebhookData with _$ChapaWebhookData {
+  @JsonSerializable(fieldRename: FieldRename.snake)
   const factory ChapaWebhookData({
     required String txRef,
     required String status,

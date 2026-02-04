@@ -303,6 +303,24 @@ class AppLocalizationsAm extends AppLocalizations {
   String get industryAlerts => 'የኢንዱስትሪ ማንቂያዎች';
 
   @override
+  String get selectIndustries => 'ኢንዱስትሪዎችን ይምረጡ';
+
+  @override
+  String get chooseSectorsAlerts =>
+      'ማንቂያዎችን ማግኘት የሚፈልጉባቸውን ዘርፎች ይምረጡ። አዳዲስ ጨረታዎች ከነዚህ ምድቦች ጋር ሲዛመዱ ማሳወቂያ ይደርስዎታል።';
+
+  @override
+  String get saveChanges => 'ለውጦችን አስቀምጥ';
+
+  @override
+  String get alertPreferencesUpdated => 'የማንቂያ ምርጫዎች ተዘምነዋል';
+
+  @override
+  String errorSavingPreferences(String error) {
+    return 'ምርጫዎችን በማስቀመጥ ላይ ስህተት ተከስቷል፡ $error';
+  }
+
+  @override
   String get industries => 'ኮንስትራክሽን፣ አይቲ፣ ሎጂስቲክስ';
 
   @override
@@ -325,6 +343,112 @@ class AppLocalizationsAm extends AppLocalizations {
 
   @override
   String get appVersion => 'TenderEthiopia v2.4.0 (Build 88)';
+
+  @override
+  String get membershipPlan => 'የአባልነት ዕቅድ';
+
+  @override
+  String get currentStatus => 'የአሁኑ ሁኔታ';
+
+  @override
+  String get annualPremiumAccess => 'የዓመታዊ ፕሪሚየም መዳረሻ';
+
+  @override
+  String validUntil(String date) {
+    return 'እስከ $date ድረስ ያገለግላል';
+  }
+
+  @override
+  String get upgradeOrChangePlan => 'ዕቅድን ያሻሽሉ ወይም ይቀይሩ';
+
+  @override
+  String get updateBusinessProfile => 'የንግድ መገለጫን ያዘምኑ';
+
+  @override
+  String get updateBusinessProfileSubtitle => 'ምርጫዎችዎን እና ተዛማጆችን ያስተካክሉ';
+
+  @override
+  String get teamManagementSubtitle => 'የድርጅት መዳረሻን ያስተዳድሩ';
+
+  @override
+  String get noSectorsSelected => 'ምንም ዘርፎች አልተመረጡም';
+
+  @override
+  String get loading => 'በመጫን ላይ...';
+
+  @override
+  String get catConsultancy => 'የምክር አገልግሎት';
+
+  @override
+  String get catNonConsultancy => 'ከምክር ውጭ አገልግሎት';
+
+  @override
+  String get catAgriculture => 'እርሻ';
+
+  @override
+  String get catEducation => 'ትምህርት';
+
+  @override
+  String get catFinance => 'ፋይናንስ እና መድህን';
+
+  @override
+  String get catTransport => 'ትራንስፖርት';
+
+  @override
+  String get catManufacturing => 'ማኑፋክቸሪንግ';
+
+  @override
+  String get catHotel => 'ሆቴል እና አገልግሎቶች';
+
+  @override
+  String get catCleaning => 'ጽዳት እና ጥበቃ';
+
+  @override
+  String get supplier => 'አቅራቢ';
+
+  @override
+  String get contractor => 'ተቋራጭ';
+
+  @override
+  String get consultant => 'አማካሪ';
+
+  @override
+  String get generalTrading => 'ጠቅላላ ንግድ';
+
+  @override
+  String get service => 'አገልግሎት';
+
+  @override
+  String grade(String grade) {
+    return 'ደረጃ $grade';
+  }
+
+  @override
+  String get na => 'አይመለከትም';
+
+  @override
+  String get ministries => 'ሚኒስቴር መስሪያ ቤቶች';
+
+  @override
+  String get universities => 'ዩኒቨርሲቲዎች';
+
+  @override
+  String get ngos => 'መንግስታዊ ያልሆኑ ድርጅቶች (NGOs)';
+
+  @override
+  String get soes => 'የመንግስት የልማት ድርጅቶች';
+
+  @override
+  String get addisAbaba => 'አዲስ አበባ';
+
+  @override
+  String get oromia => 'ኦሮሚያ';
+
+  @override
+  String get amhara => 'አማራ';
+
+  @override
+  String get nationwide => 'ሀገር አቀፍ';
 
   @override
   String get profileSetupTitle => 'መገለጫ አዋቅር';
@@ -567,4 +691,186 @@ class AppLocalizationsAm extends AppLocalizations {
 
   @override
   String get aiSummaryError => 'ማጠቃለያውን ማመንጨት አልተቻለም።';
+
+  @override
+  String get activePlan => 'ንቁ ዕቅድ';
+
+  @override
+  String get active => 'ንቁ';
+
+  @override
+  String get seatAllocation => 'የመቀመጫ ድልድል';
+
+  @override
+  String get used => 'ጥቅም ላይ የዋለ';
+
+  @override
+  String renewsOn(String date) {
+    return 'በ$date ይታደሳል';
+  }
+
+  @override
+  String get upgradeOrRenew => 'ያሻሽሉ ወይም ያድሱ';
+
+  @override
+  String get teamMembers => 'የቡድን አባላት';
+
+  @override
+  String manageAccessSlots(int count) {
+    return 'ለ$count የድርጅት ቦታዎችዎ መዳረሻን ያስተዳድሩ';
+  }
+
+  @override
+  String slotAvailable(int count) {
+    return 'ቦታ $count፡ ክፍት ነው';
+  }
+
+  @override
+  String get inviteViaEmailPhone => 'በኢሜይል ወይም በስልክ ቁጥር ይጋብዙ';
+
+  @override
+  String get emailPhoneHint => 'ኢሜይል ወይም +251...';
+
+  @override
+  String inviteSentTo(String text) {
+    return 'ግብዣ ወደ $text ተልኳል';
+  }
+
+  @override
+  String get enterEmailPhoneError => 'እባክዎ ኢሜይል ወይም ስልክ ቁጥር ያስገቡ';
+
+  @override
+  String get invite => 'ጋብዝ';
+
+  @override
+  String get email => 'ኢሜይል';
+
+  @override
+  String get phoneWithPrefix => 'ስልክ (+251)';
+
+  @override
+  String get inviteThirdMember => 'ሶስተኛ የቡድን አባል ይጋብዙ';
+
+  @override
+  String get add => 'ጨምር';
+
+  @override
+  String get slot3Config => 'የቦታ 3 ውቅር';
+
+  @override
+  String get pendingStatus => 'በጥበቃ ላይ ያለ ሁኔታ';
+
+  @override
+  String get invitePending => 'ግብዣ በጥበቃ ላይ';
+
+  @override
+  String get invitationResent => 'ግብዣው እንደገና ተልኳል';
+
+  @override
+  String get resend => 'እንደገና ላክ';
+
+  @override
+  String get invitationCancelled => 'ግብዣው ተሰርዟል';
+
+  @override
+  String get cancel => 'ሰርዝ';
+
+  @override
+  String get collaborativeTendering => 'የትብብር ጨረታ';
+
+  @override
+  String get collaborativeTenderingDesc =>
+      'የቡድን አባላት የእርስዎን የድርጅት OCR ኮታ (በወር 500 ገጾች) ይጋራሉ እና በእውነተኛ ጊዜ ለጨረታ ተሳትፎ አስተዋፅኦ ማድረግ ይችላሉ።';
+
+  @override
+  String get ethiopianMarketEnterprise => 'የኢትዮጵያ ገበያ ድርጅት';
+
+  @override
+  String get teamManagementTitle => 'የቡድን አስተዳደር';
+
+  @override
+  String get membership => 'አባልነት';
+
+  @override
+  String get corporate => 'ድርጅታዊ';
+
+  @override
+  String get personal => 'ግል';
+
+  @override
+  String pricePerYear(String price) {
+    return '$price ብር / በዓመት';
+  }
+
+  @override
+  String pricePer6Mo(String price) {
+    return '$price ብር / ለ6 ወር';
+  }
+
+  @override
+  String pricePer3Mo(String price) {
+    return '$price ብር / ለ3 ወር';
+  }
+
+  @override
+  String get oneYearPremiumAccess => 'የ1 ዓመት ፕሪሚየም መዳረሻ';
+
+  @override
+  String get bestValue => 'ምርጥ ዋጋ';
+
+  @override
+  String get realTimeAlerts => 'የእውነተኛ ጊዜ ማንቂያዎች';
+
+  @override
+  String get sixMonthsPro => 'የ6 ወራት ፕሮ';
+
+  @override
+  String get threeMonthsBasic => 'የ3 ወራት መሠረታዊ';
+
+  @override
+  String get enterpriseAnnual => 'የድርጅት ዓመታዊ';
+
+  @override
+  String get threeUserLicenses => 'የ3 ተጠቃሚዎች ፈቃድ';
+
+  @override
+  String get multiUserDashboard => 'የብዙ ተጠቃሚዎች ዳሽቦርድ';
+
+  @override
+  String get business6Month => 'ቢዝነስ 6 ወር';
+
+  @override
+  String get businessQuarterly => 'ቢዝነስ በየሶስት ወሩ';
+
+  @override
+  String get payWithTelebirrChapa => 'በቴሌብር / ቻፓ ይክፈሉ';
+
+  @override
+  String get subscriptionTerms =>
+      'በመመዝገብዎ በአገልግሎት ውላችን ይስማማሉ። ደህንነቱ የተጠበቀ ክፍያ።';
+
+  @override
+  String get completePayment => 'ክፍያውን ያጠናቅቁ';
+
+  @override
+  String get userNotLoggedIn => 'ተጠቃሚ አልገባም። ለመቀጠል እባክዎ ይግቡ።';
+
+  @override
+  String get redirectingToChapa => 'ወደ ቻፓ በማዛወር ላይ...';
+
+  @override
+  String get couldNotLaunchPayment => 'የክፍያ አገናኙን መክፈት አልተቻለም';
+
+  @override
+  String get payNowWithChapa => 'አሁን በቻፓ ይክፈሉ';
+
+  @override
+  String get paymentSuccessful => 'ክፍያው ተሳክቷል!';
+
+  @override
+  String get subscriptionActivated =>
+      'አባልነትዎ ነቅቷል። አሁን ሁሉንም የፕሪሚየም አገልግሎቶች ማግኘት ይችላሉ።';
+
+  @override
+  String get goToDashboard => 'ወደ ዳሽቦርድ ይሂዱ';
 }

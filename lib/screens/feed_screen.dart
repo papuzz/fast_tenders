@@ -1,3 +1,4 @@
+import 'package:fast_tenders/core/utils/l10n_utils.dart';
 import 'package:fast_tenders/core/providers/locale_provider.dart';
 import 'package:fast_tenders/core/providers/tender_provider.dart';
 import 'package:fast_tenders/l10n/app_localizations.dart';
@@ -139,26 +140,7 @@ class _TenderScreenState extends ConsumerState<TenderScreen> {
   }
 
   String _getCategoryLabel(BuildContext context, String key) {
-    final l10n = AppLocalizations.of(context)!;
-    switch (key) {
-      case 'All':
-        return l10n.catAll;
-      case 'Construction':
-        return l10n.catConstruction;
-      case 'IT & Telecom':
-        return l10n.catIT;
-      case 'Healthcare':
-      case 'Health':
-        return l10n.catHealth;
-      case 'Energy':
-        return l10n.catEnergy;
-      case 'Goods & Supply':
-      case 'Supply':
-        return l10n.catSupply;
-      // Fallback for new categories until they are added to ARB
-      default:
-        return key;
-    }
+    return L10nUtils.getCategoryLabel(context, key);
   }
 
   void _showFilterSheet(BuildContext context) {

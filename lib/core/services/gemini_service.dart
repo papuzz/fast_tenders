@@ -1,5 +1,6 @@
 import 'package:google_generative_ai/google_generative_ai.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 class GeminiService {
   final GenerativeModel _model;
@@ -38,8 +39,6 @@ $tenderText
 }
 
 final geminiServiceProvider = Provider<GeminiService>((ref) {
-  // TODO: Replace with your actual API key or use an environment variable
-  // Ideally, fetch this from a secure storage or configuration
-  const apiKey = 'AIzaSyCauXZQlhgBSP6mAexQkaoRXx0hLdOCEGk';
+  final apiKey = dotenv.get('GEMINI_API_KEY');
   return GeminiService(apiKey);
 });

@@ -1,4 +1,6 @@
 import 'package:supabase_flutter/supabase_flutter.dart';
+import 'package:dio/dio.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import '../models/models.dart';
 
 abstract class PaymentRepository {
@@ -70,10 +72,31 @@ class SupabasePaymentRepository implements PaymentRepository {
 
   @override
   Future<String> initiateChapaPayment(ChapaPaymentRequest request) async {
-    // For now, return a mock checkout URL
-    // TODO: Implement actual Chapa API integration
-    final checkoutUrl = 'https://checkout.chapa.co/${request.txRef}';
-    return checkoutUrl;
+    final dio = Dio();
+    final chapaUrl = dotenv.get('CHAPA_API_URL');
+    final chapaSecretKey = dotenv.get('CHAPA_SECRET_KEY');
+
+    try {
+      final response = await dio.post(
+        chapaUrl,
+        data: request.toJson(),
+        options: Options(
+          headers: {
+            'Authorization': 'Bearer $chapaSecretKey',
+            'Content-Type': 'application/json',
+          },
+        ),
+      );
+
+      if (response.statusCode == 200 || response.statusCode == 201) {
+        final chapaResponse = ChapaPaymentResponse.fromJson(response.data);
+        return chapaResponse.data.checkoutUrl;
+      } else {
+        throw Exception('Failed to initiate Chapa payment: ${response.data}');
+      }
+    } catch (e) {
+      throw Exception('Error initiating Chapa payment: $e');
+    }
   }
 
   @override

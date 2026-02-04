@@ -112,15 +112,74 @@
     "topUp": "Top Up",
     "preferences": "Preferences",
     "langPreference": "Language Preference",
-    "industryAlerts": "Industry Alerts",
-    "industries": "Construction, IT, Logistics",
-    "helpSupport": "Help & Support",
+      "industryAlerts": "Industry Alerts",
+      "selectIndustries": "Select Industries",
+      "chooseSectorsAlerts": "Choose the sectors you want to receive alerts for. You will be notified when new tenders match these categories.",
+      "saveChanges": "Save Changes",
+      "alertPreferencesUpdated": "Alert preferences updated",
+      "errorSavingPreferences": "Error saving preferences: {error}",
+      "@errorSavingPreferences": {
+        "placeholders": {
+          "error": {
+            "type": "String"
+          }
+        }
+      },
+      "industries": "Construction, IT, Logistics",    "helpSupport": "Help & Support",
     "ocrScanningTitle": "How to use OCR Scanning",
     "ocrScanningDesc": "Convert paper tenders to digital data instantly.",
     "faq": "Frequently Asked Questions",
     "contactSupport": "Contact Customer Support",
     "logout": "Logout Account",
     "appVersion": "TenderEthiopia v2.4.0 (Build 88)",
+  "membershipPlan": "Membership Plan",
+  "currentStatus": "CURRENT STATUS",
+  "annualPremiumAccess": "Annual Premium Access",
+  "validUntil": "Valid until {date}",
+  "@validUntil": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "upgradeOrChangePlan": "Upgrade or Change Plan",
+  "updateBusinessProfile": "Update Business Profile",
+  "updateBusinessProfileSubtitle": "Refine your preferences and matches",
+  "teamManagementSubtitle": "Manage corporate access",
+  "noSectorsSelected": "No sectors selected",
+  "loading": "Loading...",
+  "catConsultancy": "Consultancy",
+  "catNonConsultancy": "Non-Consultancy",
+  "catAgriculture": "Agriculture",
+  "catEducation": "Education",
+  "catFinance": "Finance & Insurance",
+  "catTransport": "Transport",
+  "catManufacturing": "Manufacturing",
+  "catHotel": "Hotel & Services",
+  "catCleaning": "Cleaning & Security",
+  "supplier": "Supplier",
+  "contractor": "Contractor",
+  "consultant": "Consultant",
+  "generalTrading": "General Trading",
+  "service": "Service",
+  "grade": "Grade {grade}",
+  "@grade": {
+    "placeholders": {
+      "grade": {
+        "type": "String"
+      }
+    }
+  },
+  "na": "N/A",
+  "ministries": "Ministries",
+  "universities": "Universities",
+  "ngos": "NGOs",
+  "soes": "SOEs",
+  "addisAbaba": "Addis Ababa",
+  "oromia": "Oromia",
+  "amhara": "Amhara",
+  "nationwide": "Nationwide",
   "profileSetupTitle": "Setup Profile",
   "skip": "Skip",
   "profileUpdatedSyncing": "Profile Updated! Your feed is syncing...",
@@ -219,6 +278,110 @@
   "generateSummary": "Generate Summary",
   "generatingSummary": "Generating...",
   "aiSummaryDisclaimer": "AI-generated summary. Please refer to official documents for final details.",
-  "aiSummaryError": "Failed to generate summary."
-  }
+  "aiSummaryError": "Failed to generate summary.",
+  "activePlan": "ACTIVE PLAN",
+  "active": "ACTIVE",
+  "seatAllocation": "Seat Allocation",
+  "used": "Used",
+  "renewsOn": "Renews on {date}",
+  "@renewsOn": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "upgradeOrRenew": "Upgrade or Renew",
+  "teamMembers": "Team Members",
+  "manageAccessSlots": "Manage access for your {count} corporate slots",
+  "@manageAccessSlots": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "slotAvailable": "Slot {count}: Available",
+  "@slotAvailable": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "inviteViaEmailPhone": "Invite via email or phone number",
+  "emailPhoneHint": "Email or +251...",
+  "inviteSentTo": "Invite sent to {text}",
+  "@inviteSentTo": {
+    "placeholders": {
+      "text": {
+        "type": "String"
+      }
+    }
+  },
+  "enterEmailPhoneError": "Please enter an email or phone number",
+  "invite": "Invite",
+  "email": "Email",
+  "phoneWithPrefix": "Phone (+251)",
+  "inviteThirdMember": "Invite a third team member",
+  "add": "Add",
+  "slot3Config": "Slot 3 configuration",
+  "pendingStatus": "PENDING STATUS",
+  "invitePending": "Invite pending",
+  "invitationResent": "Invitation resent",
+  "resend": "Resend",
+  "invitationCancelled": "Invitation cancelled",
+  "cancel": "Cancel",
+  "collaborativeTendering": "Collaborative Tendering",
+  "collaborativeTenderingDesc": "Team members share your corporate OCR quota (500 pages/mo) and can contribute to tender bidding analysis in real-time.",
+  "ethiopianMarketEnterprise": "ETHIOPIAN MARKET ENTERPRISE",
+  "teamManagementTitle": "Team Management",
+  "membership": "Membership",
+  "corporate": "Corporate",
+  "personal": "Personal",
+  "pricePerYear": "{price} ETB / year",
+  "@pricePerYear": {
+    "placeholders": {
+      "price": {
+        "type": "String"
+      }
+    }
+  },
+  "pricePer6Mo": "{price} ETB / 6 mo",
+  "@pricePer6Mo": {
+    "placeholders": {
+      "price": {
+        "type": "String"
+      }
+    }
+  },
+  "pricePer3Mo": "{price} ETB / 3 mo",
+  "@pricePer3Mo": {
+    "placeholders": {
+      "price": {
+        "type": "String"
+      }
+    }
+  },
+  "oneYearPremiumAccess": "1 Year Premium Access",
+  "bestValue": "Best Value",
+  "realTimeAlerts": "Real-time Alerts",
+  "sixMonthsPro": "6 Months Pro",
+  "threeMonthsBasic": "3 Months Basic",
+  "enterpriseAnnual": "Enterprise Annual",
+  "threeUserLicenses": "3 User Licenses",
+  "multiUserDashboard": "Multi-user Dashboard",
+  "business6Month": "Business 6 Month",
+  "businessQuarterly": "Business Quarterly",
+  "payWithTelebirrChapa": "Pay with Telebirr / Chapa",
+  "subscriptionTerms": "By subscribing, you agree to our Terms of Service. Secure encrypted payment processing.",
+  "completePayment": "Complete Payment",
+  "userNotLoggedIn": "User not logged in. Please log in to continue.",
+  "redirectingToChapa": "Redirecting to Chapa...",
+  "couldNotLaunchPayment": "Could not launch payment URL",
+  "payNowWithChapa": "Pay Now with Chapa",
+  "paymentSuccessful": "Payment Successful!",
+  "subscriptionActivated": "Your subscription has been activated. You can now access all premium features.",
+  "goToDashboard": "Go to Dashboard"
+}
   

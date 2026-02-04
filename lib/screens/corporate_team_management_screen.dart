@@ -1,7 +1,9 @@
+import 'package:intl/intl.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:core/core.dart';
+import 'package:fast_tenders/l10n/app_localizations.dart';
 
 class CorporateTeamManagementScreen extends ConsumerStatefulWidget {
   const CorporateTeamManagementScreen({super.key});
@@ -27,26 +29,13 @@ class _CorporateTeamManagementScreenState
     super.dispose();
   }
 
-  String _formatDate(DateTime date) {
-    const months = [
-      'Jan',
-      'Feb',
-      'Mar',
-      'Apr',
-      'May',
-      'Jun',
-      'Jul',
-      'Aug',
-      'Sep',
-      'Oct',
-      'Nov',
-      'Dec'
-    ];
-    return '${months[date.month - 1]} ${date.day}, ${date.year}';
+  String _formatDate(DateTime date, String locale) {
+    return DateFormat.yMMMd(locale).format(date);
   }
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
     final isDark = Theme.of(context).brightness == Brightness.dark;
     final backgroundColor = isDark ? _bgDark : _bgLight;
     final textColor = isDark ? Colors.white : Colors.grey[900];
@@ -65,12 +54,12 @@ class _CorporateTeamManagementScreenState
             constraints: const BoxConstraints(maxWidth: 480),
             child: planAsync.when(
               loading: () => const Center(child: CircularProgressIndicator()),
-              error: (err, stack) => Center(child: Text('Error: $err')),
+              error: (err, stack) => Center(child: Text('${l10n.errorWithCount(err.toString())}')),
               data: (plan) {
                 return membersAsync.when(
                   loading: () =>
                       const Center(child: CircularProgressIndicator()),
-                  error: (err, stack) => Center(child: Text('Error: $err')),
+                  error: (err, stack) => Center(child: Text('${l10n.errorWithCount(err.toString())}')),
                   data: (members) {
                     final activeMembers = members
                         .where((m) => m.status == 'active')
@@ -85,7 +74,7 @@ class _CorporateTeamManagementScreenState
                       crossAxisAlignment: CrossAxisAlignment.stretch,
                       children: [
                         // Header
-                        _buildHeader(context, isDark),
+                        _buildHeader(context, isDark, l10n),
 
                         // Active Plan Card
                         Padding(
@@ -159,9 +148,9 @@ class _CorporateTeamManagementScreenState
                                         mainAxisAlignment:
                                             MainAxisAlignment.spaceBetween,
                                         children: [
-                                          const Text(
-                                            'ACTIVE PLAN',
-                                            style: TextStyle(
+                                          Text(
+                                            l10n.activePlan,
+                                            style: const TextStyle(
                                               color: _primaryColor,
                                               fontSize: 12,
                                               fontWeight: FontWeight.bold,
@@ -183,9 +172,9 @@ class _CorporateTeamManagementScreenState
                                               borderRadius:
                                                   BorderRadius.circular(999),
                                             ),
-                                            child: const Text(
-                                              'ACTIVE',
-                                              style: TextStyle(
+                                            child: Text(
+                                              l10n.active,
+                                              style: const TextStyle(
                                                 color: Colors.green,
                                                 fontSize: 10,
                                                 fontWeight: FontWeight.bold,
@@ -210,7 +199,7 @@ class _CorporateTeamManagementScreenState
                                             MainAxisAlignment.spaceBetween,
                                         children: [
                                           Text(
-                                            'Seat Allocation',
+                                            l10n.seatAllocation,
                                             style: TextStyle(
                                               color: subTextColor,
                                               fontSize: 14,
@@ -218,7 +207,7 @@ class _CorporateTeamManagementScreenState
                                             ),
                                           ),
                                           Text(
-                                            '$usedSlots / ${plan.maxSeats} Used',
+                                            '$usedSlots / ${plan.maxSeats} ${l10n.used}',
                                             style: TextStyle(
                                               color: textColor,
                                               fontSize: 14,
@@ -242,7 +231,7 @@ class _CorporateTeamManagementScreenState
                                       ),
                                       const SizedBox(height: 8),
                                       Text(
-                                        'Renews on ${_formatDate(plan.renewalDate)}',
+                                        l10n.renewsOn(_formatDate(plan.renewalDate, Localizations.localeOf(context).toString())),
                                         style: TextStyle(
                                           color: isDark
                                               ? const Color(0xFF6A7A8A)
@@ -265,15 +254,15 @@ class _CorporateTeamManagementScreenState
                                           ),
                                           elevation: 0,
                                         ),
-                                        child: const Row(
+                                        child: Row(
                                           mainAxisAlignment:
                                               MainAxisAlignment.center,
                                           children: [
-                                            Icon(Icons.refresh, size: 18),
-                                            SizedBox(width: 8),
+                                            const Icon(Icons.refresh, size: 18),
+                                            const SizedBox(width: 8),
                                             Text(
-                                              'Upgrade or Renew',
-                                              style: TextStyle(
+                                              l10n.upgradeOrRenew,
+                                              style: const TextStyle(
                                                 fontWeight: FontWeight.bold,
                                               ),
                                             ),
@@ -295,7 +284,7 @@ class _CorporateTeamManagementScreenState
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(
-                                'Team Members',
+                                l10n.teamMembers,
                                 style: TextStyle(
                                   color: textColor,
                                   fontSize: 18,
@@ -303,7 +292,7 @@ class _CorporateTeamManagementScreenState
                                 ),
                               ),
                               Text(
-                                'Manage access for your ${plan.maxSeats} corporate slots',
+                                l10n.manageAccessSlots(plan.maxSeats),
                                 style: TextStyle(
                                     color: subTextColor, fontSize: 12),
                               ),
@@ -345,9 +334,10 @@ class _CorporateTeamManagementScreenState
                                   child: _buildInviteSlot(
                                     context,
                                     isDark,
+                                    l10n,
                                     controller: _inviteController,
                                     slotName:
-                                        'Slot ${usedSlots + 1}: Available',
+                                        l10n.slotAvailable(usedSlots + 1),
                                     cardColor: cardColor,
                                     borderColor: borderColor,
                                     textColor: textColor!,
@@ -365,8 +355,9 @@ class _CorporateTeamManagementScreenState
                                     child: _buildLockedSlot(
                                       context,
                                       isDark,
+                                      l10n,
                                       slotName:
-                                          'Slot ${usedSlots + 2 + index}: Available',
+                                          l10n.slotAvailable(usedSlots + 2 + index),
                                       cardColor: cardColor,
                                       borderColor: borderColor,
                                       textColor: textColor!,
@@ -392,7 +383,7 @@ class _CorporateTeamManagementScreenState
                                       MainAxisAlignment.spaceBetween,
                                   children: [
                                     Text(
-                                      'PENDING STATUS',
+                                      l10n.pendingStatus,
                                       style: TextStyle(
                                         color: textColor,
                                         fontSize: 12,
@@ -449,7 +440,7 @@ class _CorporateTeamManagementScreenState
                                                     ),
                                                   ),
                                                   Text(
-                                                    'Invite pending',
+                                                    l10n.invitePending,
                                                     style: TextStyle(
                                                       color: subTextColor,
                                                       fontSize: 10,
@@ -470,10 +461,10 @@ class _CorporateTeamManagementScreenState
                                                     ScaffoldMessenger.of(
                                                             context)
                                                         .showSnackBar(
-                                                      const SnackBar(
+                                                      SnackBar(
                                                         content: Text(
-                                                            'Invitation resent'),
-                                                        duration: Duration(
+                                                            l10n.invitationResent),
+                                                        duration: const Duration(
                                                             seconds: 2),
                                                       ),
                                                     );
@@ -499,9 +490,9 @@ class _CorporateTeamManagementScreenState
                                                               4),
                                                     ),
                                                   ),
-                                                  child: const Text(
-                                                    'Resend',
-                                                    style: TextStyle(
+                                                  child: Text(
+                                                    l10n.resend,
+                                                    style: const TextStyle(
                                                       color: _primaryColor,
                                                       fontSize: 10,
                                                       fontWeight:
@@ -520,10 +511,10 @@ class _CorporateTeamManagementScreenState
                                                     ScaffoldMessenger.of(
                                                             context)
                                                         .showSnackBar(
-                                                      const SnackBar(
+                                                      SnackBar(
                                                         content: Text(
-                                                            'Invitation cancelled'),
-                                                        duration: Duration(
+                                                            l10n.invitationCancelled),
+                                                        duration: const Duration(
                                                             seconds: 2),
                                                       ),
                                                     );
@@ -540,7 +531,7 @@ class _CorporateTeamManagementScreenState
                                                             .shrinkWrap,
                                                   ),
                                                   child: Text(
-                                                    'Cancel',
+                                                    l10n.cancel,
                                                     style: TextStyle(
                                                       color: Colors.red
                                                           .withValues(
@@ -589,7 +580,7 @@ class _CorporateTeamManagementScreenState
                                         CrossAxisAlignment.start,
                                     children: [
                                       Text(
-                                        'Collaborative Tendering',
+                                        l10n.collaborativeTendering,
                                         style: TextStyle(
                                           color: textColor,
                                           fontSize: 14,
@@ -598,7 +589,7 @@ class _CorporateTeamManagementScreenState
                                       ),
                                       const SizedBox(height: 4),
                                       Text(
-                                        'Team members share your corporate OCR quota (500 pages/mo) and can contribute to tender bidding analysis in real-time.',
+                                        l10n.collaborativeTenderingDesc,
                                         style: TextStyle(
                                           color: subTextColor,
                                           fontSize: 12,
@@ -617,7 +608,7 @@ class _CorporateTeamManagementScreenState
                         Padding(
                           padding: const EdgeInsets.all(24.0),
                           child: Text(
-                            'ETHIOPIAN MARKET ENTERPRISE',
+                            l10n.ethiopianMarketEnterprise,
                             textAlign: TextAlign.center,
                             style: TextStyle(
                               color: Colors.grey[500],
@@ -640,7 +631,7 @@ class _CorporateTeamManagementScreenState
     );
   }
 
-  Widget _buildHeader(BuildContext context, bool isDark) {
+  Widget _buildHeader(BuildContext context, bool isDark, AppLocalizations l10n) {
     return Container(
       color: isDark
           ? _bgDark.withValues(alpha: 0.8)
@@ -658,9 +649,9 @@ class _CorporateTeamManagementScreenState
                   color: _primaryColor,
                   size: 20,
                 ),
-                const Text(
-                  'Back',
-                  style: TextStyle(
+                Text(
+                  l10n.back,
+                  style: const TextStyle(
                     color: _primaryColor,
                     fontSize: 16,
                     fontWeight: FontWeight.w500,
@@ -670,7 +661,7 @@ class _CorporateTeamManagementScreenState
             ),
           ),
           Text(
-            'Team Management',
+            l10n.teamManagementTitle,
             style: TextStyle(
               color: isDark ? Colors.white : Colors.grey[900],
               fontSize: 18,
@@ -801,7 +792,8 @@ class _CorporateTeamManagementScreenState
 
   Widget _buildInviteSlot(
     BuildContext context,
-    bool isDark, {
+    bool isDark,
+    AppLocalizations l10n, {
     required String slotName,
     required Color cardColor,
     required Color borderColor,
@@ -851,7 +843,7 @@ class _CorporateTeamManagementScreenState
                       ),
                     ),
                     Text(
-                      'Invite via email or phone number',
+                      l10n.inviteViaEmailPhone,
                       style: TextStyle(color: subTextColor, fontSize: 12),
                     ),
                   ],
@@ -874,7 +866,7 @@ class _CorporateTeamManagementScreenState
                   child: TextField(
                     controller: controller,
                     decoration: InputDecoration(
-                      hintText: 'Email or +251...',
+                      hintText: l10n.emailPhoneHint,
                       hintStyle: TextStyle(
                         color: Colors.grey[500],
                         fontSize: 14,
@@ -894,15 +886,15 @@ class _CorporateTeamManagementScreenState
                     // For now, just show snackbar as implementation is mock
                     ScaffoldMessenger.of(context).showSnackBar(
                       SnackBar(
-                        content: Text('Invite sent to ${controller.text}'),
+                        content: Text(l10n.inviteSentTo(controller.text)),
                         backgroundColor: Colors.green,
                       ),
                     );
                     controller.clear();
                   } else {
                     ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(
-                        content: Text('Please enter an email or phone number'),
+                      SnackBar(
+                        content: Text(l10n.enterEmailPhoneError),
                         backgroundColor: Colors.red,
                       ),
                     );
@@ -917,9 +909,9 @@ class _CorporateTeamManagementScreenState
                   padding: const EdgeInsets.symmetric(horizontal: 16),
                   elevation: 2,
                 ),
-                child: const Text(
-                  'Invite',
-                  style: TextStyle(fontWeight: FontWeight.bold),
+                child: Text(
+                  l10n.invite,
+                  style: const TextStyle(fontWeight: FontWeight.bold),
                 ),
               ),
             ],
@@ -931,7 +923,7 @@ class _CorporateTeamManagementScreenState
               Icon(Icons.mail_outline, size: 14, color: Colors.grey[400]),
               const SizedBox(width: 4),
               Text(
-                'Email',
+                l10n.email,
                 style: TextStyle(
                   fontSize: 11,
                   color: Colors.grey[400],
@@ -945,7 +937,7 @@ class _CorporateTeamManagementScreenState
               Icon(Icons.phone_iphone, size: 14, color: Colors.grey[400]),
               const SizedBox(width: 4),
               Text(
-                'Phone (+251)',
+                l10n.phoneWithPrefix,
                 style: TextStyle(
                   fontSize: 11,
                   color: Colors.grey[400],
@@ -961,7 +953,8 @@ class _CorporateTeamManagementScreenState
 
   Widget _buildLockedSlot(
     BuildContext context,
-    bool isDark, {
+    bool isDark,
+    AppLocalizations l10n, {
     required String slotName,
     required Color cardColor,
     required Color borderColor,
@@ -1002,7 +995,7 @@ class _CorporateTeamManagementScreenState
                     ),
                   ),
                   Text(
-                    'Invite a third team member',
+                    l10n.inviteThirdMember,
                     style: TextStyle(
                       color: isDark
                           ? const Color(0xFF6A7A8A)
@@ -1016,15 +1009,15 @@ class _CorporateTeamManagementScreenState
             TextButton(
               onPressed: () {
                 ScaffoldMessenger.of(context).showSnackBar(
-                  const SnackBar(
-                    content: Text('Slot 3 configuration'),
-                    duration: Duration(seconds: 2),
+                  SnackBar(
+                    content: Text(l10n.slot3Config),
+                    duration: const Duration(seconds: 2),
                   ),
                 );
               },
-              child: const Text(
-                'Add',
-                style: TextStyle(
+              child: Text(
+                l10n.add,
+                style: const TextStyle(
                   color: _primaryColor,
                   fontWeight: FontWeight.bold,
                 ),
